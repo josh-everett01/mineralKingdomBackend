@@ -12,6 +12,8 @@ namespace MineralKingdomApi.Data
             : base(options)
         {
             _configuration = configuration;
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+
         }
 
         // Define DbSet properties for your entities here
@@ -21,4 +23,5 @@ namespace MineralKingdomApi.Data
         public DbSet<AuctionStatus> AuctionStatuses { get; set; }
         public DbSet<Bid> Bids { get; set; }
     }
+
 }
