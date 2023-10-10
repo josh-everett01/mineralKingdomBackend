@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "kA3bhmlWsdqiRvumRvCvh99ZgEgvbWsINlg5j3vzV8T606xMLknetDIQNBJuSogWlBhSx7EHzx/PyLUBFha1kw==",
+  "dgSpecHash": "jMf9fqXiuBYyRUEmm0G3+pQCsxO8EDo1WqbjFbQAhmW6qhb1iAl4v7yJrIWFVtAaFHRkI+rG8KHQGXCdC3dXmw==",
   "success": true,
   "projectFilePath": "/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/MineralKingdomApi.csproj",
   "expectedPackageFiles": [
@@ -26,6 +26,7 @@
     "/Users/joshuaeverett/.nuget/packages/microsoft.extensions.configuration.abstractions/7.0.0/microsoft.extensions.configuration.abstractions.7.0.0.nupkg.sha512",
     "/Users/joshuaeverett/.nuget/packages/microsoft.extensions.configuration.fileextensions/7.0.0/microsoft.extensions.configuration.fileextensions.7.0.0.nupkg.sha512",
     "/Users/joshuaeverett/.nuget/packages/microsoft.extensions.configuration.json/7.0.0/microsoft.extensions.configuration.json.7.0.0.nupkg.sha512",
+    "/Users/joshuaeverett/.nuget/packages/microsoft.extensions.configuration.usersecrets/7.0.0/microsoft.extensions.configuration.usersecrets.7.0.0.nupkg.sha512",
     "/Users/joshuaeverett/.nuget/packages/microsoft.extensions.dependencyinjection/7.0.0/microsoft.extensions.dependencyinjection.7.0.0.nupkg.sha512",
     "/Users/joshuaeverett/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/7.0.0/microsoft.extensions.dependencyinjection.abstractions.7.0.0.nupkg.sha512",
     "/Users/joshuaeverett/.nuget/packages/microsoft.extensions.dependencymodel/7.0.0/microsoft.extensions.dependencymodel.7.0.0.nupkg.sha512",

@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MineralKingdomApi.Data;
 using MineralKingdomApi.Controllers;
+using Microsoft.OpenApi.Models;
 
 namespace MineralKingdomApi
 {
@@ -21,10 +22,12 @@ namespace MineralKingdomApi
         public void ConfigureServices(IServiceCollection services)
         {
             // Configure DbContext with SQL Server provider
-            services.AddDbContext<MineralKingdomContext>(options =>
+            services.AddDbContext<MineralKingdomApi.Data.MineralKingdomContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            
 
             // Add other services, controllers, etc. here as needed
             services.AddControllers(); // Add this line to enable controllers
@@ -38,6 +41,11 @@ namespace MineralKingdomApi
                                .AllowAnyHeader()
                                .AllowAnyMethod();
                     });
+            });
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
             });
         }
 
@@ -63,6 +71,12 @@ namespace MineralKingdomApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
         }
     }
