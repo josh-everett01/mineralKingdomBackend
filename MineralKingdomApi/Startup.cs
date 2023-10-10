@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MineralKingdomApi.Data;
+using MineralKingdomApi.Controllers;
 
 namespace MineralKingdomApi
 {
@@ -26,6 +27,18 @@ namespace MineralKingdomApi
             });
 
             // Add other services, controllers, etc. here as needed
+            services.AddControllers(); // Add this line to enable controllers
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigins",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:5113")
+                               .AllowAnyHeader()
+                               .AllowAnyMethod();
+                    });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -44,6 +57,8 @@ namespace MineralKingdomApi
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
+
+            app.UseCors("AllowSpecificOrigins");
 
             app.UseEndpoints(endpoints =>
             {
