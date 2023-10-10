@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MineralKingdomApi.Data;
+using MineralKingdomApi.Repositories;
+using MineralKingdomApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,11 @@ builder.Services.AddSwaggerGen();
 // Add DbContext to the services container.
 builder.Services.AddDbContext<MineralKingdomContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Registering repositories and services for DI
+builder.Services.AddScoped<IMineralRepository, MineralRepository>();
+builder.Services.AddScoped<IMineralService, MineralService>();
+
 
 var app = builder.Build();
 

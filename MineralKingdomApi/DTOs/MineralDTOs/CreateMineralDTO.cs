@@ -1,6 +1,7 @@
-﻿namespace MineralKingdomApi.DTOs
+﻿using System;
+namespace MineralKingdomApi.DTOs
 {
-    public class CreateMineralDto
+    public class CreateMineralDTO
     {
         public string? Name { get; set; }
         public string? Description { get; set; }
@@ -9,3 +10,4 @@
         public string? ImageURL { get; set; }
     }
 }
+

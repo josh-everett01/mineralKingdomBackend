@@ -7,6 +7,8 @@ using Microsoft.Extensions.Hosting;
 using MineralKingdomApi.Data;
 using MineralKingdomApi.Controllers;
 using Microsoft.OpenApi.Models;
+using MineralKingdomApi.Repositories;
+using MineralKingdomApi.Services;
 
 namespace MineralKingdomApi
 {
@@ -27,10 +29,13 @@ namespace MineralKingdomApi
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
-            
+
+            // Registering repositories and services for DI
+            services.AddScoped<IMineralRepository, MineralRepository>();
+            services.AddScoped<IMineralService, MineralService>();
 
             // Add other services, controllers, etc. here as needed
-            services.AddControllers(); // Add this line to enable controllers
+            services.AddControllers();
 
             services.AddCors(options =>
             {
