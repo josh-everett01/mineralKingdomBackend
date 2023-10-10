@@ -19,6 +19,11 @@ namespace MineralKingdomApi.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Retrieves a list of all minerals.
+        /// </summary>
+        /// <response code="200">Returns the list of minerals.</response>
+        /// <response code="500">If there is a server error.</response>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Mineral>>> GetMinerals()
         {
