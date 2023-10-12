@@ -26,11 +26,11 @@ namespace MineralKingdomApi.Models
         public DateTime EndTime { get; set; }
 
         // Relationship Navigation Property: An Auction has one Mineral
-        public int MineralId { get; set; }
+        public int? MineralId { get; set; }
         public Mineral? Mineral { get; set; }
 
         // Relationship Navigation Property: An Auction has one AuctionStatus
-        public int AuctionStatusId { get; set; }
+        public int? AuctionStatusId { get; set; }
         public AuctionStatus? AuctionStatus { get; set; }
 
         // Relationship Navigation Property: An Auction can have multiple Bids

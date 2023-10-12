@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MineralKingdomApi.Data;
 
@@ -11,9 +12,11 @@ using MineralKingdomApi.Data;
 namespace MineralKingdomApi.Data.Migrations
 {
     [DbContext(typeof(MineralKingdomContext))]
-    partial class MineralKingdomContextModelSnapshot : ModelSnapshot
+    [Migration("20231011015411_Migration_10_10_23")]
+    partial class Migration_10_10_23
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
