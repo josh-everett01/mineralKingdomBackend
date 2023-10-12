@@ -17,12 +17,20 @@ namespace MineralKingdomApi.Repositories
 
         public async Task CreateAuctionAsync(Auction auction)
         {
+            if (auction == null)
+            {
+                throw new ArgumentNullException(nameof(auction));
+            }
             await _context.Auctions.AddAsync(auction);
             await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAuctionAsync(Auction auction)
         {
+            if (auction == null)
+            {
+                throw new ArgumentNullException(nameof(auction));
+            }
             _context.Auctions.Remove(auction);
             await _context.SaveChangesAsync();
         }
@@ -32,6 +40,7 @@ namespace MineralKingdomApi.Repositories
             return await _context.Auctions
                 .Include(a => a.AuctionStatus)
                 .Include(a => a.Mineral)
+                .Include(a => a.Bids)
                 .ToListAsync();
         }
 
@@ -153,6 +162,10 @@ namespace MineralKingdomApi.Repositories
 
         public async Task UpdateAuctionAsync(Auction auction)
         {
+            if (auction == null)
+            {
+                throw new ArgumentNullException(nameof(auction));
+            }
             _context.Auctions.Update(auction);
             await _context.SaveChangesAsync();
         }

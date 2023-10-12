@@ -1,4 +1,5 @@
 ﻿using System;
+using MineralKingdomApi.DTOs.AuctionDTOs;
 using MineralKingdomApi.DTOs.AuctionDTOs.YourNamespace.Models;
 using MineralKingdomApi.Models;
 
@@ -6,7 +7,7 @@ namespace MineralKingdomApi.Services
 {
     public interface IAuctionService
     {
-        Task<IEnumerable<Auction>> GetAllAuctionsAsync();
+        Task<IEnumerable<AuctionResponseDTO>> GetAllAuctionsAsync();
         Task<Auction?> GetAuctionByIdAsync(int id);
         Task CreateAuctionAsync(Auction auction);
         Task UpdateAuctionAsync(Auction auction);

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using MineralKingdomApi;
 using MineralKingdomApi.Data;
 using MineralKingdomApi.Repositories;
 using MineralKingdomApi.Services;
@@ -22,6 +23,11 @@ builder.Services.AddScoped<IMineralService, MineralService>();
 builder.Services.AddScoped<IAuctionRepository, AuctionRepository>();
 builder.Services.AddScoped<IAuctionService, AuctionService>();
 
+// Configure user secrets for the development environment
+if (builder.Environment.IsDevelopment())
+{
+    builder.Configuration.AddUserSecrets<Startup>();
+}
 
 var app = builder.Build();
 

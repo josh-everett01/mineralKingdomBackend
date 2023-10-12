@@ -7,7 +7,7 @@ namespace MineralKingdomApi.Models
     public class AuctionStatus
     {
         [Key]
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         [Required]
         [MaxLength(50)]

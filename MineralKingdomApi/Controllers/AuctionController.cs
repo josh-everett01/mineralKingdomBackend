@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
+using MineralKingdomApi.DTOs.AuctionDTOs;
 using MineralKingdomApi.Models;
 using MineralKingdomApi.Services;
 
@@ -13,7 +14,7 @@ namespace MineralKingdomApi.Controllers
 
         public AuctionController(IAuctionService auctionService)
         {
-            _auctionService = auctionService;
+            _auctionService = auctionService ?? throw new ArgumentNullException(nameof(auctionService));
         }
 
         /// <summary>
@@ -59,12 +60,24 @@ namespace MineralKingdomApi.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateAuction(Auction auction)
+        public async Task<IActionResult> CreateAuction([FromBody] CreateAuctionDTO createAuctionDto)
         {
-            if (auction == null)
+            if (createAuctionDto == null)
             {
                 return BadRequest();
             }
+
+            // Map DTO to Domain Model
+            var auction = new Auction
+            {
+                Title = createAuctionDto.Title,
+                Description = createAuctionDto.Description,
+                StartingPrice = createAuctionDto.StartingPrice,
+                StartTime = createAuctionDto.StartTime,
+                EndTime = createAuctionDto.EndTime,
+                MineralId = createAuctionDto.MineralId,
+                AuctionStatusId = createAuctionDto.AuctionStatusId
+            };
 
             await _auctionService.CreateAuctionAsync(auction);
             return CreatedAtAction(nameof(GetAuctionById), new { id = auction.Id }, auction);
@@ -83,9 +96,16 @@ namespace MineralKingdomApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateAuction(int id, Auction auction)
         {
+            // Check if auction is null
+            if (auction == null)
+            {
+                return BadRequest("Auction cannot be null");
+            }
+
+            // Check if id does not match auction.Id
             if (id != auction.Id)
             {
-                return BadRequest();
+                return BadRequest("Mismatched auction ID");
             }
 
             await _auctionService.UpdateAuctionAsync(auction);
@@ -142,6 +162,20 @@ namespace MineralKingdomApi.Controllers
         }
 
         /// <summary>
+        /// Retrieves auctions by user.
+        /// </summary>
+        /// <param name="userId">The ID of the user.</param>
+        /// <returns>A list of auctions created by the specified user.</returns>
+        /// <response code="200">Returns the list of auctions.</response>
+        //[HttpGet("user/{userId}")]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //public async Task<IActionResult> GetAuctionsByUser(int userId)
+        //{
+        //    var auctions = await _auctionService.GetAuctionsByUserAsync(userId);
+        //    return Ok(auctions);
+        //}
+
+        /// <summary>
         /// Retrieves auctions with bids.
         /// </summary>
         /// <returns>A list of auctions that have received bids.</returns>
@@ -152,6 +186,26 @@ namespace MineralKingdomApi.Controllers
         {
             var auctions = await _auctionService.GetAuctionsWithBidsAsync();
             return Ok(auctions);
+        }
+
+        /// <summary>
+        /// Retrieves the winning bid for an auction.
+        /// </summary>
+        /// <param name="auctionId">The ID of the auction.</param>
+        /// <returns>The winning bid for the specified auction.</returns>
+        /// <response code="200">Returns the winning bid.</response>
+        /// <response code="404">If the auction or bid is not found.</response>
+        [HttpGet("{auctionId}/winning-bid")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetWinningBidForAuction(int auctionId)
+        {
+            var bid = await _auctionService.GetCurrentWinningBidForAuction(auctionId);
+            if (bid == null)
+            {
+                return NotFound();
+            }
+            return Ok(bid);
         }
 
         /// <summary>
@@ -198,26 +252,6 @@ namespace MineralKingdomApi.Controllers
             if (bidResult == null)
             {
                 return NotFound();
-            }
-            return Ok(bidResult);
-        }
-
-        /// <summary>
-        /// Retrieves the current winning bid for an auction.
-        /// </summary>
-        /// <param name="auctionId">The ID of the auction.</param>
-        /// <returns>The current winning bid for the auction.</returns>
-        /// <response code="200">Returns the current winning bid.</response>
-        /// <response code="404">If the auction or bid is not found.</response>
-        [HttpGet("{auctionId}/current/winning-bid")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetCurrentWinningBidForAuction(int auctionId)
-        {
-            var bidResult = await _auctionService.GetCurrentWinningBidForAuction(auctionId);
-            if (bidResult == null || !bidResult.IsSuccess)
-            {
-                return NotFound(bidResult?.Message ?? "No winning bid found.");
             }
             return Ok(bidResult);
         }
