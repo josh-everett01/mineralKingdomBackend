@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
+using DotNetEnv;
 using System.IO;
 
 namespace MineralKingdomApi.Data
@@ -9,17 +10,22 @@ namespace MineralKingdomApi.Data
     {
         public MineralKingdomContext CreateDbContext(string[] args)
         {
-            IConfigurationRoot configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
-                .Build();
+            // Load .env variables
+            Env.Load();
 
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            // Retrieve the connection string from environment variables
+            var connectionString = Environment.GetEnvironmentVariable("DefaultConnection");
+
+            // Ensure the connection string is available
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new InvalidOperationException("The connection string was not found in the environment variables.");
+            };
 
             var optionsBuilder = new DbContextOptionsBuilder<MineralKingdomContext>();
             optionsBuilder.UseSqlServer(connectionString);
 
-            return new MineralKingdomContext(optionsBuilder.Options, configuration);
+            return new MineralKingdomContext(optionsBuilder.Options);
         }
     }
 }

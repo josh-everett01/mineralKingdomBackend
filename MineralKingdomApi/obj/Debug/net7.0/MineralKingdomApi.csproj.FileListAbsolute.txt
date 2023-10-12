@@ -78,3 +78,5 @@
 /Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/obj/Debug/net7.0/MineralKingdomApi.pdb
 /Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/obj/Debug/net7.0/MineralKingdomApi.genruntimeconfig.cache
 /Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/obj/Debug/net7.0/ref/MineralKingdomApi.dll
+/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/bin/Debug/net7.0/DotNetEnv.dll
+/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/bin/Debug/net7.0/Sprache.dll
