@@ -1,0 +1,22 @@
+# Ignore compiled output and intermediate build artifacts
+bin/
+obj/
+
+# Visual Studio Code settings
+.vscode/
+
+# NuGet packages and cached packages
+packages/
+.package-cache/
+
+# Log and temporary files
+*.log
+*.tmp
+
+# Compiled binary files
+*.dll
+*.exe
+
+# Sensitive configuration files (if applicable)
+appsettings.json
+
