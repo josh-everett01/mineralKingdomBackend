@@ -37,6 +37,7 @@
     <None Remove="Repositories\" />
     <None Remove="Services\" />
     <None Remove="DTOs\AuctionDTOs\" />
+    <None Remove="DTOs\AuctionStatusDTOs\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
@@ -45,5 +46,6 @@
     <Folder Include="Repositories\" />
     <Folder Include="Services\" />
     <Folder Include="DTOs\AuctionDTOs\" />
+    <Folder Include="DTOs\AuctionStatusDTOs\" />
   </ItemGroup>
 </Project>

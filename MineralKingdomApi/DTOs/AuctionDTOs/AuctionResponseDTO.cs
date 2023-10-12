@@ -15,11 +15,11 @@ namespace MineralKingdomApi.DTOs.AuctionDTOs
 
         public DateTime? EndTime { get; set; }
 
-        public string? MineralName { get; set; } // Assuming Mineral has a Name property
+        public string? MineralName { get; set; }
 
-        public string? AuctionStatusName { get; set; } // Assuming AuctionStatus has a Name property
+        public string? AuctionStatusName { get; set; }
 
-        public int? BidCount { get; set; } // Number of bids on the auction
+        public int? BidCount { get; set; }
     }
 
 }
