@@ -6,12 +6,19 @@ using MineralKingdomApi.Services;
 
 namespace MineralKingdomApi.Controllers
 {
+    /// <summary>
+    /// Provides endpoints for managing auctions.
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class AuctionController : ControllerBase
     {
         private readonly IAuctionService _auctionService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuctionController"/> class.
+        /// </summary>
+        /// <param name="auctionService">The service used for auction-related operations.</param>
         public AuctionController(IAuctionService auctionService)
         {
             _auctionService = auctionService ?? throw new ArgumentNullException(nameof(auctionService));

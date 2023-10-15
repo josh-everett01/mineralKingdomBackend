@@ -9,6 +9,8 @@ using MineralKingdomApi.Controllers;
 using Microsoft.OpenApi.Models;
 using MineralKingdomApi.Repositories;
 using MineralKingdomApi.Services;
+using System.Reflection;
+using System.IO;
 
 namespace MineralKingdomApi
 {
@@ -31,9 +33,20 @@ namespace MineralKingdomApi
 
 
             // Registering repositories and services for DI
+/*
+            // Mineral
             services.AddScoped<IMineralRepository, MineralRepository>();
             services.AddScoped<IMineralService, MineralService>();
 
+            // Auction
+            services.AddScoped<IAuctionService, AuctionService>();
+            services.AddScoped<IAuctionRepository, AuctionRepository>();
+
+            // Auction Status
+            services.AddScoped<IAuctionStatusService, AuctionStatusService>();
+            services.AddScoped<IAuctionStatusRepository, AuctionStatusRepository>();
+
+            */
             // Add other services, controllers, etc. here as needed
             services.AddControllers();
 
@@ -50,7 +63,12 @@ namespace MineralKingdomApi
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Mineral Kingdom API", Version = "v1" });
+
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
         }
 
@@ -81,7 +99,7 @@ namespace MineralKingdomApi
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "MineralKingdom API V1");
             });
         }
     }

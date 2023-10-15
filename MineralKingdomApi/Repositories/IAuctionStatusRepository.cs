@@ -1,4 +1,5 @@
 ﻿using System;
+using MineralKingdomApi.DTOs.AuctionStatusDTOs;
 using MineralKingdomApi.Models;
 
 namespace MineralKingdomApi.Repositories
@@ -19,6 +20,9 @@ namespace MineralKingdomApi.Repositories
 
         // Delete an auction status by ID.
         Task DeleteAuctionStatusAsync(int id);
+
+        //Task<AuctionStatus?> GetAuctionStatusWithAuctionsAsync(int id);
+        //Task<AuctionStatusDetailsDTO?> GetAuctionStatusWithDetailsAsync(int id);
     }
 
 }

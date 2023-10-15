@@ -7,7 +7,8 @@ namespace MineralKingdomApi.DTOs.AuctionStatusDTOs
     {
         public int Id { get; set; }
         public string? Status { get; set; }
-        public IEnumerable<AuctionResponseDTO> Auctions { get; set; } = new List<AuctionResponseDTO>();
+        public string? DetailedStatus { get; set; }
+        //public IEnumerable<AuctionResponseDTO> Auctions { get; set; } = new List<AuctionResponseDTO>();
     }
 
 

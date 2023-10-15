@@ -74,7 +74,7 @@ namespace MineralKingdomApi.Services
         public async Task<IEnumerable<Bid>> GetBidsForAuctionAsync(int auctionId)
         {
             var bids = await _auctionRepository.GetBidsForAuctionAsync(auctionId);
-            return bids ?? Enumerable.Empty<Bid>();
+    return bids ?? Enumerable.Empty<Bid>();
         }
 
         public async Task<IEnumerable<Auction>> GetAuctionsForMineralAsync(int mineralId)
@@ -103,7 +103,7 @@ namespace MineralKingdomApi.Services
                 StartTime = auction.StartTime,
                 EndTime = auction.EndTime,
                 MineralName = auction.Mineral?.Name,  // Assuming Mineral has a Name property
-                //AuctionStatusName = auction.AuctionStatus.Name,  // Assuming AuctionStatus has a Name property
+                AuctionStatusName = auction.AuctionStatus?.Status,  // Assuming AuctionStatus has a Name property
                 BidCount = auction.Bids?.Count ?? 0  // Assuming Auction has a Bids collection
             };
         }

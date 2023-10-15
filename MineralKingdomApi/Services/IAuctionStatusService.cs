@@ -9,6 +9,8 @@ namespace MineralKingdomApi.Services
         Task<AuctionStatusResponseDTO> GetAuctionStatusByIdAsync(int id);
         Task<AuctionStatusResponseDTO> CreateAuctionStatusAsync(CreateAuctionStatusDTO createDto);
         Task<AuctionStatusResponseDTO> UpdateAuctionStatusAsync(int id, UpdateAuctionStatusDTO updateDto);
+        //Task<AuctionStatusDetailsDTO> GetAuctionStatusDetailsAsync(int id);
+        //Task<AuctionStatusDetailsDTO> GetAuctionStatusDetailsByIdAsync(int id);
         Task DeleteAuctionStatusAsync(int id);
     }
 
