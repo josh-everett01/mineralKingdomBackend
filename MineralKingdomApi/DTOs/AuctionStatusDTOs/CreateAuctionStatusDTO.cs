@@ -8,6 +8,7 @@ namespace MineralKingdomApi.DTOs.AuctionStatusDTOs
         [Required]
         [MaxLength(50)]
         public string? Status { get; set; }
+        public string? DetailedStatus { get; set; }
     }
 
 }

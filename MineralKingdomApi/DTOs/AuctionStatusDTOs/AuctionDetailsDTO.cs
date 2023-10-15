@@ -15,12 +15,12 @@ namespace MineralKingdomApi.DTOs.AuctionStatusDTOs
         //public IEnumerable<BidResponseDTO> Bids { get; set; }
         public IEnumerable<MineralResponseDTO>? Minerals { get; set; }
         public string? Description { get; set; }
-        public bool IsLive { get; set; }
-        public bool IsCompleted { get; set; }
-        public DateTime? CreatedAt { get; set; }
-        public string? CreatedBy { get; set; }
-        public DateTime? UpdatedAt { get; set; }
-        public string? UpdatedBy { get; set; }
+        //public bool IsLive { get; set; }
+        //public bool IsCompleted { get; set; }
+        //public DateTime? CreatedAt { get; set; }
+        //public string? CreatedBy { get; set; }
+        //public DateTime? UpdatedAt { get; set; }
+        //public string? UpdatedBy { get; set; }
     }
 
 }

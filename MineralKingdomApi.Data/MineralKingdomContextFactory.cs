@@ -12,7 +12,7 @@ namespace MineralKingdomApi.Data
         {
             // Load .env variables
             Env.Load();
-
+            
             // Retrieve the connection string from environment variables
             var connectionString = Environment.GetEnvironmentVariable("DefaultConnection");
 

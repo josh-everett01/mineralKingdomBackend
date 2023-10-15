@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace MineralKingdomApi.Models
 {
@@ -13,7 +14,10 @@ namespace MineralKingdomApi.Models
         [MaxLength(50)]
         public string? Status { get; set; }
 
-        // Relationship Navigation Property: An AuctionStatus can be associated with multiple Auctions
-        public ICollection<Auction>? Auctions { get; set; }
+        [MaxLength(500)]
+        public string? DetailedStatus { get; set; }
+
+        [JsonIgnore]
+        public List<Auction>? Auctions { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace MineralKingdomApi.Models
 {
@@ -31,6 +32,8 @@ namespace MineralKingdomApi.Models
 
         // Relationship Navigation Property: An Auction has one AuctionStatus
         public int? AuctionStatusId { get; set; }
+
+        [JsonIgnore]
         public AuctionStatus? AuctionStatus { get; set; }
 
         // Relationship Navigation Property: An Auction can have multiple Bids

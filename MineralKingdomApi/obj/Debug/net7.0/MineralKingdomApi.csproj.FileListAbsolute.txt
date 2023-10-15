@@ -7,6 +7,7 @@
 /Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/bin/Debug/net7.0/MineralKingdomApi.pdb
 /Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/bin/Debug/net7.0/Azure.Core.dll
 /Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/bin/Debug/net7.0/Azure.Identity.dll
+/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/bin/Debug/net7.0/DotNetEnv.dll
 /Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/bin/Debug/net7.0/Humanizer.dll
 /Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/bin/Debug/net7.0/Microsoft.AspNetCore.OpenApi.dll
 /Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/bin/Debug/net7.0/Microsoft.Bcl.AsyncInterfaces.dll
@@ -31,6 +32,7 @@
 /Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/bin/Debug/net7.0/Mono.TextTemplating.dll
 /Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/bin/Debug/net7.0/MySqlConnector.dll
 /Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/bin/Debug/net7.0/Pomelo.EntityFrameworkCore.MySql.dll
+/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/bin/Debug/net7.0/Sprache.dll
 /Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/bin/Debug/net7.0/Swashbuckle.AspNetCore.Swagger.dll
 /Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/bin/Debug/net7.0/Swashbuckle.AspNetCore.SwaggerGen.dll
 /Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/bin/Debug/net7.0/Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -78,5 +80,5 @@
 /Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/obj/Debug/net7.0/MineralKingdomApi.pdb
 /Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/obj/Debug/net7.0/MineralKingdomApi.genruntimeconfig.cache
 /Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/obj/Debug/net7.0/ref/MineralKingdomApi.dll
-/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/bin/Debug/net7.0/DotNetEnv.dll
-/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/bin/Debug/net7.0/Sprache.dll
+/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/bin/Debug/net7.0/MineralKingdomApi.xml
+/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/bin/Debug/net7.0/MineralKingdomApi.Data.xml
