@@ -3,6 +3,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MineralKingdomApi.Models
 {
+
+    public enum UserRole
+    {
+        Undefined,
+        Admin,
+        Customer
+    }
+
+
     public class User
     {
         [Key]
@@ -34,19 +43,36 @@ namespace MineralKingdomApi.Models
         public DateTime RegisteredAt { get; set; }
 
         // Address Properties
+        [Required]
         [MaxLength(100)]
         public string? StreetAddress { get; set; }
 
+        [Required]
         [MaxLength(50)]
         public string? City { get; set; }
 
+        [Required]
         [MaxLength(50)]
         public string? State { get; set; }
 
+        [Required]
         [MaxLength(10)]
         [RegularExpression(@"^\d{5}(-\d{4})?$")]
         public string? ZipCode { get; set; }
 
-        // Add more properties as needed, such as user roles, etc.
+        [Required]
+        [MaxLength(50)]
+        public string? Country { get; set; }
+
+        [Required]
+        public UserRole UserRole { get; set; }
+
+        // Email Verification Properties
+        public bool EmailVerified { get; set; } = false;
+
+        public string? VerificationToken { get; set; }
+
+        public DateTime? TokenExpirationDate { get; set; }
+
     }
 }
