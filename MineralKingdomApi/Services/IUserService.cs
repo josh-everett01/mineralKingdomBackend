@@ -28,7 +28,7 @@ namespace MineralKingdomApi.Services
         Task<IEnumerable<UserResponseDTO>> SearchUsersAsync(string searchTerm);
         Task<bool> ResendVerificationEmail(string email);
         Task<EmailVerificationResult> VerifyUserEmail(string token);
-        Task<UserResponseDTO> PartiallyUpdateUserAsync(int userId, JsonPatchDocument<UpdateUserDTO> patchDocument);
+        Task<UserResponseDTO> PartiallyUpdateUserAsync(int userId, PartialUpdateUserDTO partialUpdateUserDTO);
     }
 }
 

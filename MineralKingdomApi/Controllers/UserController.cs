@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MineralKingdomApi.DTOs.UserDTOs;
 using MineralKingdomApi.DTOs.UserDTOs.MineralKingdomApi.DTOs.UserDTOs;
+using MineralKingdomApi.Models;
 using MineralKingdomApi.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -131,25 +132,17 @@ namespace MineralKingdomApi.Controllers
         /// - If the JSON Patch document is invalid or the update fails, it returns an HTTP 400 Bad Request response.
         /// </returns>
         [HttpPatch("{id}")]
-        public async Task<IActionResult> PartiallyUpdateUser(int id, [FromBody] JsonPatchDocument<UpdateUserDTO> patchDocument)
+        public async Task<IActionResult> PartiallyUpdateUser(int id, [FromBody] PartialUpdateUserDTO partialUpdateUserDTO)
         {
-            // Check if the user exists
-            var existingUser = await _userService.GetUserByIdAsync(id);
-            if (existingUser == null)
+            var updatedUser = await _userService.PartiallyUpdateUserAsync(id, partialUpdateUserDTO);
+            if (updatedUser == null)
             {
                 return NotFound("User not found.");
             }
 
-            // Apply the patch document to the user
-            var updatedUser = await _userService.PartiallyUpdateUserAsync(id, patchDocument);
-
-            if (updatedUser != null)
-            {
-                return Ok(updatedUser);
-            }
-
-            return BadRequest("Invalid patch document or user update failed.");
+            return Ok("User updated successfully.");
         }
+
 
 
         /// <summary>
@@ -226,6 +219,43 @@ namespace MineralKingdomApi.Controllers
                 return Ok("Verification email sent successfully.");
             }
             return BadRequest("Error sending verification email. Please try again.");
+        }
+
+
+        private void ReallyPartiallyUpdateUser(User user, PartialUpdateUserDTO partialUpdateUserDTO)
+        {
+            // Update properties based on the DTO values
+            if (!string.IsNullOrWhiteSpace(partialUpdateUserDTO.Email))
+            {
+                user.Email = partialUpdateUserDTO.Email;
+            }
+
+            if (!string.IsNullOrWhiteSpace(partialUpdateUserDTO.StreetAddress))
+            {
+                user.StreetAddress = partialUpdateUserDTO.StreetAddress;
+            }
+
+            if (!string.IsNullOrWhiteSpace(partialUpdateUserDTO.City))
+            {
+                user.City = partialUpdateUserDTO.City;
+            }
+
+            if (!string.IsNullOrWhiteSpace(partialUpdateUserDTO.State))
+            {
+                user.State = partialUpdateUserDTO.State;
+            }
+
+            if (!string.IsNullOrWhiteSpace(partialUpdateUserDTO.ZipCode))
+            {
+                user.ZipCode = partialUpdateUserDTO.ZipCode;
+            }
+
+            if (!string.IsNullOrWhiteSpace(partialUpdateUserDTO.Country))
+            {
+                user.Country = partialUpdateUserDTO.Country;
+            }
+
+            // Add similar logic for other properties as needed
         }
 
     }

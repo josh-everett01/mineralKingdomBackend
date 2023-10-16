@@ -113,7 +113,17 @@ namespace MineralKingdomApi.Services
             existingUser.LastName = updateUserDTO.LastName;
             existingUser.Email = updateUserDTO.Email;
             existingUser.Username = updateUserDTO.Username;
-            existingUser.Password = HashPassword(updateUserDTO.Password); // Hash the password
+
+            if (!string.IsNullOrWhiteSpace(updateUserDTO.Password))
+            {
+                if (updateUserDTO.Password.Length < 6)
+                {
+                    // Handle the validation error. You can throw a custom exception or return a specific error response.
+                    throw new ArgumentException("Password must be at least 6 characters long.");
+                }
+                existingUser.Password = HashPassword(updateUserDTO.Password); // Hash the password
+            }
+
             existingUser.StreetAddress = updateUserDTO.StreetAddress;
             existingUser.City = updateUserDTO.City;
             existingUser.State = updateUserDTO.State;
@@ -125,29 +135,57 @@ namespace MineralKingdomApi.Services
             return MapToUserResponseDTO(existingUser);
         }
 
-        public async Task<UserResponseDTO> PartiallyUpdateUserAsync(int userId, JsonPatchDocument<UpdateUserDTO> patchDocument)
+        public async Task<UserResponseDTO> PartiallyUpdateUserAsync(int userId, PartialUpdateUserDTO partialUpdateUserDTO)
         {
-            // Get the user by ID
             var existingUser = await _userRepository.GetUserByIdAsync(userId);
             if (existingUser == null)
+                return null; // Handle not found
+
+            if (!string.IsNullOrWhiteSpace(partialUpdateUserDTO.Email))
             {
-                return null; // User not found
+                existingUser.Email = partialUpdateUserDTO.Email;
             }
 
-            // Log the patch document to see if it contains the correct value
-            foreach (var operation in patchDocument.Operations)
+            if (!string.IsNullOrWhiteSpace(partialUpdateUserDTO.StreetAddress))
             {
-                Console.WriteLine($"Operation: {operation.op}, Path: {operation.path}, Value: {operation.value}");
+                existingUser.StreetAddress = partialUpdateUserDTO.StreetAddress;
             }
 
-            // Map the existing user to an UpdateUserDTO
-            var userToUpdateDTO = MapToUpdateUserDTO(existingUser);
+            if (!string.IsNullOrWhiteSpace(partialUpdateUserDTO.City))
+            {
+                existingUser.City = partialUpdateUserDTO.City;
+            }
 
-            // Apply the patch document to the DTO
-            patchDocument.ApplyTo(userToUpdateDTO);
+            if (!string.IsNullOrWhiteSpace(partialUpdateUserDTO.State))
+            {
+                existingUser.State = partialUpdateUserDTO.State;
+            }
 
-            // Update the user with the changes from the patched DTO
-            MapUpdateUserDTOToUser(userToUpdateDTO, existingUser);
+            if (!string.IsNullOrWhiteSpace(partialUpdateUserDTO.ZipCode))
+            {
+                existingUser.ZipCode = partialUpdateUserDTO.ZipCode;
+            }
+
+            if (!string.IsNullOrWhiteSpace(partialUpdateUserDTO.Country))
+            {
+                existingUser.Country = partialUpdateUserDTO.Country;
+            }
+
+            if (!string.IsNullOrWhiteSpace(partialUpdateUserDTO.LastName))
+            {
+                existingUser.LastName = partialUpdateUserDTO.LastName;
+            }
+
+            if (!string.IsNullOrWhiteSpace(partialUpdateUserDTO.FirstName))
+            {
+                existingUser.FirstName = partialUpdateUserDTO.FirstName;
+            }
+
+            if (!string.IsNullOrWhiteSpace(partialUpdateUserDTO.Username))
+            {
+                existingUser.Username = partialUpdateUserDTO.Username;
+            }
+
             await _userRepository.UpdateUserAsync(existingUser);
 
             return MapToUserResponseDTO(existingUser);
@@ -173,8 +211,6 @@ namespace MineralKingdomApi.Services
 
             return updateUserDTO;
         }
-
-
 
         public async Task DeleteUserAsync(int id)
         {

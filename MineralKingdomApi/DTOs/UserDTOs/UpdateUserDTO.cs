@@ -16,8 +16,7 @@ namespace MineralKingdomApi.DTOs.UserDTOs
         public string Email { get; set; }
 
         [MaxLength(100)]
-        [MinLength(6)]
-        public string Password { get; set; }
+        public string? Password { get; set; }
 
         [MaxLength(50)]
         public string Username { get; set; }
