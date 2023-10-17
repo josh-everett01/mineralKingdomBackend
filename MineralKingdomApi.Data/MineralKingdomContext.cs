@@ -18,6 +18,8 @@ namespace MineralKingdomApi.Data
         public DbSet<Auction> Auctions { get; set; }
         public DbSet<AuctionStatus> AuctionStatuses { get; set; }
         public DbSet<Bid> Bids { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
     }
 
 }

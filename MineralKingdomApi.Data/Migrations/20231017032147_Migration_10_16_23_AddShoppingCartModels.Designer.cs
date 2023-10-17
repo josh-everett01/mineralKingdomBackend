@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MineralKingdomApi.Data;
 
@@ -11,9 +12,11 @@ using MineralKingdomApi.Data;
 namespace MineralKingdomApi.Data.Migrations
 {
     [DbContext(typeof(MineralKingdomContext))]
-    partial class MineralKingdomContextModelSnapshot : ModelSnapshot
+    [Migration("20231017032147_Migration_10_16_23_AddShoppingCartModels")]
+    partial class Migration_10_16_23_AddShoppingCartModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -114,29 +117,6 @@ namespace MineralKingdomApi.Data.Migrations
                     b.ToTable("Bids");
                 });
 
-            modelBuilder.Entity("MineralKingdomApi.Models.CartItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("MineralId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ShoppingCartId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MineralId");
-
-                    b.HasIndex("ShoppingCartId");
-
-                    b.ToTable("CartItems");
-                });
-
             modelBuilder.Entity("MineralKingdomApi.Models.Mineral", b =>
                 {
                     b.Property<int>("Id")
@@ -171,24 +151,6 @@ namespace MineralKingdomApi.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Minerals");
-                });
-
-            modelBuilder.Entity("MineralKingdomApi.Models.ShoppingCart", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ShoppingCarts");
                 });
 
             modelBuilder.Entity("MineralKingdomApi.Models.User", b =>
@@ -303,36 +265,6 @@ namespace MineralKingdomApi.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("MineralKingdomApi.Models.CartItem", b =>
-                {
-                    b.HasOne("MineralKingdomApi.Models.Mineral", "Mineral")
-                        .WithMany()
-                        .HasForeignKey("MineralId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MineralKingdomApi.Models.ShoppingCart", "ShoppingCart")
-                        .WithMany("CartItems")
-                        .HasForeignKey("ShoppingCartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Mineral");
-
-                    b.Navigation("ShoppingCart");
-                });
-
-            modelBuilder.Entity("MineralKingdomApi.Models.ShoppingCart", b =>
-                {
-                    b.HasOne("MineralKingdomApi.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("MineralKingdomApi.Models.Auction", b =>
                 {
                     b.Navigation("Bids");
@@ -341,11 +273,6 @@ namespace MineralKingdomApi.Data.Migrations
             modelBuilder.Entity("MineralKingdomApi.Models.AuctionStatus", b =>
                 {
                     b.Navigation("Auctions");
-                });
-
-            modelBuilder.Entity("MineralKingdomApi.Models.ShoppingCart", b =>
-                {
-                    b.Navigation("CartItems");
                 });
 #pragma warning restore 612, 618
         }
