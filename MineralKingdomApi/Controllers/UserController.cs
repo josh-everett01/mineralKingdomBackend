@@ -121,15 +121,15 @@ namespace MineralKingdomApi.Controllers
         }
 
         /// <summary>
-        /// Partially updates a user's information specified by the given ID using a JSON Patch document.
+        /// Partially updates a user's information specified by the given ID.
         /// </summary>
         /// <param name="id">The ID of the user to update.</param>
-        /// <param name="patchDocument">A JSON Patch document containing partial updates for the user.</param>
+        /// <param name="partialUpdateUserDTO">A data transfer object containing partial updates for the user.</param>
         /// <returns>
         /// Returns an IActionResult representing the result of the update operation.
-        /// - If the user is updated successfully, it returns an HTTP 200 OK response with the updated user.
-        /// - If the user is not found, it returns an HTTP 404 Not Found response.
-        /// - If the JSON Patch document is invalid or the update fails, it returns an HTTP 400 Bad Request response.
+        /// - If the user is updated successfully, it returns an HTTP 200 OK response with the message "User updated successfully."
+        /// - If the user is not found, it returns an HTTP 404 Not Found response with the message "User not found."
+        /// - If the update fails, it returns an HTTP 400 Bad Request response.
         /// </returns>
         [HttpPatch("{id}")]
         public async Task<IActionResult> PartiallyUpdateUser(int id, [FromBody] PartialUpdateUserDTO partialUpdateUserDTO)

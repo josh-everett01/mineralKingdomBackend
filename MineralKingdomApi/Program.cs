@@ -57,6 +57,10 @@ builder.Services.AddScoped<IAuctionService, AuctionService>();
 builder.Services.AddScoped<IAuctionStatusService, AuctionStatusService>();
 builder.Services.AddScoped<IAuctionStatusRepository, AuctionStatusRepository>();
 
+// Bids
+builder.Services.AddScoped<IBidRepository, BidRepository>();
+builder.Services.AddScoped<IBidService, BidService>();
+
 // Configure user secrets for the development environment
 if (builder.Environment.IsDevelopment())
 {
