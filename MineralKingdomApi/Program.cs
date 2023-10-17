@@ -61,6 +61,11 @@ builder.Services.AddScoped<IAuctionStatusRepository, AuctionStatusRepository>();
 builder.Services.AddScoped<IBidRepository, BidRepository>();
 builder.Services.AddScoped<IBidService, BidService>();
 
+// Shopping Cart
+builder.Services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
+builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
+builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
+
 // Configure user secrets for the development environment
 if (builder.Environment.IsDevelopment())
 {
