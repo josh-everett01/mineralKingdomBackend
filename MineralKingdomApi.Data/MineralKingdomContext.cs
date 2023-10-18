@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using MineralKingdomApi.Data.Models;
 using MineralKingdomApi.Models;
 
 namespace MineralKingdomApi.Data
@@ -20,6 +21,11 @@ namespace MineralKingdomApi.Data
         public DbSet<Bid> Bids { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<PaymentRequest> PaymentRequests { get; set; }
+        public DbSet<PaymentResponse> PaymentResponses { get; set; }
+        public DbSet<PaymentRequestMetadata> PaymentRequestMetadata { get; set; }
+        public DbSet<PaymentResponseMetadata> PaymentResponseMetadata { get; set; }
+
     }
 
 }
