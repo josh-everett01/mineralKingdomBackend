@@ -1,11 +1,11 @@
-/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi.Data/obj/Debug/net7.0/MineralKingdomApi.Data.csproj.AssemblyReference.cache
-/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi.Data/obj/Debug/net7.0/MineralKingdomApi.Data.GeneratedMSBuildEditorConfig.editorconfig
-/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi.Data/obj/Debug/net7.0/MineralKingdomApi.Data.AssemblyInfoInputs.cache
 /Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi.Data/bin/Debug/net7.0/MineralKingdomApi.Data.xml
 /Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi.Data/bin/Debug/net7.0/MineralKingdomApi.Data.deps.json
 /Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi.Data/bin/Debug/net7.0/MineralKingdomApi.Data.runtimeconfig.json
 /Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi.Data/bin/Debug/net7.0/MineralKingdomApi.Data.dll
 /Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi.Data/bin/Debug/net7.0/MineralKingdomApi.Data.pdb
+/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi.Data/obj/Debug/net7.0/MineralKingdomApi.Data.csproj.AssemblyReference.cache
+/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi.Data/obj/Debug/net7.0/MineralKingdomApi.Data.GeneratedMSBuildEditorConfig.editorconfig
+/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi.Data/obj/Debug/net7.0/MineralKingdomApi.Data.AssemblyInfoInputs.cache
 /Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi.Data/obj/Debug/net7.0/MineralKingdomApi.Data.AssemblyInfo.cs
 /Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi.Data/obj/Debug/net7.0/MineralKingdomApi.Data.csproj.CoreCompileInputs.cache
 /Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi.Data/obj/Debug/net7.0/MineralKingdomApi.Data.dll

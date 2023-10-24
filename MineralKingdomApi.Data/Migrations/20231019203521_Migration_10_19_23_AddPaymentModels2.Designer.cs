@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MineralKingdomApi.Data;
 
@@ -11,9 +12,11 @@ using MineralKingdomApi.Data;
 namespace MineralKingdomApi.Data.Migrations
 {
     [DbContext(typeof(MineralKingdomContext))]
-    partial class MineralKingdomContextModelSnapshot : ModelSnapshot
+    [Migration("20231019203521_Migration_10_19_23_AddPaymentModels2")]
+    partial class Migration_10_19_23_AddPaymentModels2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,213 +25,7 @@ namespace MineralKingdomApi.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("MineralKingdomApi.Data.Models.CheckoutSessionDetails", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CustomerId")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("SessionId")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("Status")
-                        .HasMaxLength(50)
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SessionId")
-                        .IsUnique();
-
-                    b.ToTable("CheckoutSessionDetails");
-                });
-
-            modelBuilder.Entity("MineralKingdomApi.Data.Models.CheckoutSessionRequest", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CancelUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Mode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PaymentMethodTypes")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SuccessUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CheckoutSessionRequests");
-                });
-
-            modelBuilder.Entity("MineralKingdomApi.Data.Models.CheckoutSessionResponse", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("SessionId")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SessionId")
-                        .IsUnique();
-
-                    b.ToTable("CheckoutSessionResponses");
-                });
-
-            modelBuilder.Entity("MineralKingdomApi.Data.Models.CustomerRequest", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CustomerRequests");
-                });
-
-            modelBuilder.Entity("MineralKingdomApi.Data.Models.CustomerResponse", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Country")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CustomerId")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CustomerResponses");
-                });
-
-            modelBuilder.Entity("MineralKingdomApi.Data.Models.LineItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CheckoutSessionDetailsId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CheckoutSessionRequestId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Currency")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<int?>("MineralId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CheckoutSessionDetailsId");
-
-                    b.HasIndex("CheckoutSessionRequestId");
-
-                    b.HasIndex("MineralId");
-
-                    b.ToTable("LineItems");
-                });
-
-            modelBuilder.Entity("MineralKingdomApi.Data.Models.PaymentDetails", b =>
+            modelBuilder.Entity("MineralKingdomApi.Data.Models.PaymentRequest", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -239,28 +36,75 @@ namespace MineralKingdomApi.Data.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("OrderId")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PaymentRequests");
+                });
+
+            modelBuilder.Entity("MineralKingdomApi.Data.Models.PaymentRequestMetadata", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("PaymentRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PaymentRequestId");
+
+                    b.ToTable("PaymentRequestMetadata");
+                });
+
+            modelBuilder.Entity("MineralKingdomApi.Data.Models.PaymentResponse", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Currency")
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
-                    b.Property<string>("CustomerId")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
+                    b.Property<string>("Message")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("PaymentMethod")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -274,7 +118,35 @@ namespace MineralKingdomApi.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PaymentDetails");
+                    b.ToTable("PaymentResponses");
+                });
+
+            modelBuilder.Entity("MineralKingdomApi.Data.Models.PaymentResponseMetadata", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("PaymentResponseId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PaymentResponseId");
+
+                    b.ToTable("PaymentResponseMetadata");
                 });
 
             modelBuilder.Entity("MineralKingdomApi.Models.Auction", b =>
@@ -524,74 +396,26 @@ namespace MineralKingdomApi.Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("MineralKingdomApi.Data.Models.CustomerRequest", b =>
+            modelBuilder.Entity("MineralKingdomApi.Data.Models.PaymentRequestMetadata", b =>
                 {
-                    b.OwnsOne("MineralKingdomApi.Data.Models.Address", "Address", b1 =>
-                        {
-                            b1.Property<int>("CustomerRequestId")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("City")
-                                .IsRequired()
-                                .HasMaxLength(100)
-                                .HasColumnType("nvarchar(100)");
-
-                            b1.Property<string>("Country")
-                                .IsRequired()
-                                .HasMaxLength(50)
-                                .HasColumnType("nvarchar(50)");
-
-                            b1.Property<string>("Line1")
-                                .IsRequired()
-                                .HasMaxLength(200)
-                                .HasColumnType("nvarchar(200)");
-
-                            b1.Property<string>("Line2")
-                                .IsRequired()
-                                .HasMaxLength(200)
-                                .HasColumnType("nvarchar(200)");
-
-                            b1.Property<string>("PostalCode")
-                                .IsRequired()
-                                .HasMaxLength(10)
-                                .HasColumnType("nvarchar(10)");
-
-                            b1.Property<string>("State")
-                                .IsRequired()
-                                .HasMaxLength(100)
-                                .HasColumnType("nvarchar(100)");
-
-                            b1.HasKey("CustomerRequestId");
-
-                            b1.ToTable("CustomerRequests");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CustomerRequestId");
-                        });
-
-                    b.Navigation("Address")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("MineralKingdomApi.Data.Models.LineItem", b =>
-                {
-                    b.HasOne("MineralKingdomApi.Data.Models.CheckoutSessionDetails", "CheckoutSessionDetails")
-                        .WithMany("LineItems")
-                        .HasForeignKey("CheckoutSessionDetailsId")
+                    b.HasOne("MineralKingdomApi.Data.Models.PaymentRequest", "PaymentRequest")
+                        .WithMany("Metadata")
+                        .HasForeignKey("PaymentRequestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MineralKingdomApi.Data.Models.CheckoutSessionRequest", null)
-                        .WithMany("LineItems")
-                        .HasForeignKey("CheckoutSessionRequestId");
+                    b.Navigation("PaymentRequest");
+                });
 
-                    b.HasOne("MineralKingdomApi.Models.Mineral", "Mineral")
-                        .WithMany()
-                        .HasForeignKey("MineralId");
+            modelBuilder.Entity("MineralKingdomApi.Data.Models.PaymentResponseMetadata", b =>
+                {
+                    b.HasOne("MineralKingdomApi.Data.Models.PaymentResponse", "PaymentResponse")
+                        .WithMany("Metadata")
+                        .HasForeignKey("PaymentResponseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("CheckoutSessionDetails");
-
-                    b.Navigation("Mineral");
+                    b.Navigation("PaymentResponse");
                 });
 
             modelBuilder.Entity("MineralKingdomApi.Models.Auction", b =>
@@ -658,14 +482,14 @@ namespace MineralKingdomApi.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("MineralKingdomApi.Data.Models.CheckoutSessionDetails", b =>
+            modelBuilder.Entity("MineralKingdomApi.Data.Models.PaymentRequest", b =>
                 {
-                    b.Navigation("LineItems");
+                    b.Navigation("Metadata");
                 });
 
-            modelBuilder.Entity("MineralKingdomApi.Data.Models.CheckoutSessionRequest", b =>
+            modelBuilder.Entity("MineralKingdomApi.Data.Models.PaymentResponse", b =>
                 {
-                    b.Navigation("LineItems");
+                    b.Navigation("Metadata");
                 });
 
             modelBuilder.Entity("MineralKingdomApi.Models.Auction", b =>
