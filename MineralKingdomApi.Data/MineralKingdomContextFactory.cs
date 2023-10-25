@@ -12,9 +12,11 @@ namespace MineralKingdomApi.Data
         {
             // Load .env variables
             Env.Load();
-            
+
             // Retrieve the connection string from environment variables
-            var connectionString = Environment.GetEnvironmentVariable("DefaultConnection");
+            //var connectionString = Environment.GetEnvironmentVariable("DefaultConnection");
+
+            var connectionString = Environment.GetEnvironmentVariable("POSTGRES_CONNECTION_STRING");
 
             // Ensure the connection string is available
             if (string.IsNullOrEmpty(connectionString))
@@ -23,7 +25,8 @@ namespace MineralKingdomApi.Data
             };
 
             var optionsBuilder = new DbContextOptionsBuilder<MineralKingdomContext>();
-            optionsBuilder.UseSqlServer(connectionString);
+            //optionsBuilder.UseSqlServer(connectionString);
+            optionsBuilder.UseNpgsql(connectionString);
 
             return new MineralKingdomContext(optionsBuilder.Options);
         }

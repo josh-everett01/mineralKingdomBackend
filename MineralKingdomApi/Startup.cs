@@ -16,6 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.JsonPatch;
 using MineralKingdomApi.DTOs.UserDTOs;
+using Stripe;
 
 namespace MineralKingdomApi
 {
@@ -31,10 +32,13 @@ namespace MineralKingdomApi
         public void ConfigureServices(IServiceCollection services)
         {
             // 1. Database Contexts and Related Services
+            //services.AddDbContext<MineralKingdomApi.Data.MineralKingdomContext>(options =>
+            //{
+            //    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            //});
+
             services.AddDbContext<MineralKingdomApi.Data.MineralKingdomContext>(options =>
-            {
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-            });
+                options.UseNpgsql(Configuration.GetConnectionString("POSTGRES_CONNECTION_STRING")));
 
             // 2. Authentication and Authorization Services
             var secretKey = Configuration.GetValue<string>("SECRET_KEY");
@@ -65,7 +69,6 @@ namespace MineralKingdomApi
 
             // 3. Custom Services and Repositories
             services.AddScoped<IJwtService, JwtService>();
-
 
             // 4. MVC, CORS, and Other Middleware-Related Services
             services.AddControllers();
