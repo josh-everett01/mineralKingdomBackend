@@ -68,6 +68,10 @@
               "target": "Package",
               "version": "[7.0.0, )"
             },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[7.0.11, )"
+            },
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",
               "version": "[7.0.0, )"
@@ -175,9 +179,17 @@
               "target": "Package",
               "version": "[7.0.0, )"
             },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[7.0.11, )"
+            },
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",
               "version": "[7.0.0, )"
+            },
+            "Stripe.net": {
+              "target": "Package",
+              "version": "[43.0.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

@@ -27,7 +27,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.11" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0" />
+    <PackageReference Include="Stripe.net" Version="43.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="7.0.12" />
@@ -52,6 +54,7 @@
     <None Remove="Filters\" />
     <None Remove="DTOs\BidDTOs\" />
     <None Remove="DTOs\ShoppingCartDTOs\" />
+    <None Remove="DTOs\PaymentDTOs\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
@@ -65,5 +68,6 @@
     <Folder Include="Filters\" />
     <Folder Include="DTOs\BidDTOs\" />
     <Folder Include="DTOs\ShoppingCartDTOs\" />
+    <Folder Include="DTOs\PaymentDTOs\" />
   </ItemGroup>
 </Project>

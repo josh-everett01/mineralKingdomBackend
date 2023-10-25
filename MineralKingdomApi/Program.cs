@@ -6,6 +6,7 @@ using MineralKingdomApi.Data;
 using MineralKingdomApi.DTOs.UserDTOs;
 using MineralKingdomApi.Repositories;
 using MineralKingdomApi.Services;
+using Stripe;
 using System;
 using System.IO;
 using System.Reflection;
@@ -35,7 +36,8 @@ builder.Services.AddSwaggerGen(c =>
 
 // Add DbContext to the services container.
 builder.Services.AddDbContext<MineralKingdomContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    //options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(Environment.GetEnvironmentVariable("POSTGRES_CONNECTION_STRING")));
 
 // Registering repositories and services for DI
 
@@ -70,6 +72,7 @@ builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
 if (builder.Environment.IsDevelopment())
 {
     builder.Configuration.AddUserSecrets<Startup>();
+    StripeConfiguration.ApiKey = builder.Configuration["STRIPE_API_KEY"];
 }
 
 var app = builder.Build();
