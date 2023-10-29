@@ -25,7 +25,8 @@ namespace MineralKingdomApi.Services
                 Description = m.Description,
                 Price = m.Price,
                 Origin = m.Origin,
-                CreatedAt = m.CreatedAt
+                CreatedAt = m.CreatedAt,
+                ImageURL = m.ImageURL
             }).ToList();
         }
 
@@ -51,7 +52,8 @@ namespace MineralKingdomApi.Services
                 Description = createMineralDTO.Description,
                 Price = (decimal)createMineralDTO.Price,
                 Origin = createMineralDTO.Origin,
-                CreatedAt = DateTime.UtcNow  // Assuming you want to set this at creation time
+                CreatedAt = DateTime.UtcNow, // Assuming you want to set this at creation time
+                ImageURL = createMineralDTO.ImageURL
             };
 
             await _mineralRepository.AddAsync(mineral);
@@ -99,7 +101,8 @@ namespace MineralKingdomApi.Services
                 Description = mineral.Description,
                 Price = mineral.Price,
                 Origin = mineral.Origin,
-                CreatedAt = mineral.CreatedAt
+                CreatedAt = mineral.CreatedAt,
+                ImageURL = mineral.ImageURL
             };
         }
     }
