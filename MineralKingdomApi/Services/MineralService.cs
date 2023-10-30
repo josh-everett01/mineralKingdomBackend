@@ -40,7 +40,8 @@ namespace MineralKingdomApi.Services
                 Description = mineral.Description,
                 Price = mineral.Price,
                 Origin = mineral.Origin,
-                CreatedAt = mineral.CreatedAt
+                CreatedAt = mineral.CreatedAt,
+                ImageURL = mineral.ImageURL,
             };
         }
 
