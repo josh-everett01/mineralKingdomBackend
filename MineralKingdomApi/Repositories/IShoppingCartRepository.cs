@@ -10,6 +10,8 @@ namespace MineralKingdomApi.Repositories
         Task CreateCartAsync(ShoppingCart cart);
         Task UpdateCartAsync(ShoppingCart cart);
         Task DeleteCartAsync(int cartId);
+        Task CreateCartItemAsync(CartItem cartItem);
+        Task DeleteCartItemAsync(int cartItemId);
     }
 }
 

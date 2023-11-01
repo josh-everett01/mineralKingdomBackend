@@ -13,7 +13,7 @@ namespace MineralKingdomApi.Data.Models
 
         [Required]
         [MaxLength(100)]
-        public string TransactionId { get; set; }
+        public string? TransactionId { get; set; }
 
         [Required]
         [Range(0.01, 1000000)] // Assuming a max limit, adjust as needed
@@ -39,6 +39,8 @@ namespace MineralKingdomApi.Data.Models
 
         [Required]
         public DateTime CreatedAt { get; set; }
+
+        public string? CheckoutSessionId { get; set; }
 
     }
 

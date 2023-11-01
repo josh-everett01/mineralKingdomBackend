@@ -9,6 +9,8 @@ public interface IShoppingCartService
     Task CreateCartForUserAsync(int userId);
     Task UpdateCartAsync(ShoppingCartDTO cart);
     Task DeleteCartAsync(int cartId);
+    Task AddItemToCartAsync(int userId, CartItemDTO cartItemDTO);
+    Task RemoveItemFromCartAsync(int userId, int cartItemId);
 }
 
 

@@ -3,6 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MineralKingdomApi.Models
 {
+
+    public enum MineralStatus
+    {
+        Available,
+        Sold,
+    }
+
     public class Mineral
     {
         [Key]
@@ -28,5 +35,12 @@ namespace MineralKingdomApi.Models
         [MaxLength(255)]
         public string? ImageURL { get; set; }
         // Add more properties as needed, such as image URLs, properties, etc.
+
+        public List<string>? ImageURLs { get; set; } = new List<string>();
+
+        public string? VideoURL { get; set; }
+
+        [Required]
+        public MineralStatus Status { get; set; } = MineralStatus.Available;
     }
 }

@@ -69,10 +69,12 @@ namespace MineralKingdomApi.Models
 
         // Email Verification Properties
         public bool EmailVerified { get; set; } = false;
-
         public string? VerificationToken { get; set; }
-
         public DateTime? TokenExpirationDate { get; set; }
 
+        // Stripe Customer ID
+        public string? StripeCustomerId { get; set; }
     }
+
 }
+

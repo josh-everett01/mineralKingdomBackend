@@ -14,6 +14,7 @@ namespace MineralKingdomApi.Services
         Task<MineralResponseDTO?> GetMineralByIdAsync(int id);
         Task SaveAsync();
         Task UpdateMineralAsync(int id, UpdateMineralDTO updateMineralDTO);
+        Task UpdateMineralStatusAsync(int mineralId, MineralStatus status);
     }
 
 }

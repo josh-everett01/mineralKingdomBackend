@@ -101,6 +101,45 @@ namespace MineralKingdomApi.Repositories
                 throw new Exception($"Error deleting cart with ID {cartId}.", ex);
             }
         }
+
+        public async Task CreateCartItemAsync(CartItem cartItem)
+        {
+            if (cartItem == null)
+            {
+                throw new ArgumentNullException(nameof(cartItem), "Cart item cannot be null.");
+            }
+
+            try
+            {
+                _context.CartItems.Add(cartItem);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                throw new Exception("Error adding item to cart.", ex);
+            }
+        }
+
+        public async Task DeleteCartItemAsync(int cartItemId)
+        {
+            try
+            {
+                var cartItem = await _context.CartItems.FindAsync(cartItemId);
+                if (cartItem == null)
+                {
+                    throw new Exception($"No cart item found with ID {cartItemId}.");
+                }
+
+                _context.CartItems.Remove(cartItem);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                throw new Exception($"Error removing item from cart.", ex);
+            }
+        }
     }
 }
 

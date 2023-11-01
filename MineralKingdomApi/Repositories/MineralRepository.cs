@@ -6,33 +6,33 @@ using MineralKingdomApi.Repositories;
 
 public class MineralRepository : IMineralRepository
 {
-    private readonly MineralKingdomContext _mineralService;
+    private readonly MineralKingdomContext _dbContext;
 
     public MineralRepository(MineralKingdomContext context)
     {
-        _mineralService = context;
+        _dbContext = context;
     }
 
     public async Task<IEnumerable<Mineral>> GetAllMineralsAsync()
     {
-        return await _mineralService.Minerals.ToListAsync();
+        return await _dbContext.Minerals.ToListAsync();
     }
 
     public async Task<Mineral?> GetMineralByIdAsync(int id)
     {
-        return await _mineralService.Minerals.FindAsync(id);
+        return await _dbContext.Minerals.FindAsync(id);
     }
 
     public async Task CreateMineralAsync(Mineral mineral)
     {
-        await _mineralService.Minerals.AddAsync(mineral);
-        await _mineralService.SaveChangesAsync();
+        await _dbContext.Minerals.AddAsync(mineral);
+        await _dbContext.SaveChangesAsync();
     }
 
     public async Task UpdateMineralAsync(Mineral mineral)
     {
-        _mineralService.Minerals.Update(mineral);
-        await _mineralService.SaveChangesAsync();
+        _dbContext.Minerals.Update(mineral);
+        await _dbContext.SaveChangesAsync();
     }
 
     public async Task DeleteMineralAsync(int id)
@@ -40,19 +40,35 @@ public class MineralRepository : IMineralRepository
         var mineral = await GetMineralByIdAsync(id);
         if (mineral != null)
         {
-            _mineralService.Minerals.Remove(mineral);
-            await _mineralService.SaveChangesAsync();
+            _dbContext.Minerals.Remove(mineral);
+            await _dbContext.SaveChangesAsync();
         }
     }
 
     public async Task AddAsync(Mineral mineral)
     {
-        await _mineralService.Minerals.AddAsync(mineral);
+        await _dbContext.Minerals.AddAsync(mineral);
     }
 
     public async Task SaveAsync()
     {
-        await _mineralService.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync();
     }
+
+    public async Task UpdateMineralStatusAsync(int mineralId, MineralStatus status)
+    {
+        var mineral = await _dbContext.Minerals.FindAsync(mineralId);
+        if (mineral != null)
+        {
+            mineral.Status = status;
+            _dbContext.Minerals.Update(mineral);
+            await _dbContext.SaveChangesAsync();
+        }
+        else
+        {
+            throw new KeyNotFoundException($"Mineral with ID {mineralId} not found.");
+        }
+    }
+
 }
 
