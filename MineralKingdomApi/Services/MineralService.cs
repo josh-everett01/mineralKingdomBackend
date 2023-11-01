@@ -9,10 +9,12 @@ namespace MineralKingdomApi.Services
     public class MineralService : IMineralService
     {
         private readonly IMineralRepository _mineralRepository;
+        private readonly ILogger<PaymentService> _logger;
 
-        public MineralService(IMineralRepository mineralRepository)
+        public MineralService(IMineralRepository mineralRepository, ILogger<PaymentService> logger)
         {
             _mineralRepository = mineralRepository;
+            _logger = logger;
         }
 
         public async Task<IEnumerable<MineralResponseDTO>> GetAllMineralsAsync()
@@ -103,9 +105,20 @@ namespace MineralKingdomApi.Services
                 Price = mineral.Price,
                 Origin = mineral.Origin,
                 CreatedAt = mineral.CreatedAt,
-                ImageURL = mineral.ImageURL
+                ImageURL = mineral.ImageURL,
+                ImageURLs = mineral.ImageURLs,
+                VideoURL = mineral.VideoURL,
+                Status = mineral.Status
             };
         }
+
+        public async Task UpdateMineralStatusAsync(int mineralId, MineralStatus status)
+        {
+            _logger.LogInformation($"Updating status of mineral with ID: {mineralId} to {status}");
+            await _mineralRepository.UpdateMineralStatusAsync(mineralId, status);
+            _logger.LogInformation($"Mineral status updated successfully.");
+        }
+
     }
 }
 

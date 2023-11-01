@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using MineralKingdomApi.Data;
+using MineralKingdomApi.DTOs.ShoppingCartDTOs;
 using MineralKingdomApi.Models;
 
 namespace MineralKingdomApi.Repositories
@@ -13,13 +14,16 @@ namespace MineralKingdomApi.Repositories
         {
             _context = context;
         }
-        public async Task<CartItem> GetCartItemByIdAsync(int itemId)
+
+        public async Task<CartItemDTO> GetCartItemByIdAsync(int itemId)
         {
             try
             {
-                return await _context.CartItems
+                var cartItem = await _context.CartItems
                     .Include(ci => ci.Mineral) // Include related Mineral data if needed
                     .FirstOrDefaultAsync(ci => ci.Id == itemId);
+
+                return MapCartItemToDTO(cartItem);
             }
             catch (Exception ex)
             {
@@ -28,15 +32,16 @@ namespace MineralKingdomApi.Repositories
             }
         }
 
-        public async Task CreateCartItemAsync(CartItem cartItem)
+        public async Task CreateCartItemAsync(CartItemDTO cartItemDTO)
         {
-            if (cartItem == null)
+            if (cartItemDTO == null)
             {
-                throw new ArgumentNullException(nameof(cartItem), "Cart item cannot be null.");
+                throw new ArgumentNullException(nameof(cartItemDTO), "Cart item DTO cannot be null.");
             }
 
             try
             {
+                var cartItem = MapDTOToCartItem(cartItemDTO);
                 _context.CartItems.Add(cartItem);
                 await _context.SaveChangesAsync();
             }
@@ -47,22 +52,23 @@ namespace MineralKingdomApi.Repositories
             }
         }
 
-        public async Task UpdateCartItemAsync(CartItem cartItem)
+        public async Task UpdateCartItemAsync(CartItemDTO cartItemDTO)
         {
-            if (cartItem == null)
+            if (cartItemDTO == null)
             {
-                throw new ArgumentNullException(nameof(cartItem), "Cart item cannot be null.");
+                throw new ArgumentNullException(nameof(cartItemDTO), "Cart item DTO cannot be null.");
             }
 
             try
             {
+                var cartItem = MapDTOToCartItem(cartItemDTO);
                 _context.Entry(cartItem).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
                 // Log the exception
-                throw new Exception($"Error updating cart item with ID {cartItem.Id}.", ex);
+                throw new Exception($"Error updating cart item with ID {cartItemDTO.Id}.", ex);
             }
         }
 
@@ -84,6 +90,28 @@ namespace MineralKingdomApi.Repositories
                 // Log the exception
                 throw new Exception($"Error deleting cart item with ID {itemId}.", ex);
             }
+        }
+
+        private CartItemDTO MapCartItemToDTO(CartItem cartItem)
+        {
+            if (cartItem == null) return null;
+
+            return new CartItemDTO
+            {
+                Id = cartItem.Id,
+                MineralId = cartItem.MineralId
+            };
+        }
+
+        private CartItem MapDTOToCartItem(CartItemDTO cartItemDTO)
+        {
+            if (cartItemDTO == null) return null;
+
+            return new CartItem
+            {
+                Id = cartItemDTO.Id,
+                MineralId = cartItemDTO.MineralId
+            };
         }
 
     }

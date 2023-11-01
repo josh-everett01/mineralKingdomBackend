@@ -84,6 +84,8 @@ builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
 builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
 
 // Payment
+builder.Services.AddScoped<IPaymentDetailsRepository, PaymentDetailsRepository>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
 
 // Configure CORS
 builder.Services.AddCors(options =>

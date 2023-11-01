@@ -25,6 +25,10 @@ namespace MineralKingdomApi.Repositories
 
         // Saves changes made to the repository.
         Task SaveAsync();
+
+        // Updates a minerals status after purchase
+        Task UpdateMineralStatusAsync(int mineralId, MineralStatus status);
+
     }
 
 

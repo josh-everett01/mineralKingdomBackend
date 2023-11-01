@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MineralKingdomApi.Data;
 using MineralKingdomApi.DTOs;
+using MineralKingdomApi.DTOs.MineralDTOs;
 using MineralKingdomApi.Models;
 using MineralKingdomApi.Services;
 using System.Collections.Generic;
@@ -80,27 +81,20 @@ namespace MineralKingdomApi.Controllers
         /// <response code="400">If the request is invalid.</response>
         /// <response code="404">If the mineral is not found.</response>
         [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)] // Indicates that the mineral is updated successfully
-        [ProducesResponseType(StatusCodes.Status400BadRequest)] // Indicates that the request is invalid
-        [ProducesResponseType(StatusCodes.Status404NotFound)] // Indicates that the mineral is not found
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateMineral(int id, [FromBody] UpdateMineralDTO updateMineralDTO)
         {
-            var mineral = await _mineralService.GetMineralByIdAsync(id);
-            if (mineral == null)
+            try
+            {
+                await _mineralService.UpdateMineralAsync(id, updateMineralDTO);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
             {
                 return NotFound();
             }
-
-            // Update properties
-            mineral.Name = updateMineralDTO.Name ?? mineral.Name;
-            mineral.Description = updateMineralDTO.Description ?? mineral.Description;
-            mineral.Price = updateMineralDTO.Price ?? mineral.Price;
-            mineral.Origin = updateMineralDTO.Origin ?? mineral.Origin;
-
-            // Save changes
-            await _mineralService.SaveAsync();
-
-            return NoContent(); // 204 No Content response
         }
 
         /// <summary>
@@ -124,5 +118,20 @@ namespace MineralKingdomApi.Controllers
 
             return NoContent(); // 204 No Content response
         }
+
+        [HttpPut("{id}/status")]
+        public async Task<IActionResult> UpdateMineralStatus(int id, [FromBody] UpdateMineralStatusDTO updateStatusDTO)
+        {
+            try
+            {
+                await _mineralService.UpdateMineralStatusAsync(id, updateStatusDTO.Status);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
     }
 }

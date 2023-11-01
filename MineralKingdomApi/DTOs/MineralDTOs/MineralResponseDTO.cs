@@ -1,4 +1,6 @@
 ﻿using System;
+using MineralKingdomApi.Models;
+
 namespace MineralKingdomApi.DTOs
 {
     public class MineralResponseDTO
@@ -10,6 +12,9 @@ namespace MineralKingdomApi.DTOs
         public string? Origin { get; set; }
         public DateTime CreatedAt { get; set; }
         public string? ImageURL { get; set; }
+        public List<string>? ImageURLs { get; set; }
+        public string? VideoURL { get; set; }
+        public MineralStatus Status { get; set; }
     }
 
 }

@@ -8,10 +8,12 @@ using MineralKingdomApi.Repositories;
 public class ShoppingCartService : IShoppingCartService
 {
     private readonly IShoppingCartRepository _shoppingCartRepository;
+    private readonly ICartItemRepository _cartItemRepository;
 
-    public ShoppingCartService(IShoppingCartRepository shoppingCartRepository)
+    public ShoppingCartService(IShoppingCartRepository shoppingCartRepository, ICartItemRepository cartItemRepository)
     {
         _shoppingCartRepository = shoppingCartRepository;
+        _cartItemRepository = cartItemRepository;
     }
 
     public async Task<ShoppingCartDTO> GetCartByUserIdAsync(int userId)
@@ -101,6 +103,59 @@ public class ShoppingCartService : IShoppingCartService
             throw new Exception($"Error deleting cart with ID {cartId}.", ex);
         }
     }
+
+        public async Task AddItemToCartAsync(int userId, CartItemDTO cartItemDTO)
+        {
+            try
+            {
+                var cart = await _shoppingCartRepository.GetCartWithItemsByUserIdAsync(userId);
+                if (cart == null)
+                {
+                    // If the cart doesn't exist, create it
+                    cart = new ShoppingCart { UserId = userId };
+                    await _shoppingCartRepository.CreateCartAsync(cart);
+                }
+
+                // Check if the item is already in the cart
+                if (cart.CartItems.Any(ci => ci.MineralId == cartItemDTO.MineralId))
+                {
+                    throw new InvalidOperationException("Item is already in the cart.");
+                }
+
+                // Add the item to the cart
+                await _cartItemRepository.CreateCartItemAsync(cartItemDTO);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                throw new Exception("Error adding item to cart.", ex);
+            }
+        }
+
+        public async Task RemoveItemFromCartAsync(int userId, int cartItemId)
+        {
+            try
+            {
+                var cart = await _shoppingCartRepository.GetCartWithItemsByUserIdAsync(userId);
+                if (cart == null)
+                {
+                    throw new InvalidOperationException("Shopping cart not found.");
+                }
+
+                var cartItem = cart.CartItems.FirstOrDefault(ci => ci.Id == cartItemId);
+                if (cartItem == null)
+                {
+                    throw new InvalidOperationException("Item not found in the cart.");
+                }
+
+                await _cartItemRepository.DeleteCartItemAsync(cartItemId);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                throw new Exception("Error removing item from cart.", ex);
+            }
+        }
 
     // Helper methods for mapping between DTOs and entities
     private ShoppingCartDTO MapShoppingCartToDTO(ShoppingCart shoppingCart)
