@@ -74,6 +74,10 @@ namespace MineralKingdomApi.Models
 
         // Stripe Customer ID
         public string? StripeCustomerId { get; set; }
+
+        // Refresh token for Login / JWTService
+        public string? RefreshToken { get; set; }
+        public DateTime? RefreshTokenExpiryTime { get; set; }
     }
 
 }
