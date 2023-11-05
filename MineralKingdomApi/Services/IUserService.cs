@@ -13,7 +13,7 @@ namespace MineralKingdomApi.Services
     public interface IUserService
     {
         Task<UserResponseDTO> RegisterUserAsync(RegisterDTO registerDTO);
-        Task<UserResponseDTO> LoginUserAsync(LoginDTO loginDTO);
+        Task<(UserResponseDTO, string, string)> LoginUserAsync(LoginDTO loginDTO);
         Task<UserResponseDTO> GetUserByIdAsync(int id);
         Task<UserResponseDTO> GetUserByUsernameAsync(string username);
         Task<UserResponseDTO> UpdateUserAsync(int userId, UpdateUserDTO updateUserDTO);
@@ -29,6 +29,8 @@ namespace MineralKingdomApi.Services
         Task<bool> ResendVerificationEmail(string email);
         Task<EmailVerificationResult> VerifyUserEmail(string token);
         Task<UserResponseDTO> PartiallyUpdateUserAsync(int userId, PartialUpdateUserDTO partialUpdateUserDTO);
+        Task<UserResponseDTO> CreateAdminUserAsync(RegisterDTO registerDTO);
+        Task InvalidateRefreshToken(int userId);
     }
 }
 

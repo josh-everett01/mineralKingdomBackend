@@ -42,5 +42,6 @@ namespace MineralKingdomApi.Models
 
         [Required]
         public MineralStatus Status { get; set; } = MineralStatus.Available;
+
     }
 }

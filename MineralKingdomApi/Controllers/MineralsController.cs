@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MineralKingdomApi.Data;
 using MineralKingdomApi.DTOs;
@@ -15,10 +16,12 @@ namespace MineralKingdomApi.Controllers
     public class MineralsController : ControllerBase
     {
         private readonly IMineralService _mineralService;
+        private readonly ILogger<MineralsController> _logger;
 
-        public MineralsController(IMineralService mineralService)
+        public MineralsController(IMineralService mineralService, ILogger<MineralsController> logger)
         {
             _mineralService = mineralService;
+            _logger = logger;
         }
 
         /// <summary>
@@ -30,6 +33,7 @@ namespace MineralKingdomApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)] // Indicates that the minerals are returned successfully
         public async Task<ActionResult<IEnumerable<MineralResponseDTO>>> GetMinerals()
         {
+            LogUserClaims();
             return Ok(await _mineralService.GetAllMineralsAsync());
         }
 
@@ -51,7 +55,7 @@ namespace MineralKingdomApi.Controllers
             var mineral = await _mineralService.CreateMineralAsync(newMineral);
 
             var mineralResponseDTO = _mineralService.ConvertToMineralResponseDTO(mineral);
-
+            _logger.LogInformation("mineralResponseDTO: "+mineralResponseDTO);
             // Return the created mineral
             return CreatedAtAction(nameof(GetMineral), new { id = mineral.Id }, mineralResponseDTO);
         }
@@ -130,6 +134,22 @@ namespace MineralKingdomApi.Controllers
             catch (KeyNotFoundException)
             {
                 return NotFound();
+            }
+        }
+
+        private void LogUserClaims()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                _logger.LogInformation("User is authenticated");
+                foreach (var claim in User.Claims)
+                {
+                    _logger.LogInformation($"Claim Type: {claim.Type}, Claim Value: {claim.Value}");
+                }
+            }
+            else
+            {
+                _logger.LogInformation("User is not authenticated");
             }
         }
 

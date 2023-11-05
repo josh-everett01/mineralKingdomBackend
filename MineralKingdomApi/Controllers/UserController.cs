@@ -5,6 +5,7 @@ using MineralKingdomApi.DTOs.UserDTOs.MineralKingdomApi.DTOs.UserDTOs;
 using MineralKingdomApi.Models;
 using MineralKingdomApi.Services;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using static MineralKingdomApi.Services.UserService;
 
@@ -18,10 +19,12 @@ namespace MineralKingdomApi.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, ILogger<UserController> logger)
         {
             _userService = userService;
+            _logger = logger;
         }
 
         /// <summary>
@@ -47,12 +50,29 @@ namespace MineralKingdomApi.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)
         {
-            var userResponse = await _userService.LoginUserAsync(loginDTO);
-            if (userResponse != null)
+            var (user, token, refreshToken) = await _userService.LoginUserAsync(loginDTO);
+            if (user != null)
             {
-                return Ok(userResponse);
+                Response.Cookies.Append("auth-token", token, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.None,
+                    Expires = DateTime.UtcNow.AddMinutes(15),
+                });
+
+                Response.Cookies.Append("refresh-token", refreshToken, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.None,
+                    Expires = DateTime.UtcNow.AddDays(7),
+                });
+
+                return Ok(user);
             }
-            return Unauthorized("Invalid username or password.");
+
+            return Unauthorized("User not found or password is incorrect");
         }
 
         /// <summary>
@@ -221,6 +241,27 @@ namespace MineralKingdomApi.Controllers
             return BadRequest("Error sending verification email. Please try again.");
         }
 
+        /// <summary>
+        /// Creates a new admin user.
+        /// </summary>
+        /// <param name="registerDTO">The registration data transfer object containing the user's information.</param>
+        /// <returns>An <see cref="IActionResult"/> representing the result of the operation.</returns>
+        /// <response code="200">Returns the admin user's information if creation is successful.</response>
+        /// <response code="400">If the input is invalid or the user cannot be created.</response>
+        [HttpPost("create-admin")]
+        // [Authorize(Roles = "Admin")] // Temporarily commented out
+        public async Task<IActionResult> CreateAdmin([FromBody] RegisterDTO registerDTO)
+        {
+            try
+            {
+                var adminUserResponse = await _userService.CreateAdminUserAsync(registerDTO);
+                return Ok(adminUserResponse);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         private void ReallyPartiallyUpdateUser(User user, PartialUpdateUserDTO partialUpdateUserDTO)
         {
@@ -258,5 +299,33 @@ namespace MineralKingdomApi.Controllers
             // Add similar logic for other properties as needed
         }
 
+        private void LogUserClaims()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                _logger.LogInformation("User is authenticated");
+                foreach (var claim in User.Claims)
+                {
+                    _logger.LogInformation($"Claim Type: {claim.Type}, Claim Value: {claim.Value}");
+                }
+            }
+            else
+            {
+                _logger.LogInformation("User is not authenticated");
+            }
+        }
+
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out var userId))
+            {
+                return Unauthorized();
+            }
+
+            await _userService.InvalidateRefreshToken(userId);
+            return Ok();
+        }
     }
 }

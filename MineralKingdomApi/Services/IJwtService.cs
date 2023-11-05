@@ -6,6 +6,7 @@ namespace MineralKingdomApi.Services
     public interface IJwtService
     {
         string GenerateJwtToken(User user);
+        public string GenerateRefreshToken();
     }
 }
 

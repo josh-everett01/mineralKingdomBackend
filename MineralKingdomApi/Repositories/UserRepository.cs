@@ -161,7 +161,16 @@ namespace MineralKingdomApi.Repositories
             return Guid.NewGuid().ToString();
         }
 
-
+        public async Task InvalidateRefreshToken(int userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user != null)
+            {
+                user.RefreshToken = null;
+                user.RefreshTokenExpiryTime = null;
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }
 

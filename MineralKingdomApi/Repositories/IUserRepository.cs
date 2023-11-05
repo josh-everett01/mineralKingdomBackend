@@ -53,6 +53,9 @@ namespace MineralKingdomApi.Repositories
 
         // Retrieve a user based on the verification token.
         Task<User> GetUserByVerificationToken(string token);
+
+        // Invalidate Refresh Token upon logout
+        Task InvalidateRefreshToken(int userId);
     }
 
 }
