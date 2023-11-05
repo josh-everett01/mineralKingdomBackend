@@ -28,7 +28,10 @@ namespace MineralKingdomApi.Services
                 Price = m.Price,
                 Origin = m.Origin,
                 CreatedAt = m.CreatedAt,
-                ImageURL = m.ImageURL
+                ImageURL = m.ImageURL,
+                ImageURLs = m.ImageURLs,
+                VideoURL = m.VideoURL,
+                Status = m.Status,
             }).ToList();
         }
 
@@ -44,6 +47,9 @@ namespace MineralKingdomApi.Services
                 Origin = mineral.Origin,
                 CreatedAt = mineral.CreatedAt,
                 ImageURL = mineral.ImageURL,
+                ImageURLs = mineral.ImageURLs,
+                VideoURL = mineral.VideoURL,
+                Status = mineral.Status,
             };
         }
 
@@ -56,12 +62,15 @@ namespace MineralKingdomApi.Services
                 Price = (decimal)createMineralDTO.Price,
                 Origin = createMineralDTO.Origin,
                 CreatedAt = DateTime.UtcNow, // Assuming you want to set this at creation time
-                ImageURL = createMineralDTO.ImageURL
+                ImageURL = createMineralDTO.ImageURL,
+                ImageURLs = createMineralDTO.ImageURLs ?? new List<string>(),
+                VideoURL = createMineralDTO.VideoURL,
+                Status = createMineralDTO.Status = MineralStatus.Available
             };
 
             await _mineralRepository.AddAsync(mineral);
             await _mineralRepository.SaveAsync(); // Ensure you have a method to save changes in your repository
-
+            _logger.LogInformation("mineral: " + mineral);
             return mineral;
         }
 

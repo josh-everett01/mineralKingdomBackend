@@ -6,12 +6,14 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MineralKingdomApi.Data;
+using MineralKingdomApi.Models;
 using MineralKingdomApi.Repositories;
 using MineralKingdomApi.Services;
 using Stripe;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Security.Claims;
 using System.Text;
 
 DotNetEnv.Env.Load();
@@ -25,10 +27,38 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Mineral Kingdom API", Version = "v1" });
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     c.IncludeXmlComments(xmlPath);
+
+    // Configure Swagger to use JWT
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                },
+                Scheme = "oauth2",
+                Name = "Bearer",
+                In = ParameterLocation.Header
+            },
+            new List<string>()
+        }
+    });
 });
 
 // Add DbContext to the services container.
@@ -50,10 +80,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(key),
             ValidateIssuer = false,
-            ValidateAudience = false
+            ValidateAudience = false,
+            RoleClaimType = ClaimTypes.Role,
         };
     });
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequireAdminRole", policy => policy.RequireRole(nameof(UserRole.Admin)));
+});
 
 // Registering repositories and services for Dependency Injection
 builder.Services.AddScoped<IJwtService, JwtService>();

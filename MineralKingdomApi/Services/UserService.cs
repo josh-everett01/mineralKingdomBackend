@@ -24,7 +24,7 @@ namespace MineralKingdomApi.Services
             _jwtService = jwtService;
         }
 
-        public async Task<UserResponseDTO> LoginUserAsync(LoginDTO loginDTO)
+        public async Task<(UserResponseDTO, string, string)> LoginUserAsync(LoginDTO loginDTO)
         {
             var user = await _userRepository.GetUserByUsernameAsync(loginDTO.Username);
 
@@ -33,12 +33,20 @@ namespace MineralKingdomApi.Services
                 // Password is correct, generate a JWT token
                 var jwtToken = _jwtService.GenerateJwtToken(user);
 
+                // Generate a refresh token
+                var refreshToken = _jwtService.GenerateRefreshToken();
+                user.RefreshToken = refreshToken;
+                user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7); // Set the expiry time for the refresh token
+
+                // Save the user with the refresh token
+                await _userRepository.UpdateUserAsync(user);
+
                 var response = MapToUserResponseDTO(user);
                 response.JwtToken = jwtToken;
-                return response;
+                return (response, jwtToken, refreshToken);
             }
 
-            return null; // User not found or password is incorrect
+            return (null, null, null); // User not found or password is incorrect
         }
 
         public async Task<UserResponseDTO> RegisterUserAsync(RegisterDTO registerDTO)
@@ -66,7 +74,7 @@ namespace MineralKingdomApi.Services
                 Username = registerDTO.Username,
                 Password = hashedPassword,
                 RegisteredAt = DateTime.UtcNow,
-                UserRole = UserRole.Customer,
+                UserRole = registerDTO.UserRole == UserRole.Admin ? UserRole.Admin : UserRole.Customer,
                 StreetAddress = registerDTO.StreetAddress,
                 City = registerDTO.City,
                 State = registerDTO.State,
@@ -85,6 +93,16 @@ namespace MineralKingdomApi.Services
             return MapToUserResponseDTO(user);
         }
 
+        public async Task<UserResponseDTO> CreateAdminUserAsync(RegisterDTO registerDTO)
+        {
+            // You might want to add additional checks or logic specific to admin creation here
+            registerDTO.UserRole = UserRole.Admin; // Set the user role to Admin
+
+            // You can add additional validation here if needed
+            // For example, check if a user with the same username or email already exists
+
+            return await RegisterUserAsync(registerDTO);
+        }
 
         public async Task<UserResponseDTO> GetUserByIdAsync(int id)
         {
@@ -191,7 +209,10 @@ namespace MineralKingdomApi.Services
             return MapToUserResponseDTO(existingUser);
         }
 
-
+        public async Task InvalidateRefreshToken(int userId)
+        {
+            await _userRepository.InvalidateRefreshToken(userId);
+        }
 
         private UpdateUserDTO MapToUpdateUserDTO(User user)
         {
