@@ -20,6 +20,8 @@ namespace MineralKingdomApi.DTOs.AuctionDTOs
         public string? AuctionStatusName { get; set; }
 
         public int? BidCount { get; set; }
+
+        public int? MineralId { get; set; }
     }
 
 }

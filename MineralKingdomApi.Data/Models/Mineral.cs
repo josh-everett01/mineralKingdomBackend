@@ -43,5 +43,8 @@ namespace MineralKingdomApi.Models
         [Required]
         public MineralStatus Status { get; set; } = MineralStatus.Available;
 
+        [Required]
+        public bool IsAuctionItem { get; set; } = false;
+
     }
 }

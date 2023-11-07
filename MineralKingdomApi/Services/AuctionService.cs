@@ -33,6 +33,8 @@ namespace MineralKingdomApi.Services
             {
                 throw new ArgumentNullException(nameof(auction));
             }
+            auction.StartTime = auction.StartTime.ToUniversalTime();
+            auction.EndTime = auction.EndTime.ToUniversalTime();
             await _auctionRepository.CreateAuctionAsync(auction);
         }
 
@@ -104,7 +106,8 @@ namespace MineralKingdomApi.Services
                 EndTime = auction.EndTime,
                 MineralName = auction.Mineral?.Name,  // Assuming Mineral has a Name property
                 AuctionStatusName = auction.AuctionStatus?.Status,  // Assuming AuctionStatus has a Name property
-                BidCount = auction.Bids?.Count ?? 0  // Assuming Auction has a Bids collection
+                BidCount = auction.Bids?.Count ?? 0,  // Assuming Auction has a Bids collection
+                MineralId = auction.MineralId
             };
         }
 
