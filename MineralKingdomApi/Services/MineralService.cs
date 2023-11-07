@@ -20,6 +20,7 @@ namespace MineralKingdomApi.Services
         public async Task<IEnumerable<MineralResponseDTO>> GetAllMineralsAsync()
         {
             var minerals = await _mineralRepository.GetAllMineralsAsync();
+            _logger.LogInformation("minerals: " + minerals);
             return minerals.Select(m => new MineralResponseDTO
             {
                 Id = m.Id,
@@ -32,6 +33,7 @@ namespace MineralKingdomApi.Services
                 ImageURLs = m.ImageURLs,
                 VideoURL = m.VideoURL,
                 Status = m.Status,
+                IsAuctionItem = m.IsAuctionItem,
             }).ToList();
         }
 
@@ -50,6 +52,7 @@ namespace MineralKingdomApi.Services
                 ImageURLs = mineral.ImageURLs,
                 VideoURL = mineral.VideoURL,
                 Status = mineral.Status,
+                IsAuctionItem = mineral.IsAuctionItem,
             };
         }
 
@@ -65,7 +68,8 @@ namespace MineralKingdomApi.Services
                 ImageURL = createMineralDTO.ImageURL,
                 ImageURLs = createMineralDTO.ImageURLs ?? new List<string>(),
                 VideoURL = createMineralDTO.VideoURL,
-                Status = createMineralDTO.Status = MineralStatus.Available
+                Status = createMineralDTO.Status = MineralStatus.Available,
+                IsAuctionItem = createMineralDTO.IsAuctionItem,
             };
 
             await _mineralRepository.AddAsync(mineral);
@@ -117,7 +121,8 @@ namespace MineralKingdomApi.Services
                 ImageURL = mineral.ImageURL,
                 ImageURLs = mineral.ImageURLs,
                 VideoURL = mineral.VideoURL,
-                Status = mineral.Status
+                Status = mineral.Status,
+                IsAuctionItem = mineral.IsAuctionItem,
             };
         }
 

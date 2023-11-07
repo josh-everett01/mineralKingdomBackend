@@ -13,6 +13,7 @@ namespace MineralKingdomApi.DTOs
         public List<string>? ImageURLs { get; set; } = new List<string>();
         public string? VideoURL { get; set; }
         public MineralStatus Status { get; set; }
+        public bool IsAuctionItem { get; set; }
     }
 }
 
