@@ -21,6 +21,10 @@ public class ShoppingCartService : IShoppingCartService
         try
         {
             var shoppingCart = await _shoppingCartRepository.GetCartByUserIdAsync(userId);
+            if (shoppingCart == null)
+            {
+                await CreateCartForUserAsync(userId);
+            }
             return MapShoppingCartToDTO(shoppingCart);
         }
         catch (Exception ex)

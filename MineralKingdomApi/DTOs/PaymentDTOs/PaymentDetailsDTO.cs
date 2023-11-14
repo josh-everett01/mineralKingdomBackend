@@ -14,6 +14,7 @@ namespace MineralKingdomApi.DTOs.PaymentDTOs
         public DateTime CreatedAt { get; set; }
         public int MineralId { get; set; }
         public string CheckoutSessionId { get; set; }
+        public string OrderId { get; set; }
     }
 
 }

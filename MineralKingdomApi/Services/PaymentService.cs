@@ -44,7 +44,7 @@ namespace MineralKingdomApi.Services
 
         public async Task UpdatePaymentDetailsAsync(PaymentDetailsDto paymentDetailsDto)
         {
-            await _paymentDetailsRepository.UpdatePaymentDetailsAsync(paymentDetailsDto.CheckoutSessionId, paymentDetailsDto.TransactionId);
+            await _paymentDetailsRepository.UpdatePaymentDetailsAsync(paymentDetailsDto.CheckoutSessionId, paymentDetailsDto.TransactionId, paymentDetailsDto.Status);
         }
 
         public async Task UpdateTransactionIdAsync(string checkoutSessionId, string transactionId)
@@ -113,6 +113,106 @@ namespace MineralKingdomApi.Services
         {
             await _paymentDetailsRepository.UpdatePaymentDetailsStatusAsync(transactionId, status);
         }
+
+        public async Task<IEnumerable<PaymentDetailsDto>> GetPaymentDetailsBySessionIdCollectionAsync(string sessionId)
+        {
+            var paymentDetailsList = await _mineralKingdomContext.PaymentDetails
+                .Where(pd => pd.CheckoutSessionId == sessionId)
+                .ToListAsync();
+
+            if (!paymentDetailsList.Any())
+            {
+                _logger.LogWarning("No PaymentDetails found for CheckoutSessionId: {CheckoutSessionId}", sessionId);
+                return Enumerable.Empty<PaymentDetailsDto>(); // Return an empty collection if no details are found
+            }
+
+            return paymentDetailsList.Select(pd => MapToPaymentDetailsDto(pd)).ToList();
+        }
+
+        public async Task<bool> CancelPaymentByOrderId(string orderId)
+        {
+            var paymentDetailsList = await _paymentDetailsRepository.GetPaymentDetailsByOrderIdAsync(orderId);
+            if (paymentDetailsList == null || !paymentDetailsList.Any())
+            {
+                _logger.LogWarning($"No PaymentDetails found for OrderId: {orderId}");
+                return false;
+            }
+
+            foreach (var paymentDetails in paymentDetailsList)
+            {
+                _mineralKingdomContext.PaymentDetails.Remove(paymentDetails);
+            }
+
+            await _mineralKingdomContext.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> CancelPaymentByMineralId(int mineralId)
+        {
+            var paymentDetailsList = await _paymentDetailsRepository.GetPaymentDetailsByMineralIdAsync(mineralId);
+            if (paymentDetailsList == null || !paymentDetailsList.Any())
+            {
+                _logger.LogWarning($"No PaymentDetails found for MineralId: {mineralId}");
+                return false;
+            }
+
+            foreach (var paymentDetails in paymentDetailsList)
+            {
+                _mineralKingdomContext.PaymentDetails.Remove(paymentDetails);
+            }
+
+            await _mineralKingdomContext.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<IEnumerable<PaymentDetailsDto>> GetPaymentDetailsByOrderIdAsync(string orderId)
+        {
+            var paymentDetailsList = await _mineralKingdomContext.PaymentDetails
+                .Where(pd => pd.TransactionId == orderId)
+                .ToListAsync();
+
+            if (!paymentDetailsList.Any())
+            {
+                _logger.LogWarning($"No PaymentDetails found for OrderId: {orderId}");
+                return Enumerable.Empty<PaymentDetailsDto>();
+            }
+
+            return paymentDetailsList.Select(pd => MapToPaymentDetailsDto(pd)).ToList();
+        }
+
+        public async Task<IEnumerable<PaymentDetailsDto>> GetPaymentDetailsByMineralIdAsync(int mineralId)
+        {
+            var paymentDetailsList = await _mineralKingdomContext.PaymentDetails
+                .Where(pd => pd.Id == mineralId)
+                .ToListAsync();
+
+            if (!paymentDetailsList.Any())
+            {
+                _logger.LogWarning($"No PaymentDetails found for MineralId: {mineralId}");
+                return Enumerable.Empty<PaymentDetailsDto>();
+            }
+
+            return paymentDetailsList.Select(pd => MapToPaymentDetailsDto(pd)).ToList();
+        }
+
+        public async Task<bool> CancelPayment(string orderId)
+        {
+            var paymentDetailsList = await _paymentDetailsRepository.GetPaymentDetailsByOrderIdAsync(orderId);
+            if (paymentDetailsList == null || !paymentDetailsList.Any())
+            {
+                _logger.LogWarning($"No PaymentDetails found for OrderId: {orderId}");
+                return false;
+            }
+
+            foreach (var paymentDetails in paymentDetailsList)
+            {
+                _mineralKingdomContext.PaymentDetails.Remove(paymentDetails);
+            }
+
+            await _mineralKingdomContext.SaveChangesAsync();
+            return true;
+        }
+
 
     }
 

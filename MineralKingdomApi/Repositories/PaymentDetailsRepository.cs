@@ -3,16 +3,19 @@ using System.Net.NetworkInformation;
 using Microsoft.EntityFrameworkCore;
 using MineralKingdomApi.Data;
 using MineralKingdomApi.Data.Models;
+using MineralKingdomApi.Services;
 
 namespace MineralKingdomApi.Repositories
 {
     public class PaymentDetailsRepository : IPaymentDetailsRepository
     {
         private readonly MineralKingdomContext _context;
+        private readonly ILogger<PaymentDetailsRepository> _logger;
 
-        public PaymentDetailsRepository(MineralKingdomContext context)
+        public PaymentDetailsRepository(MineralKingdomContext context, ILogger<PaymentDetailsRepository> logger)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _logger = logger;
         }
 
         public async Task AddPaymentDetailsAsync(PaymentDetails paymentDetails)
@@ -26,22 +29,30 @@ namespace MineralKingdomApi.Repositories
             return await _context.PaymentDetails.FirstOrDefaultAsync(pd => pd.TransactionId == transactionId);
         }
 
-        public async Task UpdatePaymentDetailsAsync(string checkoutSessionId, string transactionId)
+        public async Task UpdatePaymentDetailsAsync(string checkoutSessionId, string transactionId, string status)
         {
-            var existingEntity = _context.ChangeTracker.Entries<PaymentDetails>()
-                .FirstOrDefault(e => e.Entity.CheckoutSessionId == checkoutSessionId)?.Entity;
+            var paymentDetailsList = await _context.PaymentDetails
+                .Where(pd => pd.CheckoutSessionId == checkoutSessionId)
+                .ToListAsync();
 
-            if (existingEntity != null)
+            if (paymentDetailsList.Any())
             {
-                existingEntity.TransactionId = transactionId;
+                foreach (var paymentDetails in paymentDetailsList)
+                {
+                    paymentDetails.TransactionId = transactionId;
+                    paymentDetails.Status = status;
+                }
+
+                await _context.SaveChangesAsync();
             }
             else
             {
-                var paymentDetails = new PaymentDetails { CheckoutSessionId = checkoutSessionId, TransactionId = transactionId, Status = existingEntity.Status };
-                _context.PaymentDetails.Update(paymentDetails);
+                // Log the case where no matching records are found
+                _logger.LogWarning($"No PaymentDetails found for CheckoutSessionId: {checkoutSessionId}");
+                // Optionally, you can also handle this scenario differently if needed
             }
-            await _context.SaveChangesAsync();
         }
+
 
         public async Task UpdateTransactionIdAsync(string checkoutSessionId, string transactionId)
         {
@@ -75,6 +86,22 @@ namespace MineralKingdomApi.Repositories
                 await _context.SaveChangesAsync();
             }
         }
+
+        public async Task<IEnumerable<PaymentDetails>> GetPaymentDetailsByOrderIdAsync(string orderId)
+        {
+            return await _context.PaymentDetails
+                                .Where(pd => pd.TransactionId == orderId)
+                                .ToListAsync();
+        }
+
+
+        public async Task<IEnumerable<PaymentDetails>> GetPaymentDetailsByMineralIdAsync(int mineralId)
+        {
+            return await _context.PaymentDetails
+                                .Where(pd => pd.Id == mineralId)
+                                .ToListAsync();
+        }
+
     }
 }
 

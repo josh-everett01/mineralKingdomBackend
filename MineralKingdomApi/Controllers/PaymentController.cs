@@ -25,6 +25,42 @@ namespace MineralKingdomApi.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCheckoutSession([FromBody] CheckoutRequestDto request)
         {
+            // Retrieve user information
+            var user = await _userRepository.GetUserByIdAsync(request.UserId);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            // Generate a unique order ID
+            var orderId = GenerateOrderId(user.Id);
+
+            // Create a list to hold PaymentDetailsDto instances
+            var paymentDetailsList = new List<PaymentDetailsDto>();
+
+            // Store initial payment details with orderId for each line item
+            foreach (var item in request.LineItems)
+            {
+                var paymentDetailsDto = new PaymentDetailsDto
+                {
+                    // Assign values from item and user
+                    Amount = item.Price,
+                    Currency = "USD",
+                    PaymentMethod = "card",
+                    Status = "pending",
+                    Description = $"Purchase of {item.Name}",
+                    CustomerId = user.Id.ToString(),
+                    CreatedAt = DateTime.UtcNow,
+                    TransactionId = orderId,
+                    OrderId = orderId,
+                    MineralId = item.MineralId
+                };
+
+                paymentDetailsList.Add(paymentDetailsDto);
+            }
+
+            var successUrl = $"https://localhost:8080/payment-success/{orderId}";
+            var cancelUrl = $"https://localhost:8080/payment-cancelled/{orderId}";
             var options = new SessionCreateOptions
             {
                 PaymentMethodTypes = new List<string> { "card" },
@@ -42,19 +78,24 @@ namespace MineralKingdomApi.Controllers
                     Quantity = item.Quantity,
                 }).ToList(),
                 Mode = "payment",
-                SuccessUrl = "https://example.com/success",
-                CancelUrl = "https://example.com/cancel",
+                SuccessUrl = successUrl,
+                CancelUrl = cancelUrl,
             };
 
             var service = new SessionService();
             Session session = await service.CreateAsync(options);
 
-            return Ok(new
+            // Update each PaymentDetailsDto with the CheckoutSessionId
+            foreach (var paymentDetails in paymentDetailsList)
             {
-                sessionId = session.Id,
-                Url = session.Url
-            });
+                paymentDetails.CheckoutSessionId = session.Id;
+                await _paymentService.AddPaymentDetailsAsync(paymentDetails);
+            }
+
+            // Return session details along with the order ID
+            return Ok(new { sessionId = session.Id, url = session.Url, orderId = orderId });
         }
+
 
         [HttpPost("purchase-mineral")]
         public async Task<IActionResult> PurchaseMineral([FromBody] MineralPurchaseDto request)
@@ -77,6 +118,7 @@ namespace MineralKingdomApi.Controllers
 
             // 3. Create a Checkout Session for the payment
             var successUrl = $"https://localhost:8080/payment-success/{mineral.Id}";
+            var cancelUrl = $"https://localhost:8080/payment-cancelled/{mineral.Id}";
             var options = new SessionCreateOptions
             {
                 PaymentMethodTypes = new List<string> { "card" },
@@ -98,7 +140,7 @@ namespace MineralKingdomApi.Controllers
         },
                 Mode = "payment",
                 SuccessUrl = successUrl,
-                CancelUrl = "https://example.com/cancel",
+                CancelUrl = cancelUrl,
             };
 
             var service = new SessionService();
@@ -116,7 +158,9 @@ namespace MineralKingdomApi.Controllers
                 CustomerId = user.Id.ToString(),
                 CreatedAt = DateTime.UtcNow,
                 CheckoutSessionId = session.Id,
-                MineralId = mineral.Id
+                MineralId = mineral.Id,
+                OrderId = session.Id
+                
             };
          
             await _paymentService.AddPaymentDetailsAsync(paymentDetailsDto);
@@ -124,6 +168,53 @@ namespace MineralKingdomApi.Controllers
             // 5. Return the Checkout Session ID and URL to the client
             return Ok(new { sessionId = session.Id, url = session.Url });
         }
+
+        private string GenerateOrderId(int userId)
+        {
+            var timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            var randomComponent = new Random().Next(1000, 9999); // Random number between 1000 and 9999
+            return $"{userId}-{timestamp}-{randomComponent}";
+        }
+
+        [HttpPost("cancel-order")]
+        public async Task<IActionResult> CancelOrder([FromBody] string orderId)
+        {
+            var paymentDetailsList = await _paymentService.GetPaymentDetailsByOrderIdAsync(orderId);
+            if (paymentDetailsList == null || !paymentDetailsList.Any())
+            {
+                return NotFound($"No payment details found for Order ID: {orderId}");
+            }
+
+            var result = await _paymentService.CancelPayment(orderId);
+            if (!result)
+            {
+                return BadRequest("Failed to cancel the order.");
+            }
+
+            return Ok("Order cancelled successfully.");
+        }
+
+        [HttpPost("cancel-mineral-purchase")]
+        public async Task<IActionResult> CancelMineralPurchase([FromBody] int mineralId)
+        {
+            var paymentDetailsList = await _paymentService.GetPaymentDetailsByMineralIdAsync(mineralId);
+            if (paymentDetailsList == null || !paymentDetailsList.Any())
+            {
+                return NotFound($"No payment details found for Mineral ID: {mineralId}");
+            }
+
+            // Assuming you have a method in your service to handle cancellation by mineral ID
+            var result = await _paymentService.CancelPaymentByMineralId(mineralId);
+            if (!result)
+            {
+                return BadRequest("Failed to cancel the mineral purchase.");
+            }
+
+            return Ok("Mineral purchase cancelled successfully.");
+        }
+
+
+
     }
 }
 
