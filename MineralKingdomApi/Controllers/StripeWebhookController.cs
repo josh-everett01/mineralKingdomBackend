@@ -78,24 +78,31 @@ namespace MineralKingdomApi.Controllers
                 var paymentIntentService = new PaymentIntentService();
                 var paymentIntent = await paymentIntentService.GetAsync(session.PaymentIntentId);
 
-                var paymentDetailsDto = await _paymentService.GetPaymentDetailsBySessionIdAsync(session.Id);
-                if (paymentDetailsDto != null)
+                var paymentDetailsDtos = await _paymentService.GetPaymentDetailsBySessionIdCollectionAsync(session.Id);
+                _logger.LogInformation("PaymentDetailsDTOS: " + paymentDetailsDtos);
+                if (paymentDetailsDtos != null && paymentDetailsDtos.Any())
                 {
-                    paymentDetailsDto.TransactionId = session.PaymentIntentId;
-                    paymentDetailsDto.Status = paymentIntent.Status;
-                    await _paymentService.UpdatePaymentDetailsAsync(paymentDetailsDto);
+                    foreach (var paymentDetailsDto in paymentDetailsDtos)
+                    {
+                        _logger.LogInformation("Each PaymentDetailsDTO: " + paymentDetailsDto);
+                        paymentDetailsDto.TransactionId = session.PaymentIntentId;
+                        paymentDetailsDto.Status = paymentIntent.Status;
+                        await _paymentService.UpdatePaymentDetailsAsync(paymentDetailsDto);
 
-                    if (paymentIntent.Status == "succeeded")
-                    {
-                        _logger.LogInformation("Mineral status in progresss updating to Sold for MineralId: " + paymentDetailsDto.Id) ;
-                        await _mineralRepository.UpdateMineralStatusAsync(paymentDetailsDto.Id, MineralStatus.Sold);
-                        _logger.LogInformation("Mineral status updated to Sold for MineralId: " + paymentDetailsDto.Id);
-                        await _paymentService.UpdatePaymentDetailsStatusAsync(paymentDetailsDto.TransactionId, paymentIntent.Status);
+                        if (paymentIntent.Status == "succeeded")
+                        {
+                            _logger.LogInformation("Mineral status in progress updating to Sold for MineralId: " + paymentDetailsDto.Id);
+                            await _mineralRepository.UpdateMineralStatusAsync(paymentDetailsDto.Id, MineralStatus.Sold);
+                            _logger.LogInformation("Mineral status updated to Sold for MineralId: " + paymentDetailsDto.Id);
+                        }
+                        else
+                        {
+                            _logger.LogWarning("Payment was not successful for MineralId: " + paymentDetailsDto.Id + ". Status: " + paymentIntent.Status);
+                        }
                     }
-                    else
-                    {
-                        _logger.LogWarning("Payment was not successful. Status: " + paymentIntent.Status);
-                    }
+
+                    // Update the payment details status after processing all entries
+                    await _paymentService.UpdatePaymentDetailsStatusAsync(session.PaymentIntentId, paymentIntent.Status);
                 }
                 else
                 {
@@ -103,6 +110,7 @@ namespace MineralKingdomApi.Controllers
                 }
             }
         }
+
 
 
 

@@ -11,6 +11,7 @@ namespace MineralKingdomApi.DTOs.PaymentDTOs
         public string Currency { get; set; } = "usd"; // Default to USD, or set based on your application's needs
         public string? DiscountCode { get; set; }
         public string? Notes { get; set; }
+        public string? OrderId { get; set; }
     }
 
 }

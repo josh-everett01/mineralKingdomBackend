@@ -7,6 +7,9 @@ namespace MineralKingdomApi.DTOs.PaymentDTOs
     {
         [Required]
         public List<LineItemDto> LineItems { get; set; }
+
+        [Required]
+        public int UserId { get; set; }
     }
 
     public class LineItemDto
@@ -22,6 +25,9 @@ namespace MineralKingdomApi.DTOs.PaymentDTOs
         [Required]
         [Range(0.01, double.MaxValue)]
         public decimal Price { get; set; }
+
+        [Required]
+        public int MineralId { get; set; }
     }
 }
 
