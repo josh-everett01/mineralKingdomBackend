@@ -16,15 +16,16 @@ public class ShoppingCartService : IShoppingCartService
         _cartItemRepository = cartItemRepository;
     }
 
-    public async Task<ShoppingCartDTO> GetCartByUserIdAsync(int userId)
+    public async Task<ShoppingCartDTO?> GetCartByUserIdAsync(int userId)
     {
         try
         {
             var shoppingCart = await _shoppingCartRepository.GetCartByUserIdAsync(userId);
             if (shoppingCart == null)
             {
-                await CreateCartForUserAsync(userId);
+                return null;
             }
+
             return MapShoppingCartToDTO(shoppingCart);
         }
         catch (Exception ex)

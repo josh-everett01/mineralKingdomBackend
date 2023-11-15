@@ -1,5 +1,5 @@
 ﻿<Properties StartupConfiguration="{40E8144B-D904-4DF4-9182-CA0DC289B963}|https">
-  <MonoDevelop.Ide.Workbench ActiveDocument="MineralKingdomApi/Controllers/UserController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="MineralKingdomApi/Repositories/CartItemRepository.cs">
     <Files>
       <File FileName="MineralKingdomApi.Data/Models/CheckoutSessionDetails.cs" />
       <File FileName="MineralKingdomApi.Data/Models/CheckoutSessionRequest.cs" />
@@ -7,110 +7,115 @@
       <File FileName="MineralKingdomApi.Data/Models/CustomerRequest.cs" />
       <File FileName="MineralKingdomApi.Data/Models/CustomerResponse.cs" />
       <File FileName="MineralKingdomApi.Data/Models/LineItem.cs" />
-      <File FileName="MineralKingdomApi.Data/Models/PaymentDetails.cs" Line="1" Column="1" />
+      <File FileName="MineralKingdomApi.Data/Models/PaymentDetails.cs" Line="28" Column="8" />
       <File FileName="MineralKingdomApi.Data/MineralKingdomContext.cs" />
       <File FileName="MineralKingdomApi.Data/MineralKingdomContextFactory.cs" />
-      <File FileName="MineralKingdomApi.Data/Models/ShoppingCart.cs" />
-      <File FileName="MineralKingdomApi.Data/Models/CartItem.cs" />
-      <File FileName="MineralKingdomApi.Data/Models/User.cs" Line="78" Column="38" />
+      <File FileName="MineralKingdomApi.Data/Models/ShoppingCart.cs" Line="17" Column="1" />
+      <File FileName="MineralKingdomApi.Data/Models/CartItem.cs" Line="24" Column="1" />
+      <File FileName="MineralKingdomApi.Data/Models/User.cs" />
       <File FileName="MineralKingdomApi/Program.cs" Line="159" Column="1" />
-      <File FileName="MineralKingdomApi.Data/Models/Mineral.cs" />
+      <File FileName="MineralKingdomApi.Data/Models/Mineral.cs" Line="47" Column="15" />
       <File FileName="MineralKingdomApi.Data/.env" />
-      <File FileName="MineralKingdomApi/Controllers/PaymentController.cs" />
-      <File FileName="MineralKingdomApi/DTOs/PaymentDTOs/CheckoutRequestDTO.cs" />
+      <File FileName="MineralKingdomApi/Controllers/PaymentController.cs" Line="182" Column="1" />
+      <File FileName="MineralKingdomApi/DTOs/PaymentDTOs/CheckoutRequestDTO.cs" Line="22" Column="33" />
       <File FileName="MineralKingdomApi/.env" />
-      <File FileName="MineralKingdomApi/DTOs/PaymentDTOs/MineralPurchaseDTO.cs" />
+      <File FileName="MineralKingdomApi/DTOs/PaymentDTOs/MineralPurchaseDTO.cs" Line="14" Column="23" />
       <File FileName="MineralKingdomApi/Repositories/IMineralRepository.cs" />
-      <File FileName="MineralKingdomApi/Controllers/StripeWebhookController.cs" />
-      <File FileName="MineralKingdomApi.Data/Models/Auction.cs" />
-      <File FileName="MineralKingdomApi.Data/Models/AuctionStatus.cs" />
-      <File FileName="MineralKingdomApi/Controllers/AuctionController.cs" />
-      <File FileName="MineralKingdomApi/Services/AuctionService.cs" />
-      <File FileName="MineralKingdomApi/Repositories/AuctionRepository.cs" />
-      <File FileName="MineralKingdomApi/Controllers/UserController.cs" Line="322" Column="1" />
-      <File FileName="MineralKingdomApi/Controllers/MineralsController.cs" Line="21" Column="1" />
-      <File FileName="MineralKingdomApi/Services/MineralService.cs" Line="1" Column="1" />
-      <File FileName="MineralKingdomApi/Repositories/MineralRepository.cs" />
-      <File FileName="MineralKingdomApi/DTOs/UserDTOs/RegisterDTO.cs" Line="1" Column="1" />
-      <File FileName="MineralKingdomApi/Services/UserService.cs" Line="216" Column="1" />
-      <File FileName="MineralKingdomApi/DTOs/UserDTOs/UserResponseDTO.cs" Line="1" Column="1" />
-      <File FileName="MineralKingdomApi/Repositories/UserRepository.cs" Line="164" Column="61" />
-      <File FileName="MineralKingdomApi/DTOs/MineralDTOs/CreateMineralDTO.cs" />
-      <File FileName="MineralKingdomApi/DTOs/MineralDTOs/MineralResponseDTO.cs" />
-      <File FileName="MineralKingdomApi/Services/ShoppingCartService.cs" />
-      <File FileName="MineralKingdomApi/Repositories/ShoppingCartRepository.cs" />
-      <File FileName="MineralKingdomApi/Repositories/CartItemRepository.cs" />
-      <File FileName="MineralKingdomApi/Controllers/ShoppingCartController.cs" />
+      <File FileName="MineralKingdomApi/Controllers/StripeWebhookController.cs" Line="91" Column="1" />
+      <File FileName="MineralKingdomApi.Data/Models/Auction.cs" Line="41" Column="6" />
+      <File FileName="MineralKingdomApi.Data/Models/AuctionStatus.cs" Line="19" Column="1" />
+      <File FileName="MineralKingdomApi/Controllers/AuctionController.cs" Line="192" Column="24" />
+      <File FileName="MineralKingdomApi/Services/AuctionService.cs" Line="29" Column="1" />
+      <File FileName="MineralKingdomApi/Repositories/AuctionRepository.cs" Line="161" Column="10" />
+      <File FileName="MineralKingdomApi/Controllers/UserController.cs" Line="102" Column="22" />
+      <File FileName="MineralKingdomApi/Controllers/MineralsController.cs" Line="49" Column="1" />
+      <File FileName="MineralKingdomApi/Services/MineralService.cs" Line="24" Column="1" />
+      <File FileName="MineralKingdomApi/Repositories/MineralRepository.cs" Line="1" Column="1" />
+      <File FileName="MineralKingdomApi/DTOs/UserDTOs/RegisterDTO.cs" />
+      <File FileName="MineralKingdomApi/Services/UserService.cs" Line="51" Column="106" />
+      <File FileName="MineralKingdomApi/DTOs/UserDTOs/UserResponseDTO.cs" />
+      <File FileName="MineralKingdomApi/Repositories/UserRepository.cs" Line="172" Column="14" />
+      <File FileName="MineralKingdomApi/DTOs/MineralDTOs/CreateMineralDTO.cs" Line="16" Column="48" />
+      <File FileName="MineralKingdomApi/DTOs/MineralDTOs/MineralResponseDTO.cs" Line="18" Column="34" />
+      <File FileName="MineralKingdomApi/Services/ShoppingCartService.cs" Line="131" Column="1" />
+      <File FileName="MineralKingdomApi/Repositories/ShoppingCartRepository.cs" Line="36" Column="38" />
+      <File FileName="MineralKingdomApi/Repositories/CartItemRepository.cs" Line="51" Column="1" />
+      <File FileName="MineralKingdomApi/Controllers/ShoppingCartController.cs" Line="142" Column="1" />
       <File FileName="MineralKingdomApi/Services/IShoppingCartService.cs" />
       <File FileName="MineralKingdomApi/Repositories/IShoppingCartRepository.cs" />
-      <File FileName="MineralKingdomApi/DTOs/ShoppingCartDTOs/CartItemDTO.cs" />
-      <File FileName="MineralKingdomApi/DTOs/ShoppingCartDTOs/ShoppingCartDTO.cs" />
-      <File FileName="MineralKingdomApi/Repositories/ICartItemRepository.cs" />
-      <File FileName="MineralKingdomApi/DTOs/PaymentDTOs/PaymentDetailsDTO.cs" />
-      <File FileName="MineralKingdomApi/Services/IPaymentService.cs" />
-      <File FileName="MineralKingdomApi/Services/PaymentService.cs" />
-      <File FileName="MineralKingdomApi/Repositories/IPaymentDetailsRepository.cs" />
-      <File FileName="MineralKingdomApi/Repositories/PaymentDetailsRepository.cs" />
-      <File FileName="MineralKingdomApi/Services/IMineralService.cs" />
-      <File FileName="MineralKingdomApi/DTOs/MineralDTOs/UpdateMineralDTO.cs" />
-      <File FileName="MineralKingdomApi/Repositories/IUserRepository.cs" Line="58" Column="49" />
-      <File FileName="MineralKingdomApi/DTOs/MineralDTOs/UpdateMineralStatusDTO.cs" />
-      <File FileName="MineralKingdomApi/DTOs/UserDTOs/LoginDTO.cs" Line="1" Column="1" />
-      <File FileName="MineralKingdomApi/DTOs/UserDTOs/PartialUpdateUserDTO.cs" Line="1" Column="1" />
-      <File FileName="MineralKingdomApi/DTOs/UserDTOs/UpdateUserDTO.cs" Line="1" Column="1" />
-      <File FileName="MineralKingdomApi/Services/IUserService.cs" Line="33" Column="49" />
-      <File FileName="MineralKingdomApi/Services/JwtService.cs" Line="33" Column="74" />
-      <File FileName="MineralKingdomApi/Services/IJwtService.cs" Line="9" Column="46" />
+      <File FileName="MineralKingdomApi/DTOs/ShoppingCartDTOs/CartItemDTO.cs" Line="11" Column="1" />
+      <File FileName="MineralKingdomApi/DTOs/ShoppingCartDTOs/ShoppingCartDTO.cs" Line="12" Column="1" />
+      <File FileName="MineralKingdomApi/Repositories/ICartItemRepository.cs" Line="1" Column="1" />
+      <File FileName="MineralKingdomApi/DTOs/PaymentDTOs/PaymentDetailsDTO.cs" Line="17" Column="9" />
+      <File FileName="MineralKingdomApi/Services/IPaymentService.cs" Line="19" Column="50" />
+      <File FileName="MineralKingdomApi/Services/PaymentService.cs" Line="198" Column="62" />
+      <File FileName="MineralKingdomApi/Repositories/IPaymentDetailsRepository.cs" Line="15" Column="92" />
+      <File FileName="MineralKingdomApi/Repositories/PaymentDetailsRepository.cs" Line="98" Column="104" />
+      <File FileName="MineralKingdomApi/Services/IMineralService.cs" Line="1" Column="1" />
+      <File FileName="MineralKingdomApi/DTOs/MineralDTOs/UpdateMineralDTO.cs" Line="1" Column="1" />
+      <File FileName="MineralKingdomApi/Repositories/IUserRepository.cs" />
+      <File FileName="MineralKingdomApi/DTOs/MineralDTOs/UpdateMineralStatusDTO.cs" Line="1" Column="1" />
+      <File FileName="MineralKingdomApi/DTOs/UserDTOs/LoginDTO.cs" />
+      <File FileName="MineralKingdomApi/DTOs/UserDTOs/PartialUpdateUserDTO.cs" />
+      <File FileName="MineralKingdomApi/DTOs/UserDTOs/UpdateUserDTO.cs" />
+      <File FileName="MineralKingdomApi/Services/IUserService.cs" />
+      <File FileName="MineralKingdomApi/Services/JwtService.cs" Line="39" Column="15" />
+      <File FileName="MineralKingdomApi/Services/IJwtService.cs" />
+      <File FileName="MineralKingdomApi/Controllers/AuctionStatusController.cs" Line="8" Column="2" />
+      <File FileName="MineralKingdomApi/Controllers/BidController.cs" Line="9" Column="12" />
+      <File FileName="MineralKingdomApi/DTOs/AuctionDTOs/AuctionResponseDTO.cs" Line="24" Column="42" />
+      <File FileName="MineralKingdomApi/DTOs/AuctionDTOs/BidResult.cs" Line="18" Column="1" />
+      <File FileName="MineralKingdomApi/DTOs/AuctionDTOs/CreateAuctionDTO.cs" Line="20" Column="1" />
+      <File FileName="MineralKingdomApi/DTOs/AuctionDTOs/UpdateAuctionDTO.cs" Line="22" Column="27" />
+      <File FileName="MineralKingdomApi/DTOs/AuctionStatusDTOs/AuctionDetailsDTO.cs" Line="22" Column="34" />
+      <File FileName="MineralKingdomApi/DTOs/AuctionStatusDTOs/AuctionStatusResponseDTO.cs" Line="17" Column="1" />
+      <File FileName="MineralKingdomApi/DTOs/AuctionStatusDTOs/CreateAuctionStatusDTO.cs" Line="16" Column="1" />
+      <File FileName="MineralKingdomApi/DTOs/AuctionStatusDTOs/UpdateAuctionStatusDTO.cs" Line="19" Column="1" />
+      <File FileName="MineralKingdomApi/DTOs/BidDTOs/BidDTO.cs" Line="15" Column="1" />
+      <File FileName="MineralKingdomApi/DTOs/BidDTOs/CreateBidDTO.cs" Line="19" Column="6" />
+      <File FileName="MineralKingdomApi/DTOs/BidDTOs/UpdateBidDTO.cs" Line="18" Column="1" />
+      <File FileName="MineralKingdomApi/Services/AuctionStatusService.cs" Line="11" Column="6" />
+      <File FileName="MineralKingdomApi/Services/BidService.cs" Line="77" Column="1" />
+      <File FileName="MineralKingdomApi.Data/Models/Bid.cs" Line="11" Column="13" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="backEnd" expanded="True">
+          <Node name="backEnd">
             <Node name="MineralKingdomApi">
-              <Node name="Controllers">
-                <Node name="UserController.cs" selected="True" />
-              </Node>
+              <Node name="Controllers" expanded="True" />
               <Node name="DTOs" expanded="True">
+                <Node name="AuctionDTOs" expanded="True" />
+                <Node name="AuctionStatusDTOs" expanded="True" />
+                <Node name="BidDTOs" expanded="True" />
+                <Node name="MineralDTOs" expanded="True" />
+                <Node name="PaymentDTOs" expanded="True" />
+                <Node name="ShoppingCartDTOs" expanded="True" />
                 <Node name="UserDTOs" expanded="True" />
               </Node>
+              <Node name="Repositories" expanded="True">
+                <Node name="CartItemRepository.cs" selected="True" />
+              </Node>
+            </Node>
+            <Node name="MineralKingdomApi.Data" expanded="True">
+              <Node name="Models" expanded="True" />
             </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.ItemProperties.MineralKingdomApi PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.MineralKingdomApi PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint enabled="false" file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Controllers/TestController.cs" relfile="MineralKingdomApi/Controllers/TestController.cs" line="8" column="1" />
-      <Breakpoint enabled="false" file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Controllers/TestController.cs" relfile="MineralKingdomApi/Controllers/TestController.cs" line="12" column="1" />
-      <Breakpoint enabled="false" file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Services/MineralService.cs" relfile="MineralKingdomApi/Services/MineralService.cs" line="36" column="1" />
-      <Breakpoint enabled="false" file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Repositories/MineralRepository.cs" relfile="MineralKingdomApi/Repositories/MineralRepository.cs" line="28" column="1" />
-      <Breakpoint enabled="false" file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Repositories/AuctionRepository.cs" relfile="MineralKingdomApi/Repositories/AuctionRepository.cs" line="49" column="1" />
-      <Breakpoint enabled="false" file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Services/AuctionStatusService.cs" relfile="MineralKingdomApi/Services/AuctionStatusService.cs" line="87" column="1" />
-      <Breakpoint enabled="false" file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Services/AuctionStatusService.cs" relfile="MineralKingdomApi/Services/AuctionStatusService.cs" line="98" column="1" />
-      <Breakpoint enabled="false" file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Repositories/AuctionStatusRepository.cs" relfile="MineralKingdomApi/Repositories/AuctionStatusRepository.cs" line="59" column="1" />
-      <Breakpoint enabled="false" file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Repositories/AuctionStatusRepository.cs" relfile="MineralKingdomApi/Repositories/AuctionStatusRepository.cs" line="62" column="1" />
-      <Breakpoint enabled="false" file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Services/AuctionStatusService.cs" relfile="MineralKingdomApi/Services/AuctionStatusService.cs" line="104" column="1" />
-      <Breakpoint enabled="false" file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Repositories/AuctionStatusRepository.cs" relfile="MineralKingdomApi/Repositories/AuctionStatusRepository.cs" line="26" column="1" />
-      <Breakpoint enabled="false" file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Startup.cs" relfile="MineralKingdomApi/Startup.cs" line="108" column="1" />
-      <Breakpoint enabled="false" file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Services/UserService.cs" relfile="MineralKingdomApi/Services/UserService.cs" line="219" column="1" />
-      <Breakpoint enabled="false" file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Controllers/ShoppingCartController.cs" relfile="MineralKingdomApi/Controllers/ShoppingCartController.cs" line="80" column="1" />
-      <Breakpoint enabled="false" file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Services/ShoppingCartService.cs" relfile="MineralKingdomApi/Services/ShoppingCartService.cs" line="50" column="1" />
-      <Breakpoint enabled="false" file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Services/ShoppingCartService.cs" relfile="MineralKingdomApi/Services/ShoppingCartService.cs" line="55" column="1" />
-      <Breakpoint enabled="false" file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Services/ShoppingCartService.cs" relfile="MineralKingdomApi/Services/ShoppingCartService.cs" line="58" column="1" />
-      <Breakpoint enabled="false" file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Controllers/UserController.cs" relfile="MineralKingdomApi/Controllers/UserController.cs" line="257" column="1" />
-      <Breakpoint enabled="false" file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Controllers/MineralsController.cs" relfile="MineralKingdomApi/Controllers/MineralsController.cs" line="129" column="1" />
-      <Breakpoint enabled="false" file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Controllers/MineralsController.cs" relfile="MineralKingdomApi/Controllers/MineralsController.cs" line="13" column="1" />
-      <Breakpoint enabled="false" file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Controllers/MineralsController.cs" relfile="MineralKingdomApi/Controllers/MineralsController.cs" line="14" column="1" />
-      <Breakpoint enabled="false" file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Controllers/MineralsController.cs" relfile="MineralKingdomApi/Controllers/MineralsController.cs" line="15" column="1" />
-      <Breakpoint enabled="false" file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Controllers/MineralsController.cs" relfile="MineralKingdomApi/Controllers/MineralsController.cs" line="16" column="1" />
-      <Breakpoint enabled="false" file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Controllers/UserController.cs" relfile="MineralKingdomApi/Controllers/UserController.cs" line="304" column="1" />
-      <Breakpoint file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Controllers/UserController.cs" relfile="MineralKingdomApi/Controllers/UserController.cs" line="320" column="1" />
-      <Breakpoint file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Controllers/UserController.cs" relfile="MineralKingdomApi/Controllers/UserController.cs" line="322" column="1" />
+      <Breakpoint file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Controllers/ShoppingCartController.cs" relfile="MineralKingdomApi/Controllers/ShoppingCartController.cs" line="142" column="1" />
+      <Breakpoint file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Services/ShoppingCartService.cs" relfile="MineralKingdomApi/Services/ShoppingCartService.cs" line="117" column="1" />
+      <Breakpoint file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Services/ShoppingCartService.cs" relfile="MineralKingdomApi/Services/ShoppingCartService.cs" line="116" column="1" />
+      <Breakpoint file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Repositories/CartItemRepository.cs" relfile="MineralKingdomApi/Repositories/CartItemRepository.cs" line="37" column="1" />
+      <Breakpoint file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Repositories/CartItemRepository.cs" relfile="MineralKingdomApi/Repositories/CartItemRepository.cs" line="110" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
 </Properties>
