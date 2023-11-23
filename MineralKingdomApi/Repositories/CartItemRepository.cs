@@ -9,10 +9,15 @@ namespace MineralKingdomApi.Repositories
     public class CartItemRepository : ICartItemRepository
     {
         private readonly MineralKingdomContext _context;
+        private readonly ILogger<CartItemRepository> _logger;
+        private readonly IMineralRepository _mineralRepository;
 
-        public CartItemRepository(MineralKingdomContext context)
+
+        public CartItemRepository(MineralKingdomContext context, ILogger<CartItemRepository> logger, IMineralRepository mineralRepository)
         {
             _context = context;
+            _logger = logger;
+            _mineralRepository = mineralRepository;
         }
 
         public async Task<CartItemDTO> GetCartItemByIdAsync(int itemId)
@@ -32,7 +37,7 @@ namespace MineralKingdomApi.Repositories
             }
         }
 
-        public async Task CreateCartItemAsync(CartItemDTO cartItemDTO)
+        public async Task CreateCartItemAsync(int userId, CartItemDTO cartItemDTO, int cartId)
         {
             if (cartItemDTO == null)
             {
@@ -42,13 +47,17 @@ namespace MineralKingdomApi.Repositories
             try
             {
                 var cartItem = MapDTOToCartItem(cartItemDTO);
+                cartItem.ShoppingCartId = cartId;
+                cartItem.MineralId = cartItemDTO.MineralId;
+                cartItem.Mineral = await _mineralRepository.GetMineralByIdAsync(cartItemDTO.MineralId);
+                _logger.LogInformation($"context.CartItems: " + _context.CartItems);
                 _context.CartItems.Add(cartItem);
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-                // Log the exception
-                throw new Exception("Error creating cart item.", ex);
+                _logger.LogError(ex, "Error creating cart item. Exception: {Exception}", ex.ToString());
+                throw;
             }
         }
 
@@ -72,14 +81,14 @@ namespace MineralKingdomApi.Repositories
             }
         }
 
-        public async Task DeleteCartItemAsync(int itemId)
+        public async Task DeleteCartItemAsync(CartItem cartItem)
         {
             try
             {
-                var cartItem = await _context.CartItems.FindAsync(itemId);
+                var cartItemMatch = await _context.CartItems.FindAsync(cartItem.Id);
                 if (cartItem == null)
                 {
-                    throw new Exception($"No cart item found with ID {itemId}.");
+                    throw new Exception($"No cart item found with ID {cartItem.Id}.");
                 }
 
                 _context.CartItems.Remove(cartItem);
@@ -88,7 +97,7 @@ namespace MineralKingdomApi.Repositories
             catch (Exception ex)
             {
                 // Log the exception
-                throw new Exception($"Error deleting cart item with ID {itemId}.", ex);
+                throw new Exception($"Error deleting cart item with ID {cartItem.Id}.", ex);
             }
         }
 
@@ -109,7 +118,6 @@ namespace MineralKingdomApi.Repositories
 
             return new CartItem
             {
-                Id = cartItemDTO.Id,
                 MineralId = cartItemDTO.MineralId
             };
         }

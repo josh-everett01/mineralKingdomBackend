@@ -321,7 +321,7 @@ namespace MineralKingdomApi.Controllers
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
             if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out var userId))
             {
-                return Unauthorized();
+                return Ok();
             }
 
             await _userService.InvalidateRefreshToken(userId);

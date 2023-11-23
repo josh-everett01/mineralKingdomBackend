@@ -126,9 +126,9 @@ public class ShoppingCartService : IShoppingCartService
                 {
                     throw new InvalidOperationException("Item is already in the cart.");
                 }
-
+     
                 // Add the item to the cart
-                await _cartItemRepository.CreateCartItemAsync(cartItemDTO);
+                await _cartItemRepository.CreateCartItemAsync(userId, cartItemDTO, cart.Id);
             }
             catch (Exception ex)
             {
@@ -147,13 +147,13 @@ public class ShoppingCartService : IShoppingCartService
                     throw new InvalidOperationException("Shopping cart not found.");
                 }
 
-                var cartItem = cart.CartItems.FirstOrDefault(ci => ci.Id == cartItemId);
+                var cartItem = cart.CartItems.FirstOrDefault(ci => ci.MineralId == cartItemId);
                 if (cartItem == null)
                 {
                     throw new InvalidOperationException("Item not found in the cart.");
                 }
 
-                await _cartItemRepository.DeleteCartItemAsync(cartItemId);
+                await _cartItemRepository.DeleteCartItemAsync(cartItem);
             }
             catch (Exception ex)
             {

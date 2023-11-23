@@ -5,7 +5,7 @@ using MineralKingdomApi.Models;
 public interface ICartItemRepository
 {
     Task<CartItemDTO> GetCartItemByIdAsync(int itemId);
-    Task CreateCartItemAsync(CartItemDTO cartItemDTO);
+    Task CreateCartItemAsync(int userId, CartItemDTO cartItemDTO, int cartId);
     Task UpdateCartItemAsync(CartItemDTO cartItemDTO);
-    Task DeleteCartItemAsync(int itemId);
+    Task DeleteCartItemAsync(CartItem cartItem);
 }
