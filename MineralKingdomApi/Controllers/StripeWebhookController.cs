@@ -22,14 +22,18 @@ namespace MineralKingdomApi.Controllers
         private readonly ILogger<WebhookController> _logger;
         private readonly string _stripeEndpointSecret;
         private readonly IPaymentService _paymentService;
+        private readonly IShoppingCartRepository _shoppingCartRepository;
+        private readonly ICartItemRepository _cartItemRepository;
 
-        public WebhookController(IMineralRepository mineralRepository, IUserRepository userRepository, ILogger<WebhookController> logger, IConfiguration configuration, IPaymentService paymentService)
+        public WebhookController(IMineralRepository mineralRepository, IUserRepository userRepository, ILogger<WebhookController> logger, IConfiguration configuration, IPaymentService paymentService, ICartItemRepository cartItemRepository, IShoppingCartRepository shoppingCartRepository)
         {
             _mineralRepository = mineralRepository ?? throw new ArgumentNullException(nameof(mineralRepository));
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _stripeEndpointSecret = configuration["STRIPE_WEBHOOK_SECRET"] ?? throw new InvalidOperationException("Stripe endpoint secret is not configured.");
             _paymentService = paymentService ?? throw new ArgumentNullException(nameof(paymentService));
+            _shoppingCartRepository = shoppingCartRepository ?? throw new ArgumentNullException(nameof(shoppingCartRepository));
+            _cartItemRepository = cartItemRepository ?? throw new ArgumentNullException(nameof(cartItemRepository));
         }
 
         [HttpPost]
@@ -75,6 +79,7 @@ namespace MineralKingdomApi.Controllers
             var session = stripeEvent.Data.Object as Stripe.Checkout.Session;
             if (session != null)
             {
+                _logger.LogInformation("Handling Checkout Session Completed for Session ID: {SessionId}", session.Id);
                 var paymentIntentService = new PaymentIntentService();
                 var paymentIntent = await paymentIntentService.GetAsync(session.PaymentIntentId);
 
@@ -91,9 +96,21 @@ namespace MineralKingdomApi.Controllers
 
                         if (paymentIntent.Status == "succeeded")
                         {
+                            _logger.LogInformation("Payment Intent succeeded for Session ID: {SessionId}", session.Id);
                             _logger.LogInformation("Mineral status in progress updating to Sold for MineralId: " + paymentDetailsDto.Id);
                             await _mineralRepository.UpdateMineralStatusAsync(paymentDetailsDto.Id, MineralStatus.Sold);
                             _logger.LogInformation("Mineral status updated to Sold for MineralId: " + paymentDetailsDto.Id);
+
+                            var userId = paymentDetailsDto.CustomerId;
+                            var userCart = await _shoppingCartRepository.GetCartWithItemsByUserIdAsync(int.Parse(userId));
+                            if (userCart != null)
+                            {
+                                foreach (var cartItem in userCart.CartItems.ToList())
+                                {
+                                    // Remove the item from the cart
+                                    await _cartItemRepository.DeleteCartItemAsync(cartItem);
+                                }
+                            }
                         }
                         else
                         {

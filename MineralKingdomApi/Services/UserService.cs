@@ -10,6 +10,7 @@ using BCrypt.Net;
 using MineralKingdomApi.DTOs.UserDTOs.MineralKingdomApi.DTOs.UserDTOs;
 using System.Net;
 using System.Net.Mail;
+using MineralKingdomApi.Services;
 
 namespace MineralKingdomApi.Services
 {
@@ -17,11 +18,13 @@ namespace MineralKingdomApi.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IJwtService _jwtService;
+        private readonly IShoppingCartService _shoppingCartService;
 
-        public UserService(IUserRepository userRepository, IJwtService jwtService)
+        public UserService(IUserRepository userRepository, IJwtService jwtService, IShoppingCartService shoppingCartService)
         {
             _userRepository = userRepository;
             _jwtService = jwtService;
+            _shoppingCartService = shoppingCartService;
         }
 
         public async Task<(UserResponseDTO, string, string)> LoginUserAsync(LoginDTO loginDTO)
@@ -43,6 +46,9 @@ namespace MineralKingdomApi.Services
 
                 var response = MapToUserResponseDTO(user);
                 response.JwtToken = jwtToken;
+
+                var existingCart = await _shoppingCartService.GetCartByUserIdAsync(user.Id);
+                if (existingCart == null) { await _shoppingCartService.CreateCartForUserAsync(user.Id); }
                 return (response, jwtToken, refreshToken);
             }
 
@@ -351,6 +357,7 @@ namespace MineralKingdomApi.Services
         {
             try
             {
+               
                 var user = await _userRepository.GetUserByVerificationToken(token);
                 if (user == null)
                 {
@@ -367,6 +374,8 @@ namespace MineralKingdomApi.Services
                 user.TokenExpirationDate = null; // Clear the expiration date
 
                 await _userRepository.UpdateUserAsync(user);
+                var existingCart = await _shoppingCartService.GetCartByUserIdAsync(user.Id);
+                if (existingCart == null) { await _shoppingCartService.CreateCartForUserAsync(user.Id); }
                 return EmailVerificationResult.Success; // Email verified successfully
             }
             catch (Exception ex)

@@ -16,15 +16,16 @@ public class ShoppingCartService : IShoppingCartService
         _cartItemRepository = cartItemRepository;
     }
 
-    public async Task<ShoppingCartDTO> GetCartByUserIdAsync(int userId)
+    public async Task<ShoppingCartDTO?> GetCartByUserIdAsync(int userId)
     {
         try
         {
             var shoppingCart = await _shoppingCartRepository.GetCartByUserIdAsync(userId);
             if (shoppingCart == null)
             {
-                await CreateCartForUserAsync(userId);
+                return null;
             }
+
             return MapShoppingCartToDTO(shoppingCart);
         }
         catch (Exception ex)
@@ -125,9 +126,9 @@ public class ShoppingCartService : IShoppingCartService
                 {
                     throw new InvalidOperationException("Item is already in the cart.");
                 }
-
+     
                 // Add the item to the cart
-                await _cartItemRepository.CreateCartItemAsync(cartItemDTO);
+                await _cartItemRepository.CreateCartItemAsync(userId, cartItemDTO, cart.Id);
             }
             catch (Exception ex)
             {
@@ -146,13 +147,13 @@ public class ShoppingCartService : IShoppingCartService
                     throw new InvalidOperationException("Shopping cart not found.");
                 }
 
-                var cartItem = cart.CartItems.FirstOrDefault(ci => ci.Id == cartItemId);
+                var cartItem = cart.CartItems.FirstOrDefault(ci => ci.MineralId == cartItemId);
                 if (cartItem == null)
                 {
                     throw new InvalidOperationException("Item not found in the cart.");
                 }
 
-                await _cartItemRepository.DeleteCartItemAsync(cartItemId);
+                await _cartItemRepository.DeleteCartItemAsync(cartItem);
             }
             catch (Exception ex)
             {
