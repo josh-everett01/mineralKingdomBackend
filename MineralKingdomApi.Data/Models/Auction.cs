@@ -38,5 +38,7 @@ namespace MineralKingdomApi.Models
 
         // Relationship Navigation Property: An Auction can have multiple Bids
         public ICollection<Bid>? Bids { get; set; }
+
+        public bool IsWinnerNotified { get; set; }
     }
 }
