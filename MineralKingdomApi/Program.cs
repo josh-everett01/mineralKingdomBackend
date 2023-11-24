@@ -15,6 +15,7 @@ using System.IO;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json.Serialization;
 
 DotNetEnv.Env.Load();
 
@@ -22,7 +23,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-
 // Configure Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -107,6 +107,9 @@ builder.Services.AddScoped<IAuctionService, AuctionService>();
 // Auction Status
 builder.Services.AddScoped<IAuctionStatusService, AuctionStatusService>();
 builder.Services.AddScoped<IAuctionStatusRepository, AuctionStatusRepository>();
+
+// Auction notification service
+builder.Services.AddHostedService<AuctionNotificationService>();
 
 // Bids
 builder.Services.AddScoped<IBidRepository, BidRepository>();

@@ -19,6 +19,7 @@ namespace MineralKingdomApi.Services
         Task<IEnumerable<Auction>> GetAuctionsForMineralAsync(int mineralId);
         Task<BidResult> GetWinningBidForCompletedAuction(int auctionId);
         Task<BidResult> GetCurrentWinningBidForAuction(int auctionId);
+        Task NotifyWinner(int winnerUserId, Auction auction);
     }
 
 }

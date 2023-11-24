@@ -41,6 +41,10 @@ namespace MineralKingdomApi.Repositories
 
         // Updates the specified auction.
         Task UpdateAuctionAsync(Auction auction);
+
+        // Retrieve Auctions that are finished, but whose winners
+        // haven't been notified yet
+        Task<IEnumerable<Auction>> GetFinishedAndUnnotifiedAuctionsAsync();
     }
 
 

@@ -315,7 +315,7 @@ namespace MineralKingdomApi.Services
 
         public async Task SendVerificationEmail(User user)
         {
-            string verificationLink = $"https://yourwebsite.com/verify?token={user.VerificationToken}";
+            string verificationLink = $"https://localhost:8080/verify-email?token={user.VerificationToken}";
 
             var fromAddress = new MailAddress("josh@testing.com", "MineralKingdom");
             var toAddress = new MailAddress(user.Email, user.FirstName + " " + user.LastName);
