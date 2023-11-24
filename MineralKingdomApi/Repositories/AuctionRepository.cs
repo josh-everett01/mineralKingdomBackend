@@ -169,6 +169,18 @@ namespace MineralKingdomApi.Repositories
             _context.Auctions.Update(auction);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<Auction>> GetFinishedAndUnnotifiedAuctionsAsync()
+        {
+            var now = DateTime.UtcNow;
+            return await _context.Auctions
+                .Include(a => a.AuctionStatus)
+                .Include(a => a.Mineral)
+                .Include(a => a.Bids)
+                .Where(a => a.EndTime < now && !a.IsWinnerNotified)
+                .ToListAsync();
+        }
+
     }
 }     
    

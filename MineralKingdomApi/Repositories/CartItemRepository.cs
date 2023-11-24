@@ -50,6 +50,12 @@ namespace MineralKingdomApi.Repositories
                 cartItem.ShoppingCartId = cartId;
                 cartItem.MineralId = cartItemDTO.MineralId;
                 cartItem.Mineral = await _mineralRepository.GetMineralByIdAsync(cartItemDTO.MineralId);
+
+                if (cartItem.Mineral.IsAuctionItem)
+                {
+                    // Check if the auction winner has been notified
+                }
+
                 _logger.LogInformation($"context.CartItems: " + _context.CartItems);
                 _context.CartItems.Add(cartItem);
                 await _context.SaveChangesAsync();

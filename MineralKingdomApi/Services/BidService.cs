@@ -8,10 +8,12 @@ using MineralKingdomApi.Services;
 public class BidService : IBidService
 {
     private readonly IBidRepository _bidRepository;
+    private readonly IAuctionRepository _auctionRepository;
 
-    public BidService(IBidRepository bidRepository)
+    public BidService(IBidRepository bidRepository, IAuctionRepository auctionRepository)
     {
         _bidRepository = bidRepository;
+        _auctionRepository = auctionRepository;
     }
 
     public async Task<IEnumerable<BidDTO>> GetAllBidsAsync()
@@ -45,6 +47,18 @@ public class BidService : IBidService
 
     public async Task CreateBidAsync(CreateBidDTO bidDto)
     {
+        var auction = await _auctionRepository.GetAuctionByIdAsync(bidDto.AuctionId);
+        if (auction == null) throw new Exception("Auction not found");
+
+        var currentTime = DateTime.UtcNow;
+        var timeLeft = auction.EndTime - currentTime;
+
+        if (timeLeft <= TimeSpan.FromMinutes(5))
+        {
+            auction.EndTime = currentTime.AddMinutes(5);
+            await _auctionRepository.UpdateAuctionAsync(auction);
+        }
+
         var bid = new Bid
         {
             Amount = bidDto.Amount,

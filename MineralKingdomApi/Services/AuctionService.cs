@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Net;
+using System.Net.Mail;
 using MineralKingdomApi.DTOs.AuctionDTOs;
 using MineralKingdomApi.DTOs.AuctionDTOs.YourNamespace.Models;
+using MineralKingdomApi.DTOs.ShoppingCartDTOs;
 using MineralKingdomApi.Models;
 using MineralKingdomApi.Repositories;
 
@@ -9,10 +12,16 @@ namespace MineralKingdomApi.Services
     public class AuctionService : IAuctionService
     {
         private readonly IAuctionRepository _auctionRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly ICartItemRepository _cartItemRepository;
+        private readonly IShoppingCartRepository _shoppingCartRepository;
 
-        public AuctionService(IAuctionRepository auctionRepository)
+        public AuctionService(IAuctionRepository auctionRepository, IUserRepository userRepository, ICartItemRepository cartItemRepository, IShoppingCartRepository shoppingCartRepository)
         {
             _auctionRepository = auctionRepository;
+            _userRepository = userRepository;
+            _cartItemRepository = cartItemRepository;
+            _shoppingCartRepository = shoppingCartRepository;
         }
 
         public async Task<IEnumerable<AuctionResponseDTO>> GetAllAuctionsAsync()
@@ -86,8 +95,78 @@ namespace MineralKingdomApi.Services
 
         public async Task<BidResult> GetWinningBidForCompletedAuction(int auctionId)
         {
-            return await _auctionRepository.GetWinningBidForCompletedAuction(auctionId);
+            var bidResult = await _auctionRepository.GetWinningBidForCompletedAuction(auctionId);
+            bool bidResultIsSuccess = bidResult.IsSuccess;
+            var auction = await _auctionRepository.GetAuctionByIdAsync(auctionId);
+            bool auctionWinnerNotified = auction.IsWinnerNotified;
+
+            if (bidResultIsSuccess && !auctionWinnerNotified)
+            {
+                // get user here by userID and so we can send that user to NotifyWinner
+                decimal newPrice = bidResult.WinningBid.Amount;
+                auction.Mineral.Price = newPrice;
+                var userId = bidResult.WinningBid.UserId;
+                var user = await _userRepository.GetUserByIdAsync(userId);
+                await NotifyWinner(userId, auction);
+                auction.IsWinnerNotified = true;
+                await _auctionRepository.UpdateAuctionAsync(auction);
+                var cart = await _shoppingCartRepository.GetCartWithItemsByUserIdAsync(userId);
+                var cartId = cart.Id;
+                var mineralId = (int)auction?.MineralId;
+                CartItemDTO cartItemDTO = new CartItemDTO
+                {
+                    Id = cartId,
+                    MineralId = mineralId,
+                };
+                await _cartItemRepository.CreateCartItemAsync(userId, cartItemDTO, cartId);
+            }
+            bidResult.WinningBid.Auction = null;
+            return bidResult;
         }
+
+        public async Task NotifyWinner(int winnerUserId, Auction auction)
+        {
+            var user = await _userRepository.GetUserByIdAsync(winnerUserId);
+            User newUser = new User
+            {
+                Id = user.Id,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+            };
+            string auctionLink = $"https://localhost:8080/home";
+            var fromAddress = new MailAddress("noreply@yourwebsite.com", "Your Website Name");
+            var toAddress = new MailAddress(newUser.Email, newUser.FirstName + " " + newUser.LastName);
+            const string subject = "Congratulations! You've won an auction";
+            string body = $"Dear {newUser.FirstName},\n\n" +
+                          $"Congratulations! You have won the auction for '{auction.Title}'.\n" +
+                          $"Please login to view the auction details and complete your purchase: {auctionLink}\n\n" +
+                          $"Best regards,\n" +
+                          $"Your Website Team";
+
+            var mailtrapUsername = Environment.GetEnvironmentVariable("MAILTRAP_USERNAME");
+            var mailtrapPassword = Environment.GetEnvironmentVariable("MAILTRAP_PASSWORD");
+
+            var smtp = new SmtpClient
+            {
+                Host = "smtp.mailtrap.io", // SMTP Host from MailTrap
+                Port = 587, // SMTP Port from MailTrap
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(mailtrapUsername, mailtrapPassword)
+
+            };
+            using (var message = new MailMessage(fromAddress, toAddress)
+            {
+                Subject = subject,
+                Body = body
+            })
+            {
+                await smtp.SendMailAsync(message);
+            }
+        }
+
 
         public async Task<BidResult> GetCurrentWinningBidForAuction(int auctionId)
         {
