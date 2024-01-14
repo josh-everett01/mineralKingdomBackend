@@ -14,12 +14,14 @@ namespace MineralKingdomApi.Controllers
         private readonly IMineralRepository _mineralRepository;
         private readonly IUserRepository _userRepository;
         private readonly IPaymentService _paymentService;
+        private readonly IAuctionRepository _auctionRepository;
 
-        public CheckoutController(IMineralRepository mineralRepository, IUserRepository userRepository, IPaymentService paymentService)
+        public CheckoutController(IMineralRepository mineralRepository, IUserRepository userRepository, IPaymentService paymentService, IAuctionRepository auctionRepository)
         {
             _mineralRepository = mineralRepository;
             _userRepository = userRepository;
             _paymentService = paymentService;
+            _auctionRepository = auctionRepository;
         }
 
         [HttpPost]
@@ -41,6 +43,25 @@ namespace MineralKingdomApi.Controllers
             // Store initial payment details with orderId for each line item
             foreach (var item in request.LineItems)
             {
+                var mineral = await _mineralRepository.GetMineralByIdAsync(item.MineralId);
+                if (mineral == null)
+                {
+                    return NotFound($"Mineral with ID {item.MineralId} not found.");
+                }
+
+                if (mineral.IsAuctionItem)
+                {
+                    var auctions = await _auctionRepository.GetAuctionsForMineralAsync(mineral.Id);
+                    var auctionToGetPriceFrom = auctions.FirstOrDefault();
+                    var winningBid = await _auctionRepository.GetWinningBidForCompletedAuction(auctionToGetPriceFrom.Id);
+                    if (winningBid != null)
+                    {
+                        // Update the price with the winning bid amount
+                        item.Price = winningBid.WinningBid.Amount;
+                    }
+                }
+
+
                 var paymentDetailsDto = new PaymentDetailsDto
                 {
                     // Assign values from item and user

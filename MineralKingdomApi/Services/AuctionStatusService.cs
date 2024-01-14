@@ -56,11 +56,9 @@ namespace MineralKingdomApi.Services
         {
             return new AuctionStatusResponseDTO
             {
-                Id = auctionStatus.Id ?? 0,  // Handling null, adjust as per your use case
+                Id = auctionStatus.Id ?? 0,
                 Status = auctionStatus.Status,
                 DetailedStatus = auctionStatus.DetailedStatus
-
-                // Map other properties as needed
             };
         }
 

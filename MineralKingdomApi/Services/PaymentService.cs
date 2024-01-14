@@ -1,9 +1,15 @@
 ﻿using System;
+using System.Net;
+using System.Net.Mail;
 using Microsoft.EntityFrameworkCore;
 using MineralKingdomApi.Data;
 using MineralKingdomApi.Data.Models;
 using MineralKingdomApi.DTOs.PaymentDTOs;
+using MineralKingdomApi.Models;
 using MineralKingdomApi.Repositories;
+using Stripe;
+using Stripe.BillingPortal;
+using Stripe.Checkout;
 
 namespace MineralKingdomApi.Services
 {
@@ -211,6 +217,73 @@ namespace MineralKingdomApi.Services
 
             await _mineralKingdomContext.SaveChangesAsync();
             return true;
+        }
+        // await _paymentService.SendInvoiceEmail(user, session.Id, paymentDetailsDto.Amount, paymentDetailsDto);
+        public async Task SendInvoiceEmail(User user, string sessionId, decimal totalAmount, PaymentDetailsDto pmntDetailsDto)
+        {
+            var paymentDetailsList = await _paymentDetailsRepository.GetPaymentDetailsBySessionIdAsync(sessionId);
+            if (paymentDetailsList == null)
+            {
+                _logger.LogWarning("No PaymentDetails found for SessionId: {SessionId}", sessionId);
+                return;
+            }
+
+            var fromAddress = new MailAddress("admin@mineralkingdom.com", "Mineral Kingdom Shop and Auction House");
+            var toAddress = new MailAddress(user.Email, user.FirstName + " " + user.LastName);
+            const string subject = "Confirmation of your recent purchase";
+            string emailBody = $"Dear {user.FirstName},\n\n" +
+                               $"Thank you for your purchase. Here is your invoice:\n\n";
+            var lineItems = await GetLineItemsFromStripeSession(sessionId);
+            foreach (var paymentDetail in lineItems)
+            {
+                var lineItem = paymentDetail;
+                
+                emailBody += $"{lineItem.Description}: {lineItem.Description} - {lineItem.Quantity} = ${lineItem.AmountTotal}\n";
+            }
+
+            emailBody += $"\nTotal Amount: ${totalAmount}\n\n" +
+                         $"Best regards,\n" +
+                         $"Mineral Kingdom Team";
+
+            var mailtrapUsername = Environment.GetEnvironmentVariable("MAILTRAP_USERNAME");
+            var mailtrapPassword = Environment.GetEnvironmentVariable("MAILTRAP_PASSWORD");
+
+            var smtp = new SmtpClient
+            {
+                Host = "smtp.mailtrap.io", // SMTP Host from MailTrap
+                Port = 587, // SMTP Port from MailTrap
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(mailtrapUsername, mailtrapPassword)
+
+            };
+            using (var message = new MailMessage(fromAddress, toAddress)
+            {
+                Subject = subject,
+                Body = emailBody
+            })
+            {
+                await smtp.SendMailAsync(message);
+            }
+        }
+
+        public async Task<List<Stripe.LineItem>> GetLineItemsFromStripeSession(string sessionId)
+        {
+            var service = new Stripe.Checkout.SessionService();
+            var session = await service.GetAsync(sessionId, new SessionGetOptions
+            {
+                Expand = new List<string> { "line_items" }
+            });
+
+            var lineItems = session.LineItems.Data.Select(li => new Stripe.LineItem
+            {
+                Description = li.Description,
+                Quantity = li.Quantity ?? 0,
+                AmountSubtotal = li.AmountSubtotal
+            }).ToList();
+
+            return lineItems;
         }
 
 

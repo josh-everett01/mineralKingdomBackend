@@ -46,10 +46,10 @@ public class BidService : IBidService
     }
 
     public async Task CreateBidAsync(CreateBidDTO bidDto)
-    {
+    {   
         var auction = await _auctionRepository.GetAuctionByIdAsync(bidDto.AuctionId);
         if (auction == null) throw new Exception("Auction not found");
-
+        if (bidDto.Amount < auction.StartingPrice) throw new Exception("Bid must be more than starting price"); 
         var currentTime = DateTime.UtcNow;
         var timeLeft = auction.EndTime - currentTime;
 
