@@ -25,7 +25,7 @@ namespace MineralKingdomApi.Services
         {
             _logger.LogInformation("Auction Notification Service starting.");
             _timer = new Timer(DoWork, null, TimeSpan.Zero,
-                TimeSpan.FromHours(1)); // Adjust the interval as needed
+                TimeSpan.FromMinutes(10)); // Adjust the interval as needed
 
             return Task.CompletedTask;
         }

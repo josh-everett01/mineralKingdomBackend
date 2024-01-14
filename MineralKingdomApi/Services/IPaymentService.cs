@@ -1,5 +1,6 @@
 ﻿using System;
 using MineralKingdomApi.DTOs.PaymentDTOs;
+using MineralKingdomApi.Models;
 
 namespace MineralKingdomApi.Services
 {
@@ -17,6 +18,7 @@ namespace MineralKingdomApi.Services
         Task<IEnumerable<PaymentDetailsDto>> GetPaymentDetailsByOrderIdAsync(string orderId);
         Task<IEnumerable<PaymentDetailsDto>> GetPaymentDetailsByMineralIdAsync(int mineralId);
         Task<bool> CancelPayment(string orderId);
+        Task SendInvoiceEmail(User user, string sessionId, decimal totalAmount, PaymentDetailsDto pmntDetailsDto);
 
     }
 

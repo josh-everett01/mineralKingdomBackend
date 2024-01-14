@@ -102,6 +102,10 @@ namespace MineralKingdomApi.Controllers
                             _logger.LogInformation("Mineral status updated to Sold for MineralId: " + paymentDetailsDto.Id);
 
                             var userId = paymentDetailsDto.CustomerId;
+                            int intdUserId = Int32.Parse(userId);
+                            //User thsuser = await _userRepository.GetUserByIdAsync(intdUserId);
+                            //await _paymentService.SendInvoiceEmail(thsuser, session.Id, paymentDetailsDto.Amount, paymentDetailsDto);
+
                             var userCart = await _shoppingCartRepository.GetCartWithItemsByUserIdAsync(int.Parse(userId));
                             if (userCart != null)
                             {
@@ -117,7 +121,9 @@ namespace MineralKingdomApi.Controllers
                             _logger.LogWarning("Payment was not successful for MineralId: " + paymentDetailsDto.Id + ". Status: " + paymentIntent.Status);
                         }
                     }
-
+                    PaymentDetailsDto pmntDetailsDTO = paymentDetailsDtos.Last();
+                    User user = await _userRepository.GetUserByIdAsync(Int32.Parse(pmntDetailsDTO.CustomerId));
+                    await _paymentService.SendInvoiceEmail(user, session.Id, (decimal)session.AmountTotal, pmntDetailsDTO);
                     // Update the payment details status after processing all entries
                     await _paymentService.UpdatePaymentDetailsStatusAsync(session.PaymentIntentId, paymentIntent.Status);
                 }

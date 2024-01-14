@@ -15,13 +15,15 @@ namespace MineralKingdomApi.Services
         private readonly IUserRepository _userRepository;
         private readonly ICartItemRepository _cartItemRepository;
         private readonly IShoppingCartRepository _shoppingCartRepository;
+        private readonly IMineralRepository _mineralRepository;
 
-        public AuctionService(IAuctionRepository auctionRepository, IUserRepository userRepository, ICartItemRepository cartItemRepository, IShoppingCartRepository shoppingCartRepository)
+        public AuctionService(IAuctionRepository auctionRepository, IUserRepository userRepository, ICartItemRepository cartItemRepository, IShoppingCartRepository shoppingCartRepository, IMineralRepository mineralRepository)
         {
             _auctionRepository = auctionRepository;
             _userRepository = userRepository;
             _cartItemRepository = cartItemRepository;
             _shoppingCartRepository = shoppingCartRepository;
+            _mineralRepository = mineralRepository;
         }
 
         public async Task<IEnumerable<AuctionResponseDTO>> GetAllAuctionsAsync()
@@ -104,9 +106,13 @@ namespace MineralKingdomApi.Services
             {
                 // get user here by userID and so we can send that user to NotifyWinner
                 decimal newPrice = bidResult.WinningBid.Amount;
+                Mineral mineralToBeBought = await _mineralRepository.GetMineralByIdAsync((int)auction?.MineralId);
+                mineralToBeBought.Price = newPrice;
+                await _mineralRepository.UpdateMineralAsync(mineralToBeBought);
                 auction.Mineral.Price = newPrice;
                 var userId = bidResult.WinningBid.UserId;
                 var user = await _userRepository.GetUserByIdAsync(userId);
+                
                 await NotifyWinner(userId, auction);
                 auction.IsWinnerNotified = true;
                 await _auctionRepository.UpdateAuctionAsync(auction);
