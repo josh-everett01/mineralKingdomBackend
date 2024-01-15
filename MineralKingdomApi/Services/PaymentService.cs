@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Mail;
 using Microsoft.EntityFrameworkCore;
 using MineralKingdomApi.Data;
@@ -7,9 +6,14 @@ using MineralKingdomApi.Data.Models;
 using MineralKingdomApi.DTOs.PaymentDTOs;
 using MineralKingdomApi.Models;
 using MineralKingdomApi.Repositories;
-using Stripe;
-using Stripe.BillingPortal;
 using Stripe.Checkout;
+using System.Reflection.Metadata;
+using iText.Layout;
+using iText.Kernel.Pdf;
+using iText.Layout.Element;
+using iText.Kernel.Colors;
+using iText.Layout.Properties;
+
 
 namespace MineralKingdomApi.Services
 {
@@ -233,17 +237,46 @@ namespace MineralKingdomApi.Services
             const string subject = "Confirmation of your recent purchase";
             string emailBody = $"Dear {user.FirstName},\n\n" +
                                $"Thank you for your purchase. Here is your invoice:\n\n";
+
+            // Create HTML version of the message
+            string htmlEmailBody = "<html><body style='font-family: Arial, sans-serif; color: #333;'>";
+            htmlEmailBody += "<header><h1 style='color: #007bff;'>Mineral Kingdom Store and Auction House</h1></header>"; // Header with blue color
+            htmlEmailBody += $"<p>Dear {user.FirstName},</p>";
+            htmlEmailBody += "<p style='color: #555;'>Thank you for your purchase. Here is your order: </p>"; // Gray color
+            htmlEmailBody += "<ul>";
+
             var lineItems = await GetLineItemsFromStripeSession(sessionId);
+
+            // Generate PDF Invoice
+            // Generate PDF Invoice
+            string tempFilePath = Path.GetTempFileName() + "-MineralKingdomInvoice.pdf";
+            CreateInvoicePdf(lineItems, totalAmount, tempFilePath);
+
+            CreateInvoicePdf(lineItems, totalAmount, tempFilePath);
+
             foreach (var paymentDetail in lineItems)
             {
                 var lineItem = paymentDetail;
-                
-                emailBody += $"{lineItem.Description}: {lineItem.Description} - {lineItem.Quantity} = ${lineItem.AmountTotal}\n";
+
+                //emailBody += $"{lineItem.Description}: {lineItem.Description} - {lineItem.Quantity} = ${lineItem.AmountSubtotal}\n";
+                string formattedLineItemAmount = (lineItem.AmountSubtotal / 100m).ToString("N2");
+                string formattedOutput = $"{lineItem.Description} - {lineItem.Quantity} = ${formattedLineItemAmount}\n";
+                emailBody += formattedOutput;
+
+                htmlEmailBody += $"<li>{lineItem.Description} - {lineItem.Quantity} = ${formattedLineItemAmount}</li><br>";
             }
 
-            emailBody += $"\nTotal Amount: ${totalAmount}\n\n" +
-                         $"Best regards,\n" +
+            // Convert totalAmount from cents to dollars and format
+            string formattedTotalAmount = (totalAmount / 100m).ToString("N2");
+
+            emailBody += $"\nTotal Amount: ${formattedTotalAmount}\n\n" +
+                         $"Best regards,\n\n" +
                          $"Mineral Kingdom Team";
+
+            htmlEmailBody += "</ul>";
+            htmlEmailBody += $"<footer><p style='color: #007bff;'>Total Amount: ${formattedTotalAmount}</p></footer>"; // Footer with blue color
+            htmlEmailBody += "<p style='color: #555;'>Please see your itemized invoice attached.</p><p style='color: #007bff;'>Best regards,<br>Mineral Kingdom Team</p>"; // Gray and blue colors
+            htmlEmailBody += "</body></html>";
 
             var mailtrapUsername = Environment.GetEnvironmentVariable("MAILTRAP_USERNAME");
             var mailtrapPassword = Environment.GetEnvironmentVariable("MAILTRAP_PASSWORD");
@@ -261,11 +294,18 @@ namespace MineralKingdomApi.Services
             using (var message = new MailMessage(fromAddress, toAddress)
             {
                 Subject = subject,
-                Body = emailBody
+                Body = htmlEmailBody,
+                IsBodyHtml = true
             })
             {
+                Attachment pdfAttachment = new Attachment(tempFilePath);
+                message.Attachments.Add(pdfAttachment);
+
                 await smtp.SendMailAsync(message);
             }
+
+            // Optionally, delete the temp file if you no longer need it
+            File.Delete(tempFilePath);
         }
 
         public async Task<List<Stripe.LineItem>> GetLineItemsFromStripeSession(string sessionId)
@@ -284,6 +324,41 @@ namespace MineralKingdomApi.Services
             }).ToList();
 
             return lineItems;
+        }
+
+        public void CreateInvoicePdf(List<Stripe.LineItem> lineItems, decimal totalAmount, string filePath)
+        {
+            PdfWriter writer = new PdfWriter(filePath);
+            PdfDocument pdf = new PdfDocument(writer);
+            iText.Layout.Document document = new iText.Layout.Document(pdf);
+
+            string headerContent = "Mineral Kingdom Store and Auction House\n\n";
+            Paragraph headerParagraph = new Paragraph(headerContent).SetFontColor(ColorConstants.BLUE);
+            document.Add(headerParagraph);
+
+            // Table to display line items
+            Table table = new Table(new float[] { 3, 2, 2 }); // Adjust column widths as needed
+            table.AddHeaderCell("Description");
+            table.AddHeaderCell("Quantity");
+            table.AddHeaderCell("Amount");
+
+            foreach (var item in lineItems)
+            {
+                string formattedLineItemAmount = (item.AmountSubtotal / 100m).ToString("N2");
+                table.AddCell(item.Description);
+                table.AddCell(item.Quantity.ToString());
+                table.AddCell("$" + formattedLineItemAmount);
+            }
+
+            // Total Amount
+            string formattedTotalAmount = (totalAmount / 100m).ToString("N2");
+            document.Add(new Paragraph("\nYour Mineral Kingdom Invoice").SetTextAlignment(TextAlignment.CENTER));
+            document.Add(table);
+            document.Add(new Paragraph("\nTotal Amount: $" + formattedTotalAmount)
+                .SetFontColor(ColorConstants.BLUE)
+                .SetTextAlignment(TextAlignment.RIGHT));
+
+            document.Close();
         }
 
 
