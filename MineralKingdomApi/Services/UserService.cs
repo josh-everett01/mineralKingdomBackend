@@ -415,7 +415,13 @@ namespace MineralKingdomApi.Services
                 Email = user.Email,
                 Username = user.Username,
                 UserRole = user.UserRole,
-                RegisteredAt = user.RegisteredAt
+                RegisteredAt = user.RegisteredAt,
+                // Include address properties
+                StreetAddress = user.StreetAddress,
+                City = user.City,
+                State = user.State,
+                ZipCode = user.ZipCode,
+                Country = user.Country
                 // Map other properties as needed
             };
         }
