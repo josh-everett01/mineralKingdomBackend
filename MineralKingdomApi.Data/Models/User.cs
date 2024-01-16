@@ -78,6 +78,8 @@ namespace MineralKingdomApi.Models
         // Refresh token for Login / JWTService
         public string? RefreshToken { get; set; }
         public DateTime? RefreshTokenExpiryTime { get; set; }
+
+        public bool IsAddressVerified { get; set; } = false;
     }
 
 }
