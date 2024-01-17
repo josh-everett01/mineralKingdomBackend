@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MineralKingdomApi.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MineralKingdomApi.Data.Migrations
 {
     [DbContext(typeof(MineralKingdomContext))]
-    partial class MineralKingdomContextModelSnapshot : ModelSnapshot
+    [Migration("20240116183549_updatePaymentDetails")]
+    partial class updatePaymentDetails
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -285,36 +288,6 @@ namespace MineralKingdomApi.Data.Migrations
                     b.ToTable("PaymentDetails");
                 });
 
-            modelBuilder.Entity("MineralKingdomApi.Models.AdminResponse", b =>
-                {
-                    b.Property<int>("ResponseId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ResponseId"));
-
-                    b.Property<int>("AdminId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("InquiryId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("ResponseMessage")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("ResponseId");
-
-                    b.HasIndex("AdminId");
-
-                    b.HasIndex("InquiryId");
-
-                    b.ToTable("AdminResponse");
-                });
-
             modelBuilder.Entity("MineralKingdomApi.Models.Auction", b =>
                 {
                     b.Property<int>("Id")
@@ -431,49 +404,6 @@ namespace MineralKingdomApi.Data.Migrations
                     b.HasIndex("ShoppingCartId");
 
                     b.ToTable("CartItems");
-                });
-
-            modelBuilder.Entity("MineralKingdomApi.Models.CustomerInquiry", b =>
-                {
-                    b.Property<int>("InquiryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("InquiryId"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("InquiryId");
-
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("CustomerInquiry");
                 });
 
             modelBuilder.Entity("MineralKingdomApi.Models.Mineral", b =>
@@ -702,25 +632,6 @@ namespace MineralKingdomApi.Data.Migrations
                     b.Navigation("Mineral");
                 });
 
-            modelBuilder.Entity("MineralKingdomApi.Models.AdminResponse", b =>
-                {
-                    b.HasOne("MineralKingdomApi.Models.User", "Admin")
-                        .WithMany()
-                        .HasForeignKey("AdminId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MineralKingdomApi.Models.CustomerInquiry", "CustomerInquiry")
-                        .WithMany()
-                        .HasForeignKey("InquiryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Admin");
-
-                    b.Navigation("CustomerInquiry");
-                });
-
             modelBuilder.Entity("MineralKingdomApi.Models.Auction", b =>
                 {
                     b.HasOne("MineralKingdomApi.Models.AuctionStatus", "AuctionStatus")
@@ -772,17 +683,6 @@ namespace MineralKingdomApi.Data.Migrations
                     b.Navigation("Mineral");
 
                     b.Navigation("ShoppingCart");
-                });
-
-            modelBuilder.Entity("MineralKingdomApi.Models.CustomerInquiry", b =>
-                {
-                    b.HasOne("MineralKingdomApi.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MineralKingdomApi.Models.ShoppingCart", b =>

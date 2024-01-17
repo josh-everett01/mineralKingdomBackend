@@ -124,6 +124,10 @@ builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
 builder.Services.AddScoped<IPaymentDetailsRepository, PaymentDetailsRepository>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 
+// Correspondence
+builder.Services.AddScoped<ICorrespondenceRepository, CorrespondenceRepository>();
+builder.Services.AddScoped<ICorrespondenceService, CorrespondenceService>();
+
 // Configure CORS
 builder.Services.AddCors(options =>
 {

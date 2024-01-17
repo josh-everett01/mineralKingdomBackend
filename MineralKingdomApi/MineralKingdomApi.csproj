@@ -58,6 +58,7 @@
     <None Remove="DTOs\BidDTOs\" />
     <None Remove="DTOs\ShoppingCartDTOs\" />
     <None Remove="DTOs\PaymentDTOs\" />
+    <None Remove="DTOs\CorrespondenceDTOs\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
@@ -72,5 +73,6 @@
     <Folder Include="DTOs\BidDTOs\" />
     <Folder Include="DTOs\ShoppingCartDTOs\" />
     <Folder Include="DTOs\PaymentDTOs\" />
+    <Folder Include="DTOs\CorrespondenceDTOs\" />
   </ItemGroup>
 </Project>

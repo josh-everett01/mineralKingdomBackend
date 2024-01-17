@@ -19,7 +19,7 @@ namespace MineralKingdomApi.Services
         Task<IEnumerable<PaymentDetailsDto>> GetPaymentDetailsByMineralIdAsync(int mineralId);
         Task<bool> CancelPayment(string orderId);
         Task SendInvoiceEmail(User user, string sessionId, decimal totalAmount, PaymentDetailsDto pmntDetailsDto);
-
+        Task<IEnumerable<PaymentDetailsDto>> GetAllPaymentDetailsByUser(int userId);
     }
 
 }
