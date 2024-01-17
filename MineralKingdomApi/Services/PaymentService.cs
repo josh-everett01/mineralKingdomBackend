@@ -54,7 +54,7 @@ namespace MineralKingdomApi.Services
 
         public async Task UpdatePaymentDetailsAsync(PaymentDetailsDto paymentDetailsDto)
         {
-            await _paymentDetailsRepository.UpdatePaymentDetailsAsync(paymentDetailsDto.CheckoutSessionId, paymentDetailsDto.TransactionId, paymentDetailsDto.Status);
+            await _paymentDetailsRepository.UpdatePaymentDetailsAsync(paymentDetailsDto.CheckoutSessionId, paymentDetailsDto.TransactionId, paymentDetailsDto.Status, paymentDetailsDto.OrderId);
         }
 
         public async Task UpdateTransactionIdAsync(string checkoutSessionId, string transactionId)
@@ -85,6 +85,7 @@ namespace MineralKingdomApi.Services
                 CustomerId = dto.CustomerId,
                 CreatedAt = dto.CreatedAt,
                 CheckoutSessionId = dto.CheckoutSessionId,
+                OrderId = dto.OrderId,
             };
         }
 
@@ -102,6 +103,7 @@ namespace MineralKingdomApi.Services
                 CustomerId = entity.CustomerId,
                 CreatedAt = entity.CreatedAt,
                 CheckoutSessionId = entity.CheckoutSessionId,
+                OrderId = entity.OrderId,
             };
         }
 
@@ -360,6 +362,42 @@ namespace MineralKingdomApi.Services
 
             document.Close();
         }
+
+        public async Task<IEnumerable<PaymentDetailsDto>> GetAllPaymentDetailsByUser(int userId)
+        {
+            try
+            {
+                // Check if the user exists
+                var userExists = await _mineralKingdomContext.Users.AnyAsync(u => u.Id == userId);
+                if (!userExists)
+                {
+                    _logger.LogWarning($"User not found for UserId: {userId}");
+                    return Enumerable.Empty<PaymentDetailsDto>(); // Or throw an exception if that's more appropriate
+                }
+
+                // Query the PaymentDetails table for entries matching the given userId
+                var paymentDetailsList = await _mineralKingdomContext.PaymentDetails
+                    .Where(pd => pd.CustomerId == userId.ToString())
+                    .ToListAsync();
+
+                if (!paymentDetailsList.Any())
+                {
+                    _logger.LogWarning($"No PaymentDetails found for UserId: {userId}");
+                    return Enumerable.Empty<PaymentDetailsDto>();
+                }
+
+                // Map the PaymentDetails entities to PaymentDetailsDto objects
+                var paymentDetailsDtos = paymentDetailsList.Select(pd => MapToPaymentDetailsDto(pd)).ToList();
+
+                return paymentDetailsDtos;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"An error occurred while retrieving payment details for UserId: {userId}. Error: {ex.Message}");
+                throw; // Re-throw the exception to handle it further up the call stack or log it as needed
+            }
+        }
+
 
 
     }

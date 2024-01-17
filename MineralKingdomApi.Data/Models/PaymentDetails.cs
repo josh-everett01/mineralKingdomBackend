@@ -42,6 +42,9 @@ namespace MineralKingdomApi.Data.Models
 
         public string? CheckoutSessionId { get; set; }
 
+        [MaxLength(100)]
+        public string? OrderId { get; set; }
+
     }
 
 }

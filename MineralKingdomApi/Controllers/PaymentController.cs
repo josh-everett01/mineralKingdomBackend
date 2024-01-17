@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using MineralKingdomApi.DTOs.PaymentDTOs;
 using MineralKingdomApi.Repositories;
 using MineralKingdomApi.Services;
@@ -15,13 +16,15 @@ namespace MineralKingdomApi.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IPaymentService _paymentService;
         private readonly IAuctionRepository _auctionRepository;
+        private readonly ILogger<CheckoutController> _logger;
 
-        public CheckoutController(IMineralRepository mineralRepository, IUserRepository userRepository, IPaymentService paymentService, IAuctionRepository auctionRepository)
+        public CheckoutController(IMineralRepository mineralRepository, IUserRepository userRepository, IPaymentService paymentService, IAuctionRepository auctionRepository, ILogger<CheckoutController> logger)
         {
             _mineralRepository = mineralRepository;
             _userRepository = userRepository;
             _paymentService = paymentService;
             _auctionRepository = auctionRepository;
+            _logger = logger;
         }
 
         [HttpPost]
@@ -110,6 +113,7 @@ namespace MineralKingdomApi.Controllers
             foreach (var paymentDetails in paymentDetailsList)
             {
                 paymentDetails.CheckoutSessionId = session.Id;
+                paymentDetails.OrderId = orderId;
                 await _paymentService.AddPaymentDetailsAsync(paymentDetails);
             }
 
@@ -136,6 +140,9 @@ namespace MineralKingdomApi.Controllers
             {
                 return NotFound("Mineral or User not found. Ensure that the provided IDs are correct.");
             }
+
+            // Generate a unique order ID
+            var orderId = GenerateOrderId(user.Id);
 
             // 3. Create a Checkout Session for the payment
             var successUrl = $"https://localhost:8080/payment-success/{mineral.Id}";
@@ -180,14 +187,14 @@ namespace MineralKingdomApi.Controllers
                 CreatedAt = DateTime.UtcNow,
                 CheckoutSessionId = session.Id,
                 MineralId = mineral.Id,
-                OrderId = session.Id
+                OrderId = orderId
                 
             };
          
             await _paymentService.AddPaymentDetailsAsync(paymentDetailsDto);
 
             // 5. Return the Checkout Session ID and URL to the client
-            return Ok(new { sessionId = session.Id, url = session.Url });
+            return Ok(new { sessionId = session.Id, url = session.Url, orderId = orderId });
         }
 
         private string GenerateOrderId(int userId)
@@ -234,7 +241,25 @@ namespace MineralKingdomApi.Controllers
             return Ok("Mineral purchase cancelled successfully.");
         }
 
+        [HttpGet("user-payments/{userId}")]
+        public async Task<IActionResult> GetUserPayments(int userId)
+        {
+            try
+            {
+                var paymentDetails = await _paymentService.GetAllPaymentDetailsByUser(userId);
+                if (paymentDetails == null || !paymentDetails.Any())
+                {
+                    return NotFound($"No payment details found for UserId: {userId}");
+                }
 
+                return Ok(paymentDetails);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"An error occurred while retrieving payment details for UserId: {userId}. Error: {ex.Message}");
+                return StatusCode(500, "An internal server error occurred.");
+            }
+        }
 
     }
 }

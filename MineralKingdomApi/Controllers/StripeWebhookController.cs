@@ -92,6 +92,7 @@ namespace MineralKingdomApi.Controllers
                         _logger.LogInformation("Each PaymentDetailsDTO: " + paymentDetailsDto);
                         paymentDetailsDto.TransactionId = session.PaymentIntentId;
                         paymentDetailsDto.Status = paymentIntent.Status;
+                        paymentDetailsDto.OrderId = paymentDetailsDto.OrderId;
                         await _paymentService.UpdatePaymentDetailsAsync(paymentDetailsDto);
 
                         if (paymentIntent.Status == "succeeded")

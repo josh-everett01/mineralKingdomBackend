@@ -29,7 +29,7 @@ namespace MineralKingdomApi.Repositories
             return await _context.PaymentDetails.FirstOrDefaultAsync(pd => pd.TransactionId == transactionId);
         }
 
-        public async Task UpdatePaymentDetailsAsync(string checkoutSessionId, string transactionId, string status)
+        public async Task UpdatePaymentDetailsAsync(string checkoutSessionId, string transactionId, string status, string orderId)
         {
             var paymentDetailsList = await _context.PaymentDetails
                 .Where(pd => pd.CheckoutSessionId == checkoutSessionId)
@@ -41,6 +41,7 @@ namespace MineralKingdomApi.Repositories
                 {
                     paymentDetails.TransactionId = transactionId;
                     paymentDetails.Status = status;
+                    paymentDetails.OrderId = orderId;
                 }
 
                 await _context.SaveChangesAsync();

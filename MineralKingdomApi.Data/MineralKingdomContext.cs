@@ -28,6 +28,8 @@ namespace MineralKingdomApi.Data
         public DbSet<CustomerResponse> CustomerResponses { get; set; }
         public DbSet<LineItem> LineItems { get; set; }
         public DbSet<PaymentDetails> PaymentDetails { get; set; }
+        public DbSet<CustomerInquiry> CustomerInquiry { get; set; }
+        public DbSet<AdminResponse> AdminResponse { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
