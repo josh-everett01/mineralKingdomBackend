@@ -149,7 +149,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowVueApp", builder =>
     {
         builder.WithOrigins("https://mineralkingdomfrontend.onrender.com")
-               .AllowAnyMethod()
+               .AllowAnyHeader()
                .AllowAnyMethod()
                .AllowCredentials();
     });
