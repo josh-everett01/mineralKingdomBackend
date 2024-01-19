@@ -155,12 +155,13 @@ builder.Services.AddScoped<ICorrespondenceService, CorrespondenceService>();
 //    });
 //});
 
+StripeConfiguration.ApiKey = builder.Configuration["STRIPE_API_KEY"];
 
 // Configure user secrets for the development environment
 if (builder.Environment.IsDevelopment())
 {
     builder.Configuration.AddUserSecrets<Program>();
-    StripeConfiguration.ApiKey = builder.Configuration["STRIPE_API_KEY"];
+    
 }
 
 //builder.WebHost.ConfigureKestrel(serverOptions =>
