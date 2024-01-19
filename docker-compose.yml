@@ -16,9 +16,7 @@ services:
       - POSTGRES_CONNECTION_STRING=${POSTGRES_CONNECTION_STRING}
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
-      - "443:443"
-    volumes:
-      - /Users/joshuaeverett/.aspnet/dev-certs/https/aspnetcore-localhost-AF12D97846C148C93C0D0598E2F68AD520AFCFCC.pfx:/https/certificate.pfx
+      - "10000:10000"  # Map port 10000 on the host to port 10000 in the container
     networks:
       - mineralkingdombackend-network
 

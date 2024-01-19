@@ -150,16 +150,23 @@ if (builder.Environment.IsDevelopment())
     StripeConfiguration.ApiKey = builder.Configuration["STRIPE_API_KEY"];
 }
 
+//builder.WebHost.ConfigureKestrel(serverOptions =>
+//{
+//    // Configure Kestrel to use the HTTPS certificate
+//    serverOptions.Listen(IPAddress.Any, 443, listenOptions =>
+//    {
+//        listenOptions.UseHttps("/https/certificate.pfx", ""); // Path to the certificate in the container and the password (empty if no password)
+//    });
+//});
+
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
-    // Configure Kestrel to use the HTTPS certificate
-    serverOptions.Listen(IPAddress.Any, 443, listenOptions =>
-    {
-        listenOptions.UseHttps("/https/certificate.pfx", ""); // Path to the certificate in the container and the password (empty if no password)
-    });
+    // Listen on port 10000 for any IP address (0.0.0.0)
+    serverOptions.Listen(IPAddress.Any, 10000);
 });
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
