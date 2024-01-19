@@ -5,6 +5,8 @@
     <Nullable>enable</Nullable>
     <UserSecretsId>13aa81f0-ba48-45ee-b136-7d27706d24a0</UserSecretsId>
     <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
@@ -59,6 +61,7 @@
     <None Remove="DTOs\ShoppingCartDTOs\" />
     <None Remove="DTOs\PaymentDTOs\" />
     <None Remove="DTOs\CorrespondenceDTOs\" />
+    <None Remove="Dockerfile" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />

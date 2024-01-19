@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "MIVjzM5MpydDNziciDy18IyiNU1UCJ+edBeuWn2SYKgLLF7ucLVqLViH/6BfG2c8aXJAoXLn6o6TG0ZQaOLkaw==",
+  "dgSpecHash": "wJ4iGw9n5V/t0DqOKppQe1+UyUDjll5bn8x6gZL8zm+FtIuzA87IUr8WhgFTD2IaA7U7mJM8ppxVvAxmPt2+oA==",
   "success": true,
-  "projectFilePath": "/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/MineralKingdomApi.csproj",
+  "projectFilePath": "/Users/joshuaeverett/MineralKingdomBackEndDeploy/mineralKingdomBackend/MineralKingdomApi/MineralKingdomApi.csproj",
   "expectedPackageFiles": [
     "/Users/joshuaeverett/.nuget/packages/azure.core/1.25.0/azure.core.1.25.0.nupkg.sha512",
     "/Users/joshuaeverett/.nuget/packages/azure.identity/1.7.0/azure.identity.1.7.0.nupkg.sha512",

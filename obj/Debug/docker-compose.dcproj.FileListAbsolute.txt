@@ -1,0 +1,1 @@
+/Users/joshuaeverett/MineralKingdomBackEndDeploy/mineralKingdomBackend/obj/Debug/docker-compose.dcproj.CoreCompileInputs.cache

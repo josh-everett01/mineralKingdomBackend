@@ -1,8 +1,4 @@
-﻿<Properties StartupConfiguration="{40E8144B-D904-4DF4-9182-CA0DC289B963}|https">
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.ItemProperties.MineralKingdomApi PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+﻿<Properties StartupConfiguration="{BFF3B181-88E1-4105-8B1D-F54C97AE7FBB}|Default">
   <MonoDevelop.Ide.Workbench ActiveDocument="MineralKingdomApi/Services/UserService.cs">
     <Files>
       <File FileName="MineralKingdomApi.Data/Models/CheckoutSessionDetails.cs" />
@@ -108,9 +104,11 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Repositories/ShoppingCartRepository.cs" relfile="MineralKingdomApi/Repositories/ShoppingCartRepository.cs" line="107" column="1" />
-    </BreakpointStore>
+    <Breakpoint file="/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/Repositories/ShoppingCartRepository.cs" relfile="MineralKingdomApi/Repositories/ShoppingCartRepository.cs" line="107" column="1" />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.docker-compose PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
 </Properties>

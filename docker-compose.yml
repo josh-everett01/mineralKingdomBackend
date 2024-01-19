@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  mineralkingdomapi:
+    image: ${DOCKER_REGISTRY-}mineralkingdomapi
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - MAILTRAP_USERNAME=${MAILTRAP_USERNAME}
+      - MAILTRAP_PASSWORD=${MAILTRAP_PASSWORD}
+      - STRIPE_API_KEY=${STRIPE_API_KEY}
+      - STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+      - POSTGRES_CONNECTION_STRING=${POSTGRES_CONNECTION_STRING}
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "443:443"
+    volumes:
+      - /Users/joshuaeverett/.aspnet/dev-certs/https/aspnetcore-localhost-AF12D97846C148C93C0D0598E2F68AD520AFCFCC.pfx:/https/certificate.pfx
+    networks:
+      - mineralkingdombackend-network
+
+networks:
+  mineralkingdombackend-network:
+    driver: bridge

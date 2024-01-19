@@ -1,0 +1,52 @@
+name: dockercompose4935540256608881484
+services:
+  mineralkingdomapi:
+    build:
+      context: /Users/joshuaeverett/MineralKingdomBackEndDeploy/mineralKingdomBackend
+      dockerfile: Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: https://+:443;http://+:80
+      MAILTRAP_PASSWORD: 0442c64a07c2da
+      MAILTRAP_USERNAME: fd90db7dece8fb
+      POSTGRES_CONNECTION_STRING: Host=mineralkingdomdb.c3gxwlxdznas.us-east-1.rds.amazonaws.com;Port=5432;Database=mineralkingdomdb1;Username=madmin;Password=MadminTheAdmin!123;Include Error Detail=true;
+      SECRET_KEY: eHRO9VzR83zyfvrmvIxA609RO2ynQVJlJfNPEQC5u4A=
+      STRIPE_API_KEY: sk_test_51O2IEBInj1wT7rDK71zL5b5AL7S7WIlBRaQfDMoKQXzmqX3UCA5sihbfGm92CfWYRULpO1JPvWWCNjgXNzitAd0M00z4mr4A3g
+      STRIPE_PUBLISHABLE_KEY: pk_test_51O2IEBInj1wT7rDKHwv88OMuPXyxyXUCv6wAc3IuTAlHDErj5q5WSAACnNM2sYQLWJXCP59iPwmRpJxUWOPW9VuP00q553uS1P
+      STRIPE_WEBHOOK_SECRET: whsec_6d6e0f33e19d8a31a6821c0a76b79ac8a5cecf8d2250c1ed5a0da6811d689197
+    image: mineralkingdomapi
+    networks:
+      mineralkingdombackend-network: null
+    ports:
+      - mode: ingress
+        target: 80
+        protocol: tcp
+      - mode: ingress
+        target: 443
+        protocol: tcp
+      - mode: ingress
+        target: 443
+        published: "443"
+        protocol: tcp
+    volumes:
+      - type: bind
+        source: /Users/joshuaeverett/.aspnet/dev-certs/https/aspnetcore-localhost-AF12D97846C148C93C0D0598E2F68AD520AFCFCC.pfx
+        target: /https/certificate.pfx
+        bind:
+          create_host_path: true
+      - type: bind
+        source: /Users/joshuaeverett/.aspnet/https
+        target: /root/.aspnet/https
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: /Users/joshuaeverett/.microsoft/usersecrets
+        target: /root/.microsoft/usersecrets
+        read_only: true
+        bind:
+          create_host_path: true
+networks:
+  mineralkingdombackend-network:
+    name: dockercompose4935540256608881484_mineralkingdombackend-network
+    driver: bridge

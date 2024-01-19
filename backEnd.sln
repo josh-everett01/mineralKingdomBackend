@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MineralKingdomApi", "Minera
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MineralKingdomApi.Data", "MineralKingdomApi.Data\MineralKingdomApi.Data.csproj", "{B4DA28D5-4E66-4668-B4ED-984A5252B4EA}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{BFF3B181-88E1-4105-8B1D-F54C97AE7FBB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{B4DA28D5-4E66-4668-B4ED-984A5252B4EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4DA28D5-4E66-4668-B4ED-984A5252B4EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4DA28D5-4E66-4668-B4ED-984A5252B4EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFF3B181-88E1-4105-8B1D-F54C97AE7FBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFF3B181-88E1-4105-8B1D-F54C97AE7FBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFF3B181-88E1-4105-8B1D-F54C97AE7FBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFF3B181-88E1-4105-8B1D-F54C97AE7FBB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

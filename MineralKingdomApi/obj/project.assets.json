@@ -9405,11 +9405,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/MineralKingdomApi.csproj",
+      "projectUniqueName": "/Users/joshuaeverett/MineralKingdomBackEndDeploy/mineralKingdomBackend/MineralKingdomApi/MineralKingdomApi.csproj",
       "projectName": "MineralKingdomApi",
-      "projectPath": "/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/MineralKingdomApi.csproj",
+      "projectPath": "/Users/joshuaeverett/MineralKingdomBackEndDeploy/mineralKingdomBackend/MineralKingdomApi/MineralKingdomApi.csproj",
       "packagesPath": "/Users/joshuaeverett/.nuget/packages/",
-      "outputPath": "/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi/obj/",
+      "outputPath": "/Users/joshuaeverett/MineralKingdomBackEndDeploy/mineralKingdomBackend/MineralKingdomApi/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/joshuaeverett/.nuget/NuGet/NuGet.Config"
@@ -9424,8 +9424,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi.Data/MineralKingdomApi.Data.csproj": {
-              "projectPath": "/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi.Data/MineralKingdomApi.Data.csproj"
+            "/Users/joshuaeverett/MineralKingdomBackEndDeploy/mineralKingdomBackend/MineralKingdomApi.Data/MineralKingdomApi.Data.csproj": {
+              "projectPath": "/Users/joshuaeverett/MineralKingdomBackEndDeploy/mineralKingdomBackend/MineralKingdomApi.Data/MineralKingdomApi.Data.csproj"
             }
           }
         }

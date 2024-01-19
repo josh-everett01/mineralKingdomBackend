@@ -7627,11 +7627,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi.Data/MineralKingdomApi.Data.csproj",
+      "projectUniqueName": "/Users/joshuaeverett/MineralKingdomBackEndDeploy/mineralKingdomBackend/MineralKingdomApi.Data/MineralKingdomApi.Data.csproj",
       "projectName": "MineralKingdomApi.Data",
-      "projectPath": "/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi.Data/MineralKingdomApi.Data.csproj",
+      "projectPath": "/Users/joshuaeverett/MineralKingdomBackEndDeploy/mineralKingdomBackend/MineralKingdomApi.Data/MineralKingdomApi.Data.csproj",
       "packagesPath": "/Users/joshuaeverett/.nuget/packages/",
-      "outputPath": "/Users/joshuaeverett/workspace/mineralKingdom/backEnd/MineralKingdomApi.Data/obj/",
+      "outputPath": "/Users/joshuaeverett/MineralKingdomBackEndDeploy/mineralKingdomBackend/MineralKingdomApi.Data/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/joshuaeverett/.nuget/NuGet/NuGet.Config"

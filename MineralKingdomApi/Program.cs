@@ -16,6 +16,9 @@ using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json.Serialization;
+using System.Net;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+
 
 DotNetEnv.Env.Load();
 
@@ -146,6 +149,15 @@ if (builder.Environment.IsDevelopment())
     builder.Configuration.AddUserSecrets<Program>();
     StripeConfiguration.ApiKey = builder.Configuration["STRIPE_API_KEY"];
 }
+
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    // Configure Kestrel to use the HTTPS certificate
+    serverOptions.Listen(IPAddress.Any, 443, listenOptions =>
+    {
+        listenOptions.UseHttps("/https/certificate.pfx", ""); // Path to the certificate in the container and the password (empty if no password)
+    });
+});
 
 var app = builder.Build();
 
