@@ -83,13 +83,25 @@ namespace MineralKingdomApi.Services
             var mineral = await _mineralRepository.GetMineralByIdAsync(id);
             if (mineral != null)
             {
+                // Update properties if they are provided in the DTO (not null)
                 mineral.Name = updateMineralDTO.Name ?? mineral.Name;
                 mineral.Description = updateMineralDTO.Description ?? mineral.Description;
-                mineral.Price = updateMineralDTO.Price ?? mineral.Price;  // Should work if Price is decimal?
+                mineral.Price = updateMineralDTO.Price ?? mineral.Price;
                 mineral.Origin = updateMineralDTO.Origin ?? mineral.Origin;
+                mineral.ImageURL = updateMineralDTO.ImageURL ?? mineral.ImageURL;
+
+                // For lists, you might want to replace the entire list or merge it. Here's an example of replacing:
+                mineral.ImageURLs = updateMineralDTO.ImageURLs ?? mineral.ImageURLs;
+
+                mineral.VideoURL = updateMineralDTO.VideoURL ?? mineral.VideoURL;
+                mineral.Status = updateMineralDTO.Status ?? mineral.Status;
+                mineral.IsAuctionItem = updateMineralDTO.IsAuctionItem ?? mineral.IsAuctionItem;
+
+                // Save the updated mineral
                 await _mineralRepository.UpdateMineralAsync(mineral);
             }
         }
+
 
 
         public async Task DeleteMineralAsync(int id)

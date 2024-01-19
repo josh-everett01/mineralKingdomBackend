@@ -83,8 +83,15 @@ namespace MineralKingdomApi.Controllers
                 paymentDetailsList.Add(paymentDetailsDto);
             }
 
+            //var frontendUrl = _configuration.GetValue<string>("FRONTENDURL");
+            //if (string.IsNullOrEmpty(frontendUrl))
+            //{
+            //    throw new InvalidOperationException("Frontend URL is not configured.");
+            //}
+
             var successUrl = $"https://localhost:8080/payment-success/{orderId}";
             var cancelUrl = $"https://localhost:8080/payment-cancelled/{orderId}";
+
             var options = new SessionCreateOptions
             {
                 PaymentMethodTypes = new List<string> { "card" },
