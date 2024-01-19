@@ -150,6 +150,7 @@ builder.Services.AddCors(options =>
     {
         builder.WithOrigins("https://mineralkingdomfrontend.onrender.com")
                .AllowAnyMethod()
+               .AllowAnyMethod()
                .AllowCredentials();
     });
 });
