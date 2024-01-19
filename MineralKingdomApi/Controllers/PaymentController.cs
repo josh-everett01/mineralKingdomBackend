@@ -17,14 +17,16 @@ namespace MineralKingdomApi.Controllers
         private readonly IPaymentService _paymentService;
         private readonly IAuctionRepository _auctionRepository;
         private readonly ILogger<CheckoutController> _logger;
+        private readonly IConfiguration _configuration;
 
-        public CheckoutController(IMineralRepository mineralRepository, IUserRepository userRepository, IPaymentService paymentService, IAuctionRepository auctionRepository, ILogger<CheckoutController> logger)
+        public CheckoutController(IMineralRepository mineralRepository, IUserRepository userRepository, IPaymentService paymentService, IAuctionRepository auctionRepository, ILogger<CheckoutController> logger, IConfiguration configuration)
         {
             _mineralRepository = mineralRepository;
             _userRepository = userRepository;
             _paymentService = paymentService;
             _auctionRepository = auctionRepository;
             _logger = logger;
+            _configuration = configuration;
         }
 
         [HttpPost]
@@ -83,8 +85,15 @@ namespace MineralKingdomApi.Controllers
                 paymentDetailsList.Add(paymentDetailsDto);
             }
 
-            var successUrl = $"https://localhost:8080/payment-success/{orderId}";
-            var cancelUrl = $"https://localhost:8080/payment-cancelled/{orderId}";
+            var frontendUrl = _configuration.GetValue<string>("FRONTENDURL");
+            if (string.IsNullOrEmpty(frontendUrl))
+            {
+                throw new InvalidOperationException("Frontend URL is not configured.");
+            }
+
+            var successUrl = $"{frontendUrl}/payment-success/{orderId}";
+            var cancelUrl = $"{frontendUrl}/payment-cancelled/{orderId}";
+
             var options = new SessionCreateOptions
             {
                 PaymentMethodTypes = new List<string> { "card" },
@@ -144,9 +153,15 @@ namespace MineralKingdomApi.Controllers
             // Generate a unique order ID
             var orderId = GenerateOrderId(user.Id);
 
+            var frontendUrl = _configuration.GetValue<string>("FRONTENDURL");
+            if (string.IsNullOrEmpty(frontendUrl))
+            {
+                throw new InvalidOperationException("Frontend URL is not configured.");
+            }
+
             // 3. Create a Checkout Session for the payment
-            var successUrl = $"https://localhost:8080/payment-success/{mineral.Id}";
-            var cancelUrl = $"https://localhost:8080/payment-cancelled/{mineral.Id}";
+            var successUrl = $"{frontendUrl}/payment-success/{mineral.Id}";
+            var cancelUrl = $"{frontendUrl}/payment-cancelled/{mineral.Id}";
             var options = new SessionCreateOptions
             {
                 PaymentMethodTypes = new List<string> { "card" },

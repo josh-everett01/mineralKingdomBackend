@@ -16,14 +16,16 @@ namespace MineralKingdomApi.Services
         private readonly ICartItemRepository _cartItemRepository;
         private readonly IShoppingCartRepository _shoppingCartRepository;
         private readonly IMineralRepository _mineralRepository;
+        private readonly IConfiguration _configuration;
 
-        public AuctionService(IAuctionRepository auctionRepository, IUserRepository userRepository, ICartItemRepository cartItemRepository, IShoppingCartRepository shoppingCartRepository, IMineralRepository mineralRepository)
+        public AuctionService(IAuctionRepository auctionRepository, IUserRepository userRepository, ICartItemRepository cartItemRepository, IShoppingCartRepository shoppingCartRepository, IMineralRepository mineralRepository, IConfiguration configuration)
         {
             _auctionRepository = auctionRepository;
             _userRepository = userRepository;
             _cartItemRepository = cartItemRepository;
             _shoppingCartRepository = shoppingCartRepository;
             _mineralRepository = mineralRepository;
+            _configuration = configuration;
         }
 
         public async Task<IEnumerable<AuctionResponseDTO>> GetAllAuctionsAsync()
@@ -140,7 +142,14 @@ namespace MineralKingdomApi.Services
                 FirstName = user.FirstName,
                 LastName = user.LastName,
             };
-            string auctionLink = $"https://localhost:8080/home";
+            var frontendUrl = _configuration.GetValue<string>("FRONTENDURL");
+            if (string.IsNullOrEmpty(frontendUrl))
+            {
+                throw new InvalidOperationException("Frontend URL is not configured.");
+            }
+
+            string auctionLink = $"{frontendUrl}/home";
+
             var fromAddress = new MailAddress("noreply@yourwebsite.com", "Your Website Name");
             var toAddress = new MailAddress(newUser.Email, newUser.FirstName + " " + newUser.LastName);
             const string subject = "Congratulations! You've won an auction";

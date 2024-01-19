@@ -19,12 +19,14 @@ namespace MineralKingdomApi.Services
         private readonly IUserRepository _userRepository;
         private readonly IJwtService _jwtService;
         private readonly IShoppingCartService _shoppingCartService;
+        private readonly IConfiguration _configuration;
 
-        public UserService(IUserRepository userRepository, IJwtService jwtService, IShoppingCartService shoppingCartService)
+        public UserService(IUserRepository userRepository, IJwtService jwtService, IShoppingCartService shoppingCartService, IConfiguration configuration)
         {
             _userRepository = userRepository;
             _jwtService = jwtService;
             _shoppingCartService = shoppingCartService;
+            _configuration = configuration;
         }
 
         public async Task<(UserResponseDTO, string, string)> LoginUserAsync(LoginDTO loginDTO)
@@ -315,7 +317,9 @@ namespace MineralKingdomApi.Services
 
         public async Task SendVerificationEmail(User user)
         {
-            string verificationLink = $"https://localhost:8080/verify-email?token={user.VerificationToken}";
+            var frontendUrl = _configuration.GetValue<string>("FRONTENDURL");
+
+            string verificationLink = $"{frontendUrl}/verify-email?token={user.VerificationToken}";
 
             var fromAddress = new MailAddress("josh@testing.com", "MineralKingdom");
             var toAddress = new MailAddress(user.Email, user.FirstName + " " + user.LastName);
