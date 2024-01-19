@@ -144,16 +144,16 @@ builder.Services.AddScoped<ICorrespondenceService, CorrespondenceService>();
 //});
 
 // Configure CORS
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowVueApp", builder =>
-    {
-        builder.WithOrigins("https://mineralkingdomfrontend.onrender.com")
-               .AllowAnyHeader()
-               .AllowAnyMethod()
-               .AllowCredentials();
-    });
-});
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy("AllowVueApp", builder =>
+//    {
+//        builder.WithOrigins("https://mineralkingdomfrontend.onrender.com")
+//               .AllowAnyHeader()
+//               .AllowAnyMethod()
+//               .AllowCredentials();
+//    });
+//});
 
 
 // Configure user secrets for the development environment
@@ -190,7 +190,14 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors("AllowVueApp");
+
+// Apply global CORS policy
+app.UseCors(builder => builder
+    .WithOrigins("https://mineralkingdomfrontend.onrender.com") // Frontend's URL
+    .AllowAnyHeader() // Allows any header
+    .AllowAnyMethod() // Allows any HTTP method
+    .AllowCredentials()); // Allows credentials (such as cookies, authorization headers, etc.)
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
