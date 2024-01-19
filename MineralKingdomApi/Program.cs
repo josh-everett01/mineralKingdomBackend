@@ -132,16 +132,28 @@ builder.Services.AddScoped<ICorrespondenceRepository, CorrespondenceRepository>(
 builder.Services.AddScoped<ICorrespondenceService, CorrespondenceService>();
 
 // Configure CORS
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy("AllowVueApp", builder =>
+//    {
+//        builder.WithOrigins("https://localhost:8080")
+//               .AllowAnyHeader()
+//               .AllowAnyMethod()
+//               .AllowCredentials();
+//    });
+//});
+
+// Configure CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowVueApp", builder =>
     {
-        builder.WithOrigins("https://localhost:8080")
-               .AllowAnyHeader()
+        builder.WithOrigins("https://mineralkingdomfrontend.onrender.com")
                .AllowAnyMethod()
                .AllowCredentials();
     });
 });
+
 
 // Configure user secrets for the development environment
 if (builder.Environment.IsDevelopment())
