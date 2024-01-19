@@ -140,7 +140,15 @@ namespace MineralKingdomApi.Services
                 FirstName = user.FirstName,
                 LastName = user.LastName,
             };
+
+            //var frontendUrl = _configuration.GetValue<string>("FRONTENDURL");
+            //if (string.IsNullOrEmpty(frontendUrl))
+            //{
+            //    throw new InvalidOperationException("Frontend URL is not configured.");
+            //}
+
             string auctionLink = $"https://localhost:8080/home";
+
             var fromAddress = new MailAddress("noreply@yourwebsite.com", "Your Website Name");
             var toAddress = new MailAddress(newUser.Email, newUser.FirstName + " " + newUser.LastName);
             const string subject = "Congratulations! You've won an auction";
