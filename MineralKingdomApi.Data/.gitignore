@@ -1,9 +1,15 @@
+# macOS system files
+.DS_Store
+
 # Ignore compiled output and intermediate build artifacts
 bin/
 obj/
 
-# Visual Studio Code settings
-.vscode/
+# Visual Studio temporary files
+.vs/
+
+# Publish profiles
+**/Properties/PublishProfiles/*
 
 # NuGet packages and cached packages
 packages/
@@ -22,3 +28,10 @@ appsettings.json
 
 # Ignore .env files
 .env
+
+# Binaries and build output
+**/bin/
+**/obj/
+
+# User-specific files
+**/xs/UserPrefs.xml

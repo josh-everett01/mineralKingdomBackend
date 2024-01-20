@@ -59,6 +59,8 @@
     <None Remove="DTOs\ShoppingCartDTOs\" />
     <None Remove="DTOs\PaymentDTOs\" />
     <None Remove="DTOs\CorrespondenceDTOs\" />
+    <None Remove="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Remove="Properties\PublishProfiles\FolderProfile 1.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
