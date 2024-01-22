@@ -1,33 +1,45 @@
 ﻿<Properties StartupConfiguration="{40E8144B-D904-4DF4-9182-CA0DC289B963}|https">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="MineralKingdomApi.Data/.env">
-    <Files>
-      <File FileName="MineralKingdomApi/Program.cs" Line="139" Column="39" />
-      <File FileName="MineralKingdomApi/Services/AuctionService.cs" Line="148" Column="22" />
-      <File FileName="MineralKingdomApi/Controllers/AuctionController.cs" Line="1" Column="1" />
-      <File FileName="MineralKingdomApi/Services/JwtService.cs" Line="13" Column="9" />
-      <File FileName="MineralKingdomApi/Controllers/PaymentController.cs" Line="164" Column="44" />
-      <File FileName="MineralKingdomApi/Services/UserService.cs" Line="322" Column="54" />
-      <File FileName="MineralKingdomApi/Services/AuctionStatusService.cs" Line="1" Column="1" />
-      <File FileName="MineralKingdomApi/Controllers/StripeWebhookController.cs" Line="57" Column="31" />
-      <File FileName="MineralKingdomApi.Data/.env" Line="11" Column="174" />
-      <File FileName="MineralKingdomApi/.env" Line="11" Column="147" />
-    </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="backEnd" selected="True" />
-        </State>
-      </Pad>
-    </Pads>
-  </MonoDevelop.Ide.Workbench>
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.ItemProperties.docker-compose PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/Users/joshuaeverett/MineralKingdomBackEndDeploy/mineralKingdomBackend/MineralKingdomApi/Repositories/ShoppingCartRepository.cs" relfile="MineralKingdomApi/Repositories/ShoppingCartRepository.cs" line="107" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.ItemProperties.docker-compose PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.ItemProperties.MineralKingdomApi PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="MineralKingdomApi/Program.cs">
+    <Files>
+      <File FileName="MineralKingdomApi/Program.cs" Line="186" Column="6" />
+      <File FileName="MineralKingdomApi/Services/AuctionService.cs" />
+      <File FileName="MineralKingdomApi/Controllers/AuctionController.cs" />
+      <File FileName="MineralKingdomApi/Services/JwtService.cs" />
+      <File FileName="MineralKingdomApi/Controllers/PaymentController.cs" />
+      <File FileName="MineralKingdomApi/Services/UserService.cs" />
+      <File FileName="MineralKingdomApi/Services/AuctionStatusService.cs" />
+      <File FileName="MineralKingdomApi/Controllers/StripeWebhookController.cs" />
+      <File FileName="MineralKingdomApi.Data/.env" />
+      <File FileName="MineralKingdomApi/.env" />
+      <File FileName="MineralKingdomApi/DTOs/MineralDTOs/UpdateMineralDTO.cs" />
+      <File FileName="MineralKingdomApi/Services/MineralService.cs" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="backEnd">
+            <Node name="MineralKingdomApi" expanded="True">
+              <Node name="Controllers" expanded="True" />
+              <Node name="DTOs" expanded="True">
+                <Node name="MineralDTOs" expanded="True" />
+              </Node>
+              <Node name="Services" expanded="True" />
+              <Node name="Program.cs" selected="True" />
+            </Node>
+            <Node name="MineralKingdomApi.Data" expanded="True" />
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
 </Properties>

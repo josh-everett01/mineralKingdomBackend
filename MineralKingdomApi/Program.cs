@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.WebSockets;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -131,6 +132,10 @@ builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<ICorrespondenceRepository, CorrespondenceRepository>();
 builder.Services.AddScoped<ICorrespondenceService, CorrespondenceService>();
 
+
+// WebSocketManager
+builder.Services.AddSingleton<AppWebSocketsManager>();
+
 // Configure CORS
 //builder.Services.AddCors(options =>
 //{
@@ -173,6 +178,11 @@ if (builder.Environment.IsDevelopment())
 //    });
 //});
 
+builder.Services.AddWebSockets(options =>
+{
+    options.KeepAliveInterval = TimeSpan.FromSeconds(120); // Set the keep-alive interval (adjust as needed)
+});
+
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
     // Listen on port 10000 for any IP address (0.0.0.0)
@@ -192,6 +202,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// Use WebSockets
+app.UseWebSockets();
+
 // Apply global CORS policy
 app.UseCors(builder => builder
     .WithOrigins("https://mineralkingdomfrontend.onrender.com") // Frontend's URL
@@ -199,8 +212,18 @@ app.UseCors(builder => builder
     .AllowAnyMethod() // Allows any HTTP method
     .AllowCredentials()); // Allows credentials (such as cookies, authorization headers, etc.)
 
+app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseEndpoints(endpoints =>
+{
+    // Map your endpoints
+    endpoints.MapControllers();
+    // ... other endpoint mappings
+});
+
 app.MapControllers();
 
 app.Run();
