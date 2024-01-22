@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.WebSockets;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -128,6 +129,9 @@ builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<ICorrespondenceRepository, CorrespondenceRepository>();
 builder.Services.AddScoped<ICorrespondenceService, CorrespondenceService>();
 
+// WebSocketManager
+builder.Services.AddSingleton<AppWebSocketsManager>();
+
 // Configure CORS
 builder.Services.AddCors(options =>
 {
@@ -147,7 +151,16 @@ if (builder.Environment.IsDevelopment())
     StripeConfiguration.ApiKey = builder.Configuration["STRIPE_API_KEY"];
 }
 
+builder.Services.AddWebSockets(options =>
+{
+    options.KeepAliveInterval = TimeSpan.FromSeconds(120); // Set the keep-alive interval (adjust as needed)
+});
+
+
+
 var app = builder.Build();
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -158,9 +171,24 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Use WebSockets
+app.UseWebSockets();
+
 app.UseCors("AllowVueApp");
+
+app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseEndpoints(endpoints =>
+{
+    // Map your endpoints
+    endpoints.MapControllers();
+    // ... other endpoint mappings
+});
+
 app.MapControllers();
 
 app.Run();

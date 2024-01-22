@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MineralKingdomApi.DTOs.BidDTOs;
 using MineralKingdomApi.Services;
+using Newtonsoft.Json;
 
 
 /// <summary>
@@ -13,14 +14,16 @@ using MineralKingdomApi.Services;
 public class BidController : ControllerBase
 {
     private readonly IBidService _bidService;
+    private readonly AppWebSocketsManager _appWebSocketManager;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="BidController"/> class.
     /// </summary>
     /// <param name="bidService">The bid service.</param>
-    public BidController(IBidService bidService)
+    public BidController(IBidService bidService, AppWebSocketsManager appWebSocketManager)
     {
         _bidService = bidService;
+        _appWebSocketManager = appWebSocketManager;
     }
 
     /// <summary>
@@ -77,6 +80,27 @@ public class BidController : ControllerBase
         try
         {
             await _bidService.CreateBidAsync(bidDto);
+            Console.WriteLine(bidDto);
+            // Prepare the message to broadcast
+            var message = new
+            {
+                Type = "NEW_BID",
+                Data = new
+                {
+                    AuctionId = bidDto.AuctionId,
+                    Amount = bidDto.Amount,
+                    UserId = bidDto.UserId,
+                    BidTime = bidDto.BidTime,
+                    // You might need to fetch the username based on the user ID
+                }
+            };
+
+            // Convert the message to JSON
+            var jsonMessage = JsonConvert.SerializeObject(message);
+
+            // Broadcast the message to all connected clients
+            await _appWebSocketManager.BroadcastMessageAsync(jsonMessage);
+
             return CreatedAtAction(nameof(GetBidById), new { id = bidDto.AuctionId }, bidDto);
         }
         catch (Exception ex)
