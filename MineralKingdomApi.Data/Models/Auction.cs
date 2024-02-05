@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace MineralKingdomApi.Models
 {
@@ -40,5 +42,12 @@ namespace MineralKingdomApi.Models
         public ICollection<Bid>? Bids { get; set; }
 
         public bool IsWinnerNotified { get; set; }
+
+        [Column(TypeName = "xid")] // Specify the correct PostgreSQL data type
+        public uint Xmin { get; set; }
+
+        // Add a RowVersion property
+        [Timestamp]
+        public byte[]? RowVersion { get; set; }
     }
 }

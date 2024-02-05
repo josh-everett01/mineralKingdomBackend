@@ -10,6 +10,8 @@ namespace MineralKingdomApi.Services
         Task CreateBidAsync(CreateBidDTO bid);
         Task UpdateBidAsync(UpdateBidDTO bid);
         Task DeleteBidAsync(int id);
+        decimal CalculateBidIncrement(decimal currentBid);
+        Task ProcessProxyBids();
     }
 
 }
