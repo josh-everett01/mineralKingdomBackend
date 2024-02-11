@@ -62,11 +62,11 @@ namespace MineralKingdomApi.Data
                 .HasIndex(r => r.SessionId)
                 .IsUnique();
 
-            modelBuilder.Entity<Auction>()
-            .Property(a => a.Xmin) // Map the Xmin property
-            .HasColumnName("Xmin") // The actual PostgreSQL column name
-            .HasColumnType("xid")
-            .IsConcurrencyToken(); // Mark it as a concurrency token
+            //modelBuilder.Entity<Auction>()
+            //.Property(a => a.Xmin) // Map the Xmin property
+            //.HasColumnName("Xmin") // The actual PostgreSQL column name
+            //.HasColumnType("xid")
+            //.IsConcurrencyToken(); // Mark it as a concurrency token
 
         }
     }

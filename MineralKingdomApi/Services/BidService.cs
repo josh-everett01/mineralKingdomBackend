@@ -68,7 +68,6 @@ public class BidService : IBidService
     {
         var auction = await _auctionRepository.GetAuctionByIdAsync(bidDto.AuctionId);
         if (auction == null) throw new Exception("Auction not found");
-        uint auctionXmin = auction.Xmin;
 
         // Identify the current highest bid for the auction
         var currentHighestBid = await _auctionRepository.GetCurrentWinningBidForAuction(bidDto.AuctionId);
@@ -78,7 +77,6 @@ public class BidService : IBidService
         var minimumAllowedBid = (currentHighestBid?.WinningBid?.Amount ?? auction.StartingPrice) + minimumBidIncrement;
 
         if (bidDto.Amount < minimumAllowedBid) throw new Exception($"Bid must be at least {minimumAllowedBid}");
-
 
         // Handle different bid types
         switch (bidDto.BidType)
@@ -97,55 +95,49 @@ public class BidService : IBidService
                     IsDelayedBid = bidDto.IsDelayedBid,
                     ActivationTime = bidDto.ActivationTime,
                 };
-                //_context.Entry(bid).State = EntityState.Modified;
-                uint receivedAuctionXmin = auctionXmin;
 
-                // Fetch the current Xmin value of the auction from the database
-                Auction currentAuction = await _auctionRepository.GetAuctionByIdAsync(bidDto.AuctionId);
-
-                uint currentAuctionXmin = currentAuction.Xmin;
-
-                // Compare the received Xmin with the current Xmin
-                if (receivedAuctionXmin != currentAuctionXmin)
+                try
                 {
-                    // Handle the concurrency conflict (e.g., notify the client, provide options for resolution)
+                    // Continue with bid creation
+                    await _bidRepository.CreateBidAsync(bid);
+
+                    // Calculate the new bid increment based on the new highest bid
+                    decimal newBidIncrement = CalculateBidIncrement(bid.Amount);
+
+                    // Prepare the message to broadcast the new bid increment
+                    var bidIncrementMessage = new
+                    {
+                        Type = "BID_INCREMENT_UPDATE",
+                        Data = new
+                        {
+                            AuctionId = bidDto.AuctionId,
+                            NewBidIncrement = newBidIncrement
+                        }
+                    };
+
+                    // Convert the message to JSON and broadcast it
+                    var jsonBidIncrementMessage = JsonConvert.SerializeObject(bidIncrementMessage);
+                    await _appWebSocketManager.BroadcastMessageAsync(jsonBidIncrementMessage);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    // Handle the concurrency conflict
                     throw new CustomConcurrencyException("Concurrency conflict detected. Please refresh and try again.");
                 }
-
-                // Continue with bid creation if there's no conflict
-                await _bidRepository.CreateBidAsync(bid);
-
-                // Calculate the new bid increment based on the new highest bid
-                decimal newBidIncrement = CalculateBidIncrement(bid.Amount);
-
-                // Prepare the message to broadcast the new bid increment
-                var bidIncrementMessage = new
-                {
-                    Type = "BID_INCREMENT_UPDATE",
-                    Data = new
-                    {
-                        AuctionId = bidDto.AuctionId,
-                        NewBidIncrement = newBidIncrement
-                    }
-                };
-
-                // Convert the message to JSON
-                var jsonBidIncrementMessage = JsonConvert.SerializeObject(bidIncrementMessage);
-
-                // Broadcast the message to all connected clients
-                await _appWebSocketManager.BroadcastMessageAsync(jsonBidIncrementMessage);
-
                 break;
+
             case "ProxyBid":
                 ExtendAuctionTimeIfNeeded(auction);
                 // Handle proxy bidding
                 await HandleProxyBidAsync(bidDto, currentHighestBid?.WinningBid, minimumBidIncrement);
                 break;
+
             case "DelayedBid":
                 ExtendAuctionTimeIfNeeded(auction);
                 // Handle delayed bid
                 await HandleDelayedBidAsync(bidDto);
                 break;
+
             default:
                 throw new Exception("Invalid bid type");
         }

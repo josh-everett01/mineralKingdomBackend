@@ -43,8 +43,8 @@ namespace MineralKingdomApi.Models
 
         public bool IsWinnerNotified { get; set; }
 
-        [Column(TypeName = "xid")] // Specify the correct PostgreSQL data type
-        public uint Xmin { get; set; }
+        //[Column(TypeName = "xid")] // Specify the correct PostgreSQL data type
+        //public uint Xmin { get; set; }
 
         // Add a RowVersion property
         [Timestamp]
