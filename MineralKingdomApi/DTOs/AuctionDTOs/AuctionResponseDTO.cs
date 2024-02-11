@@ -22,6 +22,8 @@ namespace MineralKingdomApi.DTOs.AuctionDTOs
         public int? BidCount { get; set; }
 
         public int? MineralId { get; set; }
+
+        public byte[]? RowVersion { get; set; }
     }
 
 }
