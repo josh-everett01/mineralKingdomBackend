@@ -45,6 +45,8 @@ namespace MineralKingdomApi.Repositories
         // Retrieve Auctions that are finished, but whose winners
         // haven't been notified yet
         Task<IEnumerable<Auction>> GetFinishedAndUnnotifiedAuctionsAsync();
+
+        Task<IEnumerable<Bid>> GetProxyBidsForAuction(int AuctionId);
     }
 
 

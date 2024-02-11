@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MineralKingdomApi.Models;
-using Microsoft.EntityFrameworkCore;
-using MineralKingdomApi.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
 using MineralKingdomApi.Data;
+using MineralKingdomApi.Exceptions;
+using MineralKingdomApi.Models;
+using MineralKingdomApi.Repositories;
 
 public class BidRepository : IBidRepository
 {
@@ -58,6 +55,12 @@ public class BidRepository : IBidRepository
         {
             _context.Bids.Add(bid);
             await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException ex)
+        {
+            // Handle or log the concurrency exception
+            // You might want to throw a custom exception that the service layer knows how to handle
+            throw new CustomConcurrencyException("The auction has been modified by another transaction. Please try again.", ex);
         }
         catch (Exception ex)
         {

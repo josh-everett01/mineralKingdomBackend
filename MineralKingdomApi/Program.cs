@@ -111,6 +111,8 @@ builder.Services.AddScoped<IAuctionStatusRepository, AuctionStatusRepository>();
 
 // Auction notification service
 builder.Services.AddHostedService<AuctionNotificationService>();
+builder.Services.AddHostedService<ProxyBidProcessingService>();
+
 
 // Bids
 builder.Services.AddScoped<IBidRepository, BidRepository>();

@@ -61,6 +61,7 @@
     <None Remove="DTOs\CorrespondenceDTOs\" />
     <None Remove="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Remove="Properties\PublishProfiles\FolderProfile 1.pubxml" />
+    <None Remove="Exceptions\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
@@ -76,5 +77,6 @@
     <Folder Include="DTOs\ShoppingCartDTOs\" />
     <Folder Include="DTOs\PaymentDTOs\" />
     <Folder Include="DTOs\CorrespondenceDTOs\" />
+    <Folder Include="Exceptions\" />
   </ItemGroup>
 </Project>

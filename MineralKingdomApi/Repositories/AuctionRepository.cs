@@ -3,16 +3,20 @@ using MineralKingdomApi.DTOs.AuctionDTOs.YourNamespace.Models;
 using MineralKingdomApi.Models;
 using MineralKingdomApi.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using MineralKingdomApi.DTOs.BidDTOs;
 
 namespace MineralKingdomApi.Repositories
 {
     public class AuctionRepository : IAuctionRepository
     {
         private readonly MineralKingdomContext _context;
+        private readonly IServiceProvider _serviceProvider;
 
-        public AuctionRepository(MineralKingdomContext context)
+        public AuctionRepository(MineralKingdomContext context, IServiceProvider serviceProvider)
         {
             _context = context;
+            _serviceProvider = serviceProvider;
         }
 
         public async Task CreateAuctionAsync(Auction auction)
@@ -104,7 +108,14 @@ namespace MineralKingdomApi.Repositories
             return await _context.Bids
                 .Where(b => b.AuctionId == auctionId)
                 .OrderByDescending(b => b.Amount)
-                .ToListAsync();
+            .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Bid>> GetProxyBidsForAuction(int AuctionId)
+        {
+            var bids = await GetBidsForAuctionAsync(AuctionId);
+            var proxyBids = bids.Where(bid => bid.MaximumBid != null);
+            return proxyBids;
         }
 
         public async Task<BidResult> GetCurrentWinningBidForAuction(int auctionId)
@@ -166,8 +177,12 @@ namespace MineralKingdomApi.Repositories
             {
                 throw new ArgumentNullException(nameof(auction));
             }
-            _context.Auctions.Update(auction);
-            await _context.SaveChangesAsync();
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<MineralKingdomContext>();
+                context.Auctions.Update(auction);
+                await context.SaveChangesAsync();
+            }
         }
 
         public async Task<IEnumerable<Auction>> GetFinishedAndUnnotifiedAuctionsAsync()
