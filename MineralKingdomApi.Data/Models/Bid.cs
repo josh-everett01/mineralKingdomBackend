@@ -21,5 +21,15 @@ namespace MineralKingdomApi.Models
         // Relationship Navigation Property: A Bid is associated with one Auction
         public int AuctionId { get; set; }
         public Auction? Auction { get; set; }
+
+        // Bid Types
+        public decimal? MaximumBid { get; set; } // For Proxy Bidding
+        public bool IsDelayedBid { get; set; } = false; // For Delayed Bid
+        public DateTime? ActivationTime { get; set; } // For Delayed Bid
+        public string? BidType { get; set; } // "AuctionBid", "ProxyBid", "DelayedBid"
+
+        // Add RowVersion property for concurrency control
+        [Timestamp]
+        public byte[]? RowVersion { get; set; }
     }
 }

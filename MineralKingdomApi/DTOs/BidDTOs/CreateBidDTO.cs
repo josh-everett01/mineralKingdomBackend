@@ -16,6 +16,11 @@ namespace MineralKingdomApi.DTOs.BidDTOs
 
         [Required]
         public int AuctionId { get; set; }
+
+        public decimal? MaximumBid { get; set; }
+        public bool IsDelayedBid { get; set; }
+        public DateTime? ActivationTime { get; set; }
+        public string? BidType { get; set; }
     }
 
 }

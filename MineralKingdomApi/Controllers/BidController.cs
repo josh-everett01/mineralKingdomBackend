@@ -91,6 +91,8 @@ public class BidController : ControllerBase
                     Amount = bidDto.Amount,
                     UserId = bidDto.UserId,
                     BidTime = bidDto.BidTime,
+                    BidType = bidDto.BidType,
+                    NewIncrement = this.CalculateBidIncrement(bidDto.Amount),
                     // You might need to fetch the username based on the user ID
                 }
             };
@@ -154,6 +156,21 @@ public class BidController : ControllerBase
 
             await _bidService.DeleteBidAsync(id);
             return NoContent();
+        }
+        catch (Exception ex)
+        {
+            // Log the exception
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
+    }
+
+    [HttpGet("calculate-bid-increment")]
+    public IActionResult CalculateBidIncrement([FromQuery] decimal currentBid)
+    {
+        try
+        {
+            decimal bidIncrement = _bidService.CalculateBidIncrement(currentBid);
+            return Ok(new { bidIncrement });
         }
         catch (Exception ex)
         {

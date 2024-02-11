@@ -201,7 +201,8 @@ namespace MineralKingdomApi.Services
                 MineralName = auction.Mineral?.Name,  // Assuming Mineral has a Name property
                 AuctionStatusName = auction.AuctionStatus?.Status,  // Assuming AuctionStatus has a Name property
                 BidCount = auction.Bids?.Count ?? 0,  // Assuming Auction has a Bids collection
-                MineralId = auction.MineralId
+                MineralId = auction.MineralId,
+                RowVersion = auction.RowVersion,
             };
         }
 
